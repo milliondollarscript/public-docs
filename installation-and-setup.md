@@ -36,7 +36,7 @@ After activation, the plugin automatically registers routes, flushes permalinks,
 
 **Note:** Permalinks are automatically flushed during activation. If you experience 404 errors on MDS routes after activation, manually flush permalinks by visiting Settings > Permalinks and clicking "Save Changes".
 
-**Note:** If you encounter any errors during installation, please refer to the [Troubleshooting Installation Issues](#troubleshooting-installation-issues) section below.
+**Note:** If you encounter any errors during installation, see the [Troubleshooting Guide](troubleshooting.md#installation-issues).
 
 ### Advanced Installation (Manual)
 
@@ -47,79 +47,14 @@ If you prefer manual installation or need to install via FTP/SSH:
 
 The plugin will automatically flush permalinks on activation. If needed, you can manually flush via Settings > Permalinks (save) or WP‑CLI: `wp rewrite flush --hard`
 
-## Troubleshooting Installation Issues
+## Troubleshooting
 
-### "The link you followed has expired"
+Having issues with installation, updates, or configuration? See the comprehensive [Troubleshooting Guide](troubleshooting.md) which covers:
 
-**What causes this error:**
-This error appears when uploading the plugin ZIP file if it exceeds your server's upload file size limits. WordPress enforces limits set in your PHP configuration.
-
-**How to fix it:**
-
-1. **Check your current limits:** Visit your WordPress admin dashboard and go to Media > Add New. The maximum upload size is displayed at the bottom of the page.
-
-2. **Increase PHP limits:** You need to modify your `php.ini` file (or equivalent configuration). Add or update these settings:
-   ```
-   upload_max_filesize = 64M
-   post_max_size = 64M
-   max_execution_time = 300
-   ```
-   
-3. **Alternative methods if you can't access php.ini:**
-   - **`.htaccess` (Apache servers):** Add to your WordPress root `.htaccess` file:
-     ```
-     php_value upload_max_filesize 64M
-     php_value post_max_size 64M
-     php_value max_execution_time 300
-     ```
-   - **`wp-config.php`:** Add before "That's all, stop editing!" line:
-     ```php
-     @ini_set('upload_max_filesize', '64M');
-     @ini_set('post_max_size', '64M');
-     ```
-
-4. **Contact your hosting provider:** Many hosts provide control panel options to adjust these limits, or support staff can increase them for you.
-
-5. **Use manual installation:** If you cannot increase limits, use the [Advanced Installation (Manual)](#advanced-installation-manual) method instead by uploading via FTP/SSH.
-
-### Plugin Activation Errors
-
-**"Plugin could not be activated because it triggered a fatal error"**
-
-This usually indicates a PHP version incompatibility or missing dependencies.
-
-**Solutions:**
-- Verify your server meets the minimum requirements (PHP 8.1+, WordPress 6.7+)
-- Check your error logs (often in `wp-content/debug.log` or via your hosting control panel)
-- Contact support with the specific error message for assistance
-
-### "Missing plugin files" or "Corrupted ZIP"
-
-**What causes this:**
-The ZIP file may have been incompletely downloaded or corrupted during transfer.
-
-**Solutions:**
-- Re-download the plugin ZIP from https://milliondollarscript.com/plugin
-- Verify the download completed fully (check file size)
-- Try a different browser if the issue persists
-- Use the manual installation method as an alternative
-
-### Permission Errors
-
-**"Could not create directory" or "Installation failed"**
-
-This indicates WordPress doesn't have write permissions to the plugins directory.
-
-**Solutions:**
-- Contact your hosting provider to verify correct permissions on `wp-content/plugins/`
-- Recommended permissions: directories `755`, files `644`
-- Use manual installation via FTP/SSH if automatic installation isn't possible
-
-### Need Additional Help?
-
-- **MDS Installation Service:** Million Dollar Script offers a professional installation service for users who need assistance. Visit https://milliondollarscript.com for details
-- **Hosting Support:** Your hosting provider can assist with server configuration, PHP settings, and file permissions
-- **Check Documentation:** Review the WordPress Documentation for general plugin installation troubleshooting
+- [Installation Issues](troubleshooting.md#installation-issues) - Upload limits, activation errors, permissions
+- [Plugin Updates](troubleshooting.md#plugin-updates) - Download failures, update errors
+- [Routes & 404s](troubleshooting.md#routes--404-errors) - Permalink issues
+- [Grid Alignment](troubleshooting.md#grid-alignment) - Selection boxes not matching grid
 
 ## First Steps
 
@@ -187,4 +122,4 @@ Create pages and insert the block “Million Dollar Script”, or use the shortc
 - Grid dimensions: define grid width/height and block size under MDS Admin (Manage Grids). If you use the block, `{width}`/`{height}` automatically match your grid. With the shortcode, `Functions::maybe_set_dimensions()` can derive dimensions as needed, but for the Grid view prefer the placeholders above.
 - Multiple grids per page are supported. The UI and tooltips are scoped so clicks and popups map to the correct grid.
 - If you switch your endpoint base (Options > Routes), flush permalinks.
-- If block selections don’t align with the image, see “Troubleshooting: Grid Alignment”.
+- If block selections don't align with the image, see [Troubleshooting: Grid Alignment](troubleshooting.md#grid-alignment).

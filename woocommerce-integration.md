@@ -21,7 +21,5 @@ MDS integrates with WooCommerce for checkout, refunds, and account/login coordin
 
 ## Troubleshooting
 
-- Verify WooCommerce’s checkout page and endpoints are configured and published.
-- If redirects don’t occur, ensure you are logged in and an order id is present as required by the flow.
-- Clear caches after changing Woo settings, then retest.
+For WooCommerce-related issues, see [Troubleshooting: WooCommerce Issues](troubleshooting.md#woocommerce-issues).
 

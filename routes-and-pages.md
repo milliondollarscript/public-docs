@@ -12,7 +12,7 @@ MDS supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes
   - `/milliondollarscript/payment`
   - `/milliondollarscript/thank-you`
 - Requirements: Pretty permalinks enabled in WordPress.
-- Troubleshooting: If a route 404s after activation or changing the base, flush permalinks (Settings → Permalinks → Save) or `wp rewrite flush --hard`.
+- Troubleshooting: If a route 404s, see [Troubleshooting: Routes & 404 Errors](troubleshooting.md#routes--404-errors).
 
 ## Pages (blocks or shortcode)
 
