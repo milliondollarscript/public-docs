@@ -217,6 +217,50 @@ wp cron event run milliondollarscript_cron_minute
 
 ---
 
+## Extension Issues
+
+### Extension not appearing in admin
+
+**Cause:** The extension may not be activated, or may have a dependency issue.
+
+**Solutions:**
+- Verify the extension is activated in Plugins > Installed Plugins
+- Ensure the MDS core plugin is active and up to date
+- For premium extensions, verify your license is activated in the extension's settings
+- Check PHP error logs for activation errors (`wp-content/debug.log` or hosting control panel)
+
+### Extension features not working
+
+**Solutions:**
+- Clear any caching plugins (page cache, object cache)
+- Ensure the extension version is compatible with your MDS core version
+- For premium extensions, verify the license is valid and activated
+- Try deactivating and reactivating the extension
+- Check for JavaScript errors in your browser's developer console (F12)
+
+### Extension conflicts
+
+If an extension causes issues with MDS or other plugins:
+
+1. Deactivate all MDS extensions
+2. Verify the core MDS plugin works correctly
+3. Reactivate extensions one at a time to identify the conflict
+4. If a conflict is found, contact the extension developer with details about:
+   - WordPress version
+   - PHP version
+   - MDS core version
+   - Other active plugins/theme
+
+### Extension update issues
+
+**"Download failed" during extension update**
+
+This is similar to core plugin updates—the download link may have expired.
+
+**Solution:** Retry the update. If it persists, manually download the latest version from your MDS account and reinstall.
+
+---
+
 ## Still Need Help?
 
 - **MDS Installation Service:** Professional installation assistance at https://milliondollarscript.com

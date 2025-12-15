@@ -16,7 +16,8 @@ MDS supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes
 
 ## Pages (blocks or shortcode)
 
-- Use the Setup Wizard to create standard pages with the correct blocks.
+- You can change the permalinks of these pages to whatever you want on your site.
+- Use the Setup Wizard to create standard WordPress pages with the correct blocks.
 - You can also manually insert the “Million Dollar Script” block or the `[milliondollarscript]` shortcode into any page.
 - Blocks let you use `{width}`/`{height}` placeholders for the Grid to match exact dimensions automatically.
 
@@ -28,7 +29,7 @@ MDS supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes
 ## Changing the base
 
 - Update the endpoint base in Options.
-- After changing it, flush permalinks once.
+- After changing it, flush permalinks once. This should be automatically done by the plugin, but you can also do it manually in WordPress Settings > Permalinks.
 
 ## Upgrading from legacy 2.3.5
 

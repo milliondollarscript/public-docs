@@ -29,9 +29,12 @@ This is a quick map of the Million Dollar Script admin pages so you know where t
 - **Changelog**  
   View recent feature and fix summaries bundled with the plugin.
 
-- **Extensions**  
-  Curated launch point for extension UIs. The core plugin hides all other legacy submenus by default and highlights this entry.  
-  Extensions add their own links by hooking into `mds_main_menu_extensions_submenu`. Example:
+- **Extensions**
+  The Extensions hub is a curated launch point for installed MDS extensions. When you install extensions (from the MDS marketplace or custom builds), their admin interfaces appear here automatically.
+
+  Extensions are WordPress plugins that integrate with MDS to add features like custom fields, translation tools, analytics, and more. They follow MDS patterns and appear seamlessly in your admin without cluttering the WordPress sidebar.
+
+  Extensions register their menu items via the `mds_main_menu_extensions_submenu` hook. For developers building extensions, see [Extension Development](/docs/extension-development). Example:
   ```php
   add_action( 'mds_main_menu_extensions_submenu', function () {
       if ( current_user_can( 'manage_options' ) ) {

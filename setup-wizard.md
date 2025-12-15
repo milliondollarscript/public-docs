@@ -6,7 +6,7 @@ The Setup Wizard helps you create the core pages and confirm essential options s
 
 **WP Admin → Million Dollar Script → 🔧 Setup Wizard**
 
-Look for the **wrench icon** in your WordPress admin sidebar under the Million Dollar Script menu. This is the same icon WordPress uses for tools (`dashicons-admin-tools`).
+Look for the **wrench icon** in your WordPress admin sidebar under the Million Dollar Script menu.
 
 ## What it does
 
