@@ -432,20 +432,20 @@ delete_metadata('user', 0, 'my_extension_preference', '', true);
 
 Before releasing your extension:
 
-- [ ] Unique text domain that won't conflict with other plugins
-- [ ] All strings wrapped in translation functions
-- [ ] Proper capability checks on all admin functions
-- [ ] Nonce verification on all form submissions
-- [ ] Input sanitization on all user data
-- [ ] Output escaping on all rendered content
-- [ ] Activation/deactivation hooks handle setup/cleanup
-- [ ] Uninstall.php removes all plugin data
-- [ ] README.md with installation and usage instructions
-- [ ] Changelog documenting all versions
-- [ ] Tests passing
-- [ ] Code follows WordPress Coding Standards
-- [ ] Tested with latest WordPress and PHP versions
-- [ ] Tested with latest MDS version
+[ ] Unique text domain that won't conflict with other plugins  
+[ ] All strings wrapped in translation functions  
+[ ] Proper capability checks on all admin functions  
+[ ] Nonce verification on all form submissions  
+[ ] Input sanitization on all user data  
+[ ] Output escaping on all rendered content  
+[ ] Activation/deactivation hooks handle setup/cleanup  
+[ ] Uninstall.php removes all plugin data  
+[ ] README.md with installation and usage instructions  
+[ ] Changelog documenting all versions  
+[ ] Tests passing  
+[ ] Code follows WordPress Coding Standards  
+[ ] Tested with latest WordPress and PHP versions  
+[ ] Tested with latest MDS version  
 
 ## Resources
 
