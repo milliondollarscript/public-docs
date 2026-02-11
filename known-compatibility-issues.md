@@ -21,7 +21,7 @@ This supersedes the old compatibility note. Here are the current, practical cons
 
 ## Theme/Plugin Interactions
 
-- Page builders and custom themes generally work. If a builder template strips the content container or overly constrains image sizes, selections can appear offset—see [Troubleshooting: Grid Alignment](troubleshooting.md#grid-alignment).
+- Page builders and custom themes generally work. If a builder template strips the content container or overly constrains image sizes, selections can appear offset—see [Troubleshooting: Grid Alignment](/docs/troubleshooting#grid-alignment).
 - Elementor: earlier conflicts were addressed; upgrade to the latest MDS version if you experienced activation conflicts in the past.
 
 ## Multisite
@@ -30,4 +30,4 @@ This supersedes the old compatibility note. Here are the current, practical cons
 
 If you run into an environment‑specific limitation, capture details (WP/PHP versions, active theme/plugins, hosting type) and reproduce on a default theme to isolate the cause.
 
-For step-by-step solutions to common problems, see the [Troubleshooting Guide](troubleshooting.md).
+For step-by-step solutions to common problems, see the [Troubleshooting Guide](/docs/troubleshooting).

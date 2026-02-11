@@ -4,7 +4,7 @@ This guide updates and replaces the old “WordPress Installation” article. Th
 
 ## Requirements
 
-- WordPress 6.7+ (tested up to 6.8)
+- WordPress 6.7+ (tested up to 6.9.1)
 - PHP 8.1+
 - Optional: WooCommerce (for checkout, refunds, and account integration)
 
@@ -36,7 +36,7 @@ After activation, the plugin automatically registers routes, flushes permalinks,
 
 **Note:** Permalinks are automatically flushed during activation. If you experience 404 errors on MDS routes after activation, manually flush permalinks by visiting Settings > Permalinks and clicking "Save Changes".
 
-**Note:** If you encounter any errors during installation, see the [Troubleshooting Guide](troubleshooting.md#installation-issues).
+**Note:** If you encounter any errors during installation, see the [Troubleshooting Guide](/docs/troubleshooting#installation-issues).
 
 ### Advanced Installation (Manual)
 
@@ -49,12 +49,12 @@ The plugin will automatically flush permalinks on activation. If needed, you can
 
 ## Troubleshooting
 
-Having issues with installation, updates, or configuration? See the comprehensive [Troubleshooting Guide](troubleshooting.md) which covers:
+Having issues with installation, updates, or configuration? See the comprehensive [Troubleshooting Guide](/docs/troubleshooting) which covers:
 
-- [Installation Issues](troubleshooting.md#installation-issues) - Upload limits, activation errors, permissions
-- [Plugin Updates](troubleshooting.md#plugin-updates) - Download failures, update errors
-- [Routes & 404s](troubleshooting.md#routes--404-errors) - Permalink issues
-- [Grid Alignment](troubleshooting.md#grid-alignment) - Selection boxes not matching grid
+- [Installation Issues](/docs/troubleshooting#installation-issues) - Upload limits, activation errors, permissions
+- [Plugin Updates](/docs/troubleshooting#plugin-updates) - Download failures, update errors
+- [Routes & 404s](/docs/troubleshooting#routes--404-errors) - Permalink issues
+- [Grid Alignment](/docs/troubleshooting#grid-alignment) - Selection boxes not matching grid
 
 ## First Steps
 
@@ -122,4 +122,4 @@ Create pages and insert the block “Million Dollar Script”, or use the shortc
 - Grid dimensions: define grid width/height and block size under MDS Admin (Manage Grids). If you use the block, `{width}`/`{height}` automatically match your grid. With the shortcode, `Functions::maybe_set_dimensions()` can derive dimensions as needed, but for the Grid view prefer the placeholders above.
 - Multiple grids per page are supported. The UI and tooltips are scoped so clicks and popups map to the correct grid.
 - If you switch your endpoint base (Options > Routes), flush permalinks.
-- If block selections don't align with the image, see [Troubleshooting: Grid Alignment](troubleshooting.md#grid-alignment).
+- If block selections don't align with the image, see [Troubleshooting: Grid Alignment](/docs/troubleshooting#grid-alignment).

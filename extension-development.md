@@ -129,7 +129,7 @@ class Plugin {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_assets']);
 
         // MDS integration
-        add_action('mds_main_menu_extensions_submenu', [$this, 'add_menu_link']);
+        add_action('mds_register_dashboard_menu', [$this, 'register_dashboard_menu_items']);
 
         // Register shortcode
         add_shortcode('my_extension', [$this, 'shortcode_callback']);
@@ -154,13 +154,14 @@ class Plugin {
         );
     }
 
-    public function add_menu_link(): void {
-        if (!current_user_can('manage_options')) {
-            return;
-        }
-        echo '<li><a href="' . esc_url(admin_url('admin.php?page=my-extension')) . '">'
-            . esc_html__('My Extension', 'my-mds-extension')
-            . '</a></li>';
+    public function register_dashboard_menu_items(string $registry_class): void {
+        $registry_class::register([
+            'slug'     => 'my-extension',
+            'title'    => __('My Extension', 'my-mds-extension'),
+            'url'      => admin_url('admin.php?page=my-extension'),
+            'parent'   => 'mds-extensions',
+            'position' => 10,
+        ]);
     }
 
     public function render_admin_page(): void {
@@ -227,20 +228,21 @@ class Plugin {
 
 ## Adding to MDS Menu
 
-The recommended way to add admin links is via the Extensions dropdown:
+The recommended way to add admin links is via the `mds_register_dashboard_menu` action and `Menu_Registry`:
 
 ```php
-add_action('mds_main_menu_extensions_submenu', function () {
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-    echo '<li><a href="' . esc_url(admin_url('admin.php?page=my-extension')) . '">'
-        . esc_html__('My Extension', 'my-mds-extension')
-        . '</a></li>';
+add_action('mds_register_dashboard_menu', function (string $registry_class): void {
+    $registry_class::register([
+        'slug'     => 'my-extension',
+        'title'    => __('My Extension', 'my-mds-extension'),
+        'url'      => admin_url('admin.php?page=my-extension'),
+        'parent'   => 'mds-extensions',
+        'position' => 10,
+    ]);
 });
 ```
 
-This keeps extensions organized and doesn't clutter the WordPress sidebar.
+Use `'parent' => 'mds-extensions'` so your item appears under the Extensions dropdown. This keeps extensions organized and doesn't clutter the WordPress sidebar. See [Hooks Reference](/docs/hooks-reference) for all available parent slugs.
 
 ## Using Carbon Fields
 

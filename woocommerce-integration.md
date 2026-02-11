@@ -21,5 +21,5 @@ MDS integrates with WooCommerce for checkout, refunds, and account/login coordin
 
 ## Troubleshooting
 
-For WooCommerce-related issues, see [Troubleshooting: WooCommerce Issues](troubleshooting.md#woocommerce-issues).
+For WooCommerce-related issues, see [Troubleshooting: WooCommerce Issues](/docs/troubleshooting#woocommerce-issues).
 

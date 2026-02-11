@@ -18,7 +18,7 @@ The plugin is built around a modular class structure with namespaced PHP (PSR-4)
 
 ### Text Domains
 
-- **Core plugin:** `milliondollarscript-two`
+- **Core plugin:** `milliondollarscript`
 - **Extensions:** Each extension uses its own text domain (e.g., `mds-translation`, `mds-fields`)
 
 Always use the appropriate text domain for translatable strings.
@@ -34,13 +34,23 @@ MDS uses WordPress database conventions:
 
 ### Admin Integration
 
-Extensions integrate with MDS admin in several ways:
+Extensions register menu items via the `mds_register_dashboard_menu` action and the `Menu_Registry` API:
 
-- `mds_main_menu_extensions_submenu` - Add items to the Extensions dropdown (recommended)
-- `mds_main_menu_admin_submenu` - Add items to the Admin dropdown
-- `mds_main_menu_top` - Add top-level hero menu items
+```php
+add_action('mds_register_dashboard_menu', function (string $registry_class): void {
+    $registry_class::register([
+        'slug'     => 'my-extension-settings',
+        'title'    => __('My Extension', 'my-extension'),
+        'url'      => admin_url('admin.php?page=my-extension-settings'),
+        'parent'   => 'mds-extensions',
+        'position' => 10,
+    ]);
+});
+```
 
-See [Hooks Reference](/docs/hooks-reference) for complete documentation.
+Available parent slugs: `pixel-management`, `orders`, `reports`, `system`, `mds-extensions` (recommended for extensions).
+
+See [Hooks Reference](/docs/hooks-reference) for the full parameter table and examples.
 
 ## Getting Started
 
@@ -82,10 +92,14 @@ To verify your environment is ready for MDS development:
 2. Check `wp-content/debug.log` exists and is writable
 3. Test a simple hook:
    ```php
-   add_action('mds_main_menu_extensions_submenu', function () {
-       if (current_user_can('manage_options')) {
-           echo '<li><a href="#">Dev Test</a></li>';
-       }
+   add_action('mds_register_dashboard_menu', function (string $registry_class): void {
+       $registry_class::register([
+           'slug'     => 'dev-test',
+           'title'    => 'Dev Test',
+           'url'      => admin_url('admin.php?page=dev-test'),
+           'parent'   => 'mds-extensions',
+           'position' => 99,
+       ]);
    });
    ```
 4. Verify "Dev Test" appears in the Extensions menu

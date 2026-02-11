@@ -4,64 +4,65 @@ MDS provides actions and filters for extending functionality. This reference cov
 
 ## Menu Hooks
 
-These hooks let extensions integrate with the MDS admin menu without polluting the WordPress sidebar.
+MDS uses a structured `Menu_Registry` system for admin menu integration. Extensions register menu items as structured data rather than echoing raw HTML.
 
-### mds_main_menu_admin_submenu
+### mds_register_dashboard_menu
 
-Add items to the Admin dropdown menu.
+Register menu items in the MDS admin dashboard. This is the primary hook for adding navigation entries.
 
-**Location:** After core Admin submenu items
+**Callback signature:** `function (string $registry_class): void`
+
+The callback receives the fully-qualified `Menu_Registry` class name, which you call statically to register items.
 
 ```php
-add_action('mds_main_menu_admin_submenu', function () {
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-    $url = admin_url('admin.php?page=my-plugin-admin');
-    echo '<li><a href="' . esc_url($url) . '">My Plugin</a></li>';
+add_action('mds_register_dashboard_menu', function (string $registry_class): void {
+    $registry_class::register([
+        'slug'     => 'my-extension-settings',
+        'title'    => __('My Extension', 'my-extension'),
+        'url'      => admin_url('admin.php?page=my-extension-settings'),
+        'parent'   => 'mds-extensions',
+        'position' => 10,
+    ]);
 });
 ```
 
-### mds_main_menu_extensions_submenu
+#### Parameters for `Menu_Registry::register()`
 
-Add items to the Extensions dropdown menu. This is the recommended location for extension admin links.
+| Parameter  | Type   | Required | Description |
+|-----------|--------|----------|-------------|
+| `slug`     | string | Yes      | Unique identifier for the menu item |
+| `title`    | string | Yes      | Display label |
+| `url`      | string | Yes      | Full admin URL |
+| `parent`   | string | No       | Parent menu slug (see below) |
+| `position` | int    | No       | Sort order within the parent group |
 
-**Location:** Inside the Extensions dropdown
+#### Available parent slugs
+
+| Parent Slug | Section | Contains |
+|------------|---------|----------|
+| `pixel-management` | Grid Management | Grid, Packages, Price Zones, Backgrounds, Not for Sale, Approve |
+| `orders` | Orders | All Orders, Process Pixels, etc. |
+| `reports` | Reports | Click Reports, Top Customers, Transaction Log |
+| `system` | System | Options, Logs, Emails, License, System Info, Changelog |
+| `mds-extensions` | Extensions | Extension hub (recommended for extensions) |
+
+#### Class method example
 
 ```php
-add_action('mds_main_menu_extensions_submenu', function () {
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-    $url = admin_url('admin.php?page=my-extension');
-    echo '<li><a href="' . esc_url($url) . '">My Extension</a></li>';
-});
+add_action('mds_register_dashboard_menu', [$this, 'register_dashboard_menu_items']);
+
+public function register_dashboard_menu_items(string $registry_class): void {
+    $registry_class::register([
+        'slug'     => 'mds-translation-translations',
+        'title'    => __('Translations', 'mds-translation'),
+        'url'      => admin_url('admin.php?page=mds-translation-translations'),
+        'parent'   => 'mds-extensions',
+        'position' => 1,
+    ]);
+}
 ```
 
-### mds_main_menu_top
-
-Add top-level hero menu items with optional dropdowns.
-
-**Location:** After standard top-level hero items
-
-```php
-add_action('mds_main_menu_top', function () {
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-    echo '<li><a href="#">My Menu</a><ul>'
-        . '<li><a href="' . esc_url(admin_url('admin.php?page=sub-1')) . '">Sub Item 1</a></li>'
-        . '<li><a href="' . esc_url(admin_url('admin.php?page=sub-2')) . '">Sub Item 2</a></li>'
-        . '</ul></li>';
-});
-```
-
-### Menu Markup Rules
-
-- Output standard list items and anchor tags: `<li><a href="...">Label</a></li>`
-- For nested menus, wrap children in a nested `<ul>`: `<li><a href="#">Parent</a><ul>...children...</ul></li>`
-- Do not echo wrapper `<ul>` tags—the container is provided by the core template
-- Keep labels short; long labels will wrap gracefully
+For most extensions, use `'parent' => 'mds-extensions'` so your item appears under the Extensions dropdown.
 
 ## Submenu Visibility
 

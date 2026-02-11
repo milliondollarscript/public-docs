@@ -1,6 +1,6 @@
 # Troubleshooting
 
-This guide consolidates common issues and their solutions. If you don't find your answer here, check the [Known Compatibility Notes](known-compatibility-issues.md) or contact support.
+This guide consolidates common issues and their solutions. If you don't find your answer here, check the [Known Compatibility Notes](/docs/known-compatibility-issues) or contact support.
 
 ## Installation Issues
 
