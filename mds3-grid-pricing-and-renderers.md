@@ -1,18 +1,18 @@
-# MDS3 Grid Pricing And Renderers
+# Grid Pricing And Renderers
 
-MDS3 keeps the MDS2 grid-selling model, but the controls are now grouped under **Million Dollar Script > Grids > Edit Grid**.
+Million Dollar Script keeps the Million Dollar Script 2 grid-selling model, but the controls are now grouped under **Million Dollar Script > Grids > Edit Grid**.
 
 ## Base Pricing
 
 Set **Price Per Block** on the grid details tab. This is the default unit price for any available block that is not covered by a price zone or selected package.
 
-Set **Minimum Blocks Per Order** and **Maximum Blocks Per Order** on the same tab. MDS3 enforces these limits in the frontend selection UI and again on the server when the order is reserved.
+Set **Minimum Blocks Per Order** and **Maximum Blocks Per Order** on the same tab. Million Dollar Script enforces these limits in the frontend selection UI and again on the server when the order is reserved.
 
 Set **Maximum Orders** to cap active orders for the grid. Active orders include reserved, pending-payment, and paid orders. Use `0` for no cap.
 
 ## Packages
 
-Use the **Packages** tab to create MDS2-style package offers.
+Use the **Packages** tab to create Million Dollar Script 2-style package offers.
 
 - **Package Price** replaces per-block pricing for the selected package.
 - **Duration Days** is stored with the order and shown in order metadata.
@@ -20,15 +20,15 @@ Use the **Packages** tab to create MDS2-style package offers.
 - **Default Package** preselects the package on the public grid.
 - Archived packages remain in historical order data but are no longer offered.
 
-Customers see package choices beside the reserve button. The selection summary updates with the estimated total before reservation. MDS3 still validates the selected package on the server, so stale or tampered package IDs are rejected.
+Customers see package choices beside the reserve button. The selection summary updates with the estimated total before reservation. Million Dollar Script still validates the selected package on the server, so stale or tampered package IDs are rejected.
 
 ## Price Zones
 
 Use the **Price Zones** tab to define regional per-block prices.
 
-You can define a zone by row/column bounds or by legacy block ID bounds. Migrated MDS2 price rows are imported here. The editor previews active zones over the grid, and the public grid shows a light zone overlay while customers choose blocks.
+You can define a zone by row/column bounds or by legacy block ID bounds. Migrated Million Dollar Script 2 price rows are imported here. The editor previews active zones over the grid, and the public grid shows a light zone overlay while customers choose blocks.
 
-When multiple zones match a block, MDS3 uses the most specific match. Block-level price overrides win over price zones, and package prices win over both.
+When multiple zones match a block, Million Dollar Script uses the most specific match. Block-level price overrides win over price zones, and package prices win over both.
 
 ## Unavailable Regions
 
@@ -38,7 +38,7 @@ Sold and reserved blocks are protected when a region is changed.
 
 ## Renderer Modes
 
-MDS3 supports three renderer values:
+Million Dollar Script supports three renderer values:
 
 - `auto` - default. Uses OpenLayers when available and falls back to the classic canvas renderer.
 - `openlayers` - preferred interactive renderer for large or zoomable grids.

@@ -16,7 +16,7 @@ This supersedes the old compatibility note. Here are the current, practical cons
 
 ## WooCommerce
 
-- When enabled in Options, the Payment step redirects to the WooCommerce checkout. The plugin suppresses Woo’s “empty checkout” redirect on MDS routes so the flow is reliable regardless of the checkout page slug.
+- When the WooCommerce provider extension is active and selected in Setup, the Payment step redirects to WooCommerce checkout.
 - Refund hooks and login/register coordination are supported. Keep WooCommerce up to date for best compatibility.
 
 ## Theme/Plugin Interactions

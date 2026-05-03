@@ -1,6 +1,6 @@
 # WordPress Integration
 
-The integration is no longer a separate plugin or service - Million Dollar Script Two is a single WordPress plugin that embeds the full MDS core and native WP features.
+The integration is no longer a separate plugin or service. Million Dollar Script is a single WordPress plugin that embeds the core application and native WordPress features.
 
 ## What you get
 
@@ -17,7 +17,7 @@ No. The legacy approach (separate subdomain with a bridge) is replaced. The plug
 
 ## Blocks vs. shortcodes vs. routes
 
-- Blocks: easiest way to add MDS views to pages in the editor.
+- Blocks: easiest way to add Million Dollar Script views to pages in the editor.
 - Shortcode: `[milliondollarscript id="1" type="grid|users|list|stats|manage|payment|thank-you" width="100%" height="auto"]`
 - Routes: visit `/milliondollarscript/order`, `/milliondollarscript/manage`, `/milliondollarscript/list`, etc. Change the base in Options.
 
@@ -25,7 +25,8 @@ Use whichever fits your theme and navigation. Routes require no extra pages; blo
 
 ## WooCommerce notes
 
-- Enable under Options > WooCommerce. When enabled, MDS3 creates linked WooCommerce orders and sends customers to WooCommerce checkout after artwork upload.
+- Install **Million Dollar Script WooCommerce Checkout** and choose WooCommerce under Million Dollar Script -> Setup -> Payment Provider.
+- The provider creates linked WooCommerce orders and sends customers to WooCommerce checkout after artwork upload.
 - Refund hooks are supported. Login/register can be coordinated with Woo’s My Account when the option is enabled.
 
 ## Migration notes (legacy installs)

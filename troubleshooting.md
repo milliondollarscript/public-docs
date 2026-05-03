@@ -150,7 +150,7 @@ After changing grid settings or images, clear page/CDN caches to eliminate stale
 **Solutions:**
 - Verify WooCommerce's checkout page is configured and published
 - Ensure you're logged in and an order ID is present
-- Confirm WooCommerce integration is enabled in MDS Options > WooCommerce
+- Confirm **Million Dollar Script WooCommerce Checkout** is active and WooCommerce is selected under Million Dollar Script -> Setup -> Payment Provider
 - Clear caches after changing Woo settings
 
 ### Empty checkout redirect conflicts

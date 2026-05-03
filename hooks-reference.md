@@ -1,14 +1,14 @@
 # Hooks Reference
 
-MDS provides actions and filters for extending functionality. This reference covers the most commonly used hooks for extension developers.
+Million Dollar Script provides actions and filters for extending functionality. This reference covers the most commonly used hooks for extension developers.
 
 ## Menu Hooks
 
-MDS uses a structured `Menu_Registry` system for admin menu integration. Extensions register menu items as structured data rather than echoing raw HTML.
+Million Dollar Script uses a structured `Menu_Registry` system for admin menu integration. Extensions register menu items as structured data rather than echoing raw HTML.
 
 ### mds_register_dashboard_menu
 
-Register menu items in the MDS admin dashboard. This is the primary hook for adding navigation entries.
+Register menu items in the Million Dollar Script admin dashboard. This is the primary hook for adding navigation entries.
 
 **Callback signature:** `function (string $registry_class): void`
 
@@ -68,7 +68,7 @@ For most extensions, use `'parent' => 'mds-extensions'` so your item appears und
 
 ### mds_extensions_visible_submenus
 
-Show additional submenus that are hidden by default. Some MDS submenus are hidden with CSS but remain accessible via direct URL.
+Show additional submenus that are hidden by default. Some Million Dollar Script submenus are hidden with CSS but remain accessible via direct URL.
 
 ```php
 add_filter('mds_extensions_visible_submenus', function (array $slugs) {
@@ -144,33 +144,105 @@ add_filter('mds_list_cell_launch_date', function (array $cell, array $column, ar
 
 See [List Page Customization](/docs/list-page-customization) for detailed examples.
 
-## MDS3 Checkout Hooks
+## Million Dollar Script Payment Provider Hooks
 
-MDS3 exposes checkout routing hooks for custom gateway extensions.
+Million Dollar Script exposes payment provider hooks for custom gateway extensions.
 
-### mds3_commerce_provider
+### mds3_payment_provider_options
 
-Select the commerce provider stored on new MDS3 orders.
+Add a provider to the Setup wizard selector.
 
 ```php
-add_filter('mds3_commerce_provider', function (string $provider): string {
-    return 'my_gateway';
+add_filter('mds3_payment_provider_options', function (array $options): array {
+    $options['my-gateway'] = __('My Gateway', 'my-extension');
+    return $options;
 });
 ```
 
-### mds3_checkout_payload
+### mds3_payment_providers
 
-Return the checkout URL that should be used after artwork upload.
+Register the provider runtime callbacks.
 
 ```php
-add_filter('mds3_checkout_payload', function (array $payload, int $mds_order_id): array {
-    $payload['provider'] = 'my_gateway';
-    $payload['checkout_url'] = add_query_arg('mds_order_id', $mds_order_id, 'https://pay.example.com/checkout');
-    return $payload;
-}, 10, 2);
+add_filter('mds3_payment_providers', function (array $providers): array {
+    $providers['my-gateway'] = [
+        'id' => 'my-gateway',
+        'label' => __('My Gateway', 'my-extension'),
+        'ready' => true,
+        'create_checkout' => 'my_gateway_create_checkout',
+        'complete_source_order' => 'my_gateway_complete_source_order',
+    ];
+
+    return $providers;
+});
 ```
 
-Gateway callbacks should update the linked MDS3 order status through the MDS3 order update flow so blocks and placements stay synchronized.
+Gateway callbacks should call `MDS3\Commerce\Payments::mark_source_paid()` or `MDS3\Commerce\Payments::mark_source_cancelled()` so blocks, placements, and extension-owned records stay synchronized.
+
+### mds3_payments_pre_checkout_payload
+
+Filter the normalized checkout payload before provider-specific callbacks run.
+
+**Callback signature:** `function (array $payload, array $transaction, array $provider): array`
+
+Use this for adding extension metadata that the active payment provider should see.
+
+### mds3_payments_checkout_payload
+
+Filter the final checkout payload returned by `MDS3\Commerce\Payments::create_checkout()`.
+
+**Callback signature:** `function (array $payload, array $transaction, array $provider): array`
+
+Use this for read-only presentation changes such as custom labels or extension-owned manage URLs.
+
+### mds3_payment_source_paid
+
+Runs when the core payments API marks an extension-owned source record as paid.
+
+**Callback signature:** `function (string $source, int $source_id, array $context): void`
+
+### mds3_payment_source_cancelled
+
+Runs when the core payments API marks an extension-owned source record as cancelled.
+
+**Callback signature:** `function (string $source, int $source_id, array $context): void`
+
+### mds3_payment_source_status
+
+Runs for every source payment status transition.
+
+**Callback signature:** `function (string $source, int $source_id, string $status, array $context): void`
+
+## API Governance Hooks
+
+Million Dollar Script exposes endpoint discovery, policy management, scoped API keys, key rotation, and an OpenAPI contract for core and extension routes.
+
+### mds3_api_endpoint_manifest
+
+Register extension REST endpoints so they appear in **API Access**, discovery, and OpenAPI output.
+
+**Callback signature:** `function (array $endpoints): array`
+
+Each endpoint should provide:
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `id` | string | Stable endpoint ID, unique across core and extensions |
+| `route` | string | Full REST route pattern, such as `/mds/v3/my-extension/items` |
+| `methods` | array | HTTP methods governed by this policy |
+| `scope` | string | Required API key scope |
+| `minimum_security_level` | string | Minimum policy level core should enforce |
+| `description` | string | Human-readable description for admins and OpenAPI |
+
+Supported policy levels are `public_read`, `public_write_nonce`, `api_key_read`, `api_key_write`, `wp_capability`, and `disabled`. Internal stronger levels may be listed for future signed-token and service-to-service flows; treat them as administrator-only unless your extension implements and documents the verifier.
+
+### mds3_api_openapi_document
+
+Customize the generated OpenAPI 3.1 document.
+
+**Callback signature:** `function (array $document, MDS3\Rest\ApiGovernance $governance): array`
+
+Use this to add extension schemas, examples, or tags after your routes have been included through `mds3_api_endpoint_manifest`.
 
 ## Form Hooks
 

@@ -1,29 +1,40 @@
-# MDS3 Checkout And Payments
+# Million Dollar Script Checkout And Payments
 
-MDS3 supports two core checkout modes: WooCommerce checkout and standalone/manual checkout. Existing MDS2 sites can keep using the old Checkout URL pattern while they move to MDS3.
+Million Dollar Script routes checkout through the core payments API. The core plugin owns orders, reservations, upload state, blocks, placements, and payment status synchronization. Payment systems are provider extensions.
 
-## WooCommerce Checkout
+## Payment Providers
 
-Use WooCommerce when you want card payments, gateway webhooks, refunds, order emails, taxes, or WooCommerce account pages.
+Choose the provider in **Million Dollar Script -> Setup -> Payment Provider**.
+
+- **Standalone/manual checkout** is built in.
+- **Million Dollar Script WooCommerce Checkout** adds WooCommerce as a provider when both the extension and WooCommerce are active.
+- Future providers such as EDD or direct gateways can register the same API.
+
+Extensions such as SponsorBoard should not call WooCommerce, EDD, or Stripe directly. They should create their own local records, then call the Million Dollar Script payments API to start checkout. Provider extensions handle store-specific orders and gateway callbacks.
+
+## WooCommerce Provider
+
+Use the WooCommerce provider when you want card payments, gateway webhooks, refunds, order emails, taxes, or WooCommerce account pages.
 
 1. Install and configure WooCommerce.
 2. Configure your WooCommerce payment gateway.
-3. In MDS Options, enable Prefer WooCommerce Checkout.
-4. Test a small grid purchase with the gateway sandbox mode.
+3. Install and activate **Million Dollar Script WooCommerce Checkout**.
+4. In **Million Dollar Script -> Setup**, choose **WooCommerce** as the payment provider.
+5. Test a small grid purchase with the gateway sandbox mode.
 
-When WooCommerce checkout is enabled, MDS3 creates a linked WooCommerce order during reservation and sends the customer to the WooCommerce payment URL after artwork upload. WooCommerce `processing`, `completed`, and `payment_complete` events mark the linked MDS3 order paid, mark blocks sold, and publish the placement. WooCommerce `cancelled`, `failed`, and `refunded` events cancel the linked MDS3 order and release the blocks.
+When WooCommerce is selected, the provider extension creates a linked WooCommerce order and sends the customer to the WooCommerce payment URL after artwork upload. WooCommerce `processing`, `completed`, and `payment_complete` events mark the linked Million Dollar Script source paid. WooCommerce `cancelled`, `failed`, and `refunded` events cancel the linked source. WooCommerce account orders show a **Manage** action only to the order owner or an administrator.
 
 ## Standalone Or Manual Checkout
 
-Use standalone checkout when you are collecting payment offline or through an external payment page that is not WooCommerce.
+Use standalone checkout when you are collecting payment offline or through an external payment page that is not handled by a provider extension.
 
-In MDS Options, leave Prefer WooCommerce Checkout disabled and set Checkout URL only if you have an external/manual payment page.
+In Setup, choose **Standalone/manual checkout** and set Checkout URL only if you have an external/manual payment page.
 
-If Checkout URL is set, MDS3 redirects customers there after they reserve blocks and upload artwork. If Checkout URL is empty, MDS3 sends customers to the thank-you/order-summary page after upload. The order remains pending payment unless Auto-complete Manual Payments is enabled.
+If Checkout URL is set, Million Dollar Script redirects customers there after they reserve blocks and upload artwork. If Checkout URL is empty, Million Dollar Script sends customers to the thank-you/order-summary page after upload. The order remains pending payment unless Auto-complete Manual Payments is enabled.
 
-## MDS2 Checkout URL Placeholders
+## Million Dollar Script 2 Checkout URL Placeholders
 
-MDS3 keeps the MDS2 placeholder format for existing external checkout links:
+Million Dollar Script keeps the Million Dollar Script 2 placeholder format for existing external checkout links:
 
 ```text
 %AMOUNT%
@@ -42,7 +53,7 @@ Example:
 https://payments.example.com/mds?amount=%AMOUNT%&currency=%CURRENCY%&order=%ORDERID&grid=%GRID%&pixel=%PIXELID%
 ```
 
-When the URL does not contain placeholders, MDS3 appends order context automatically:
+When the URL does not contain placeholders, Million Dollar Script appends order context automatically:
 
 ```text
 mds3_order_id
@@ -62,8 +73,24 @@ Auto-complete Manual Payments is for offline/manual checkout flows where no gate
 - Disabled: after upload, the order moves to pending payment and an admin must mark it paid.
 - Enabled: after upload, the order is marked paid, selected blocks become sold, and the placement becomes active.
 
-Leave this disabled when WooCommerce or a real gateway is responsible for payment confirmation.
+Leave this disabled when a provider extension or real gateway is responsible for payment confirmation.
 
 ## Custom Gateway Extensions
 
-Custom checkout integrations can use the `mds3_commerce_provider` and `mds3_checkout_payload` filters to provide a provider name and payment URL. Gateway callbacks should mark MDS3 orders paid, failed, cancelled, or refunded through the MDS3 order update flow so block and placement status stays synchronized.
+Payment extensions register through:
+
+- `mds3_payment_provider_options`
+- `mds3_payment_providers`
+
+A provider entry can expose:
+
+- `id`
+- `label`
+- `ready`
+- `create_checkout`
+- `complete_source_order`
+- `locks_currency`
+- `currency_code`
+- `currency_symbol`
+
+Gateway callbacks should call the core payment status API so blocks, placements, and extension-owned records stay synchronized.

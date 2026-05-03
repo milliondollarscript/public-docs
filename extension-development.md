@@ -1,12 +1,12 @@
 # Extension Development
 
-Learn how to build your own MDS extensions using the official skeleton plugin and best practices.
+Learn how to build your own Million Dollar Script extensions using the official skeleton plugin and best practices.
 
 ## Getting Started
 
 ### Use the Skeleton Plugin
 
-The **MDS Skeleton** plugin provides a clean starting point for new extensions:
+The **Million Dollar Script Skeleton** plugin provides a clean starting point for new extensions:
 
 1. Copy the `mds-skeleton` folder from the extensions repository
 2. Rename the folder and main PHP file to match your extension name
@@ -16,7 +16,7 @@ The **MDS Skeleton** plugin provides a clean starting point for new extensions:
 
 ### File Structure
 
-A typical MDS extension follows this structure:
+A typical Million Dollar Script extension follows this structure:
 
 ```
 my-extension/
@@ -49,7 +49,7 @@ The main plugin file bootstraps your extension:
 ```php
 <?php
 /**
- * Plugin Name: My MDS Extension
+ * Plugin Name: My Million Dollar Script Extension
  * Plugin URI: https://example.com/my-extension
  * Description: Description of what your extension does.
  * Version: 1.0.0
@@ -78,13 +78,13 @@ if (file_exists(MY_EXT_DIR . 'vendor/autoload.php')) {
     require_once MY_EXT_DIR . 'vendor/autoload.php';
 }
 
-// Initialize after plugins are loaded (ensures MDS is available)
+// Initialize after plugins are loaded (ensures Million Dollar Script is available)
 add_action('plugins_loaded', function () {
-    // Check if MDS core is active
+    // Check if Million Dollar Script core is active
     if (!class_exists('MillionDollarScript')) {
         add_action('admin_notices', function () {
             echo '<div class="notice notice-error"><p>';
-            echo esc_html__('My MDS Extension requires Million Dollar Script to be installed and activated.', 'my-mds-extension');
+            echo esc_html__('My Million Dollar Script Extension requires Million Dollar Script to be installed and activated.', 'my-mds-extension');
             echo '</p></div>';
         });
         return;
@@ -128,7 +128,7 @@ class Plugin {
         // Frontend hooks
         add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_assets']);
 
-        // MDS integration
+        // Million Dollar Script integration
         add_action('mds_register_dashboard_menu', [$this, 'register_dashboard_menu_items']);
 
         // Register shortcode
@@ -226,7 +226,7 @@ class Plugin {
 }
 ```
 
-## Adding to MDS Menu
+## Adding to the Million Dollar Script Menu
 
 The recommended way to add admin links is via the `mds_register_dashboard_menu` action and `Menu_Registry`:
 
@@ -242,11 +242,182 @@ add_action('mds_register_dashboard_menu', function (string $registry_class): voi
 });
 ```
 
+## Payment Provider Extensions
+
+Payment systems should integrate with the Million Dollar Script payments API instead of being called directly by monetization extensions. A SponsorBoard-style extension should create its own booking, campaign, or inventory record, then ask core to create checkout for that source. The active provider extension handles the payment system.
+
+Register a provider with:
+
+```php
+add_filter('mds3_payment_provider_options', function (array $options): array {
+    $options['my-provider'] = __('My Provider', 'my-extension');
+    return $options;
+});
+
+add_filter('mds3_payment_providers', function (array $providers): array {
+    $providers['my-provider'] = [
+        'id' => 'my-provider',
+        'label' => __('My Provider', 'my-extension'),
+        'ready' => my_provider_is_ready(),
+        'create_checkout' => 'my_provider_create_checkout',
+        'complete_source_order' => 'my_provider_complete_source_order',
+        'locks_currency' => true,
+        'currency_code' => 'my_provider_currency_code',
+        'currency_symbol' => 'my_provider_currency_symbol',
+    ];
+
+    return $providers;
+});
+```
+
+Start checkout from an extension with:
+
+```php
+$checkout = \MDS3\Commerce\Payments::create_checkout([
+    'source' => 'my-extension',
+    'source_id' => $booking_id,
+    'user_id' => get_current_user_id(),
+    'email' => $customer_email,
+    'currency' => 'USD',
+    'total' => 100.00,
+    'items' => [
+        [
+            'name' => 'Sponsor slot',
+            'amount' => 100.00,
+            'quantity' => 1,
+            'metadata' => ['booking_id' => $booking_id],
+        ],
+    ],
+    'manage_url' => $private_manage_url,
+]);
+```
+
+When the gateway confirms or cancels payment, call:
+
+```php
+\MDS3\Commerce\Payments::mark_source_paid('my-extension', $booking_id, [
+    'provider' => 'my-provider',
+    'provider_order_id' => $gateway_order_id,
+]);
+
+\MDS3\Commerce\Payments::mark_source_cancelled('my-extension', $booking_id, [
+    'provider' => 'my-provider',
+    'provider_order_id' => $gateway_order_id,
+]);
+```
+
+Extensions that own monetized records should also listen to `mds3_payment_source_status` for their source name so local statuses stay synchronized.
+
 Use `'parent' => 'mds-extensions'` so your item appears under the Extensions dropdown. This keeps extensions organized and doesn't clutter the WordPress sidebar. See [Hooks Reference](/docs/hooks-reference) for all available parent slugs.
+
+## API-First Extensions
+
+Million Dollar Script exposes a governed REST API at `/wp-json/mds/v3`. Extensions should expose their own REST routes when they need to support external apps, automations, or LLM tools.
+
+Administrators manage API keys in **Million Dollar Script > API Access**. Keys can be scoped, rate limited, revoked, and rotated. A rotated key immediately invalidates the old secret and shows the new secret only once.
+
+API clients can authenticate with either:
+
+```http
+Authorization: Bearer milliondollarscript_...
+X-Million-Dollar-Script-API-Key: milliondollarscript_...
+```
+
+Browser-based write actions that use the `public_write_nonce` security level must send a valid WordPress REST nonce:
+
+```http
+X-WP-Nonce: <wp_create_nonce('wp_rest')>
+```
+
+Do not accept legacy or shorthand key headers in new integrations. Use the full product header or Bearer authentication.
+
+### Register Endpoint Policies
+
+Register your extension endpoints with `mds3_api_endpoint_manifest` so they appear in API discovery, the OpenAPI contract, and the administrator policy table.
+
+```php
+add_filter('mds3_api_endpoint_manifest', function (array $endpoints): array {
+    $endpoints[] = [
+        'id' => 'my-extension-items-read',
+        'route' => '/mds/v3/my-extension/items',
+        'methods' => ['GET'],
+        'scope' => 'my-extension.read',
+        'minimum_security_level' => 'api_key_read',
+        'description' => __('Read extension items.', 'my-extension'),
+    ];
+
+    $endpoints[] = [
+        'id' => 'my-extension-items-write',
+        'route' => '/mds/v3/my-extension/items',
+        'methods' => ['POST'],
+        'scope' => 'my-extension.write',
+        'minimum_security_level' => 'api_key_write',
+        'description' => __('Create extension items.', 'my-extension'),
+    ];
+
+    return $endpoints;
+});
+```
+
+Use stable endpoint IDs and scopes. Suggested scope format is `{extension-slug}.read`, `{extension-slug}.write`, or a narrower action-specific scope such as `{extension-slug}.booking.write`.
+
+Available policy levels are:
+
+| Level | Use for |
+|-------|---------|
+| `public_read` | Public read-only content |
+| `public_write_nonce` | Browser writes protected by a WordPress REST nonce |
+| `api_key_read` | External read access using a scoped API key |
+| `api_key_write` | External write access using a scoped API key |
+| `wp_capability` | Administrator-only routes |
+| `disabled` | Temporarily disabling an endpoint |
+
+Stronger internal levels may appear for future signed-token and service-to-service flows. Treat those as administrator-only unless your extension explicitly documents and implements the required verifier.
+
+### Register REST Routes
+
+Use the same route and scope in your REST permission callback:
+
+```php
+add_action('rest_api_init', function (): void {
+    register_rest_route('mds/v3', '/my-extension/items', [
+        [
+            'methods' => WP_REST_Server::READABLE,
+            'callback' => 'my_extension_read_items',
+            'permission_callback' => function (WP_REST_Request $request) {
+                return (new \MDS3\Rest\ApiGovernance())->authorize(
+                    $request,
+                    'my-extension.read',
+                    'api_key_read'
+                );
+            },
+        ],
+        [
+            'methods' => WP_REST_Server::CREATABLE,
+            'callback' => 'my_extension_create_item',
+            'permission_callback' => function (WP_REST_Request $request) {
+                return (new \MDS3\Rest\ApiGovernance())->authorize(
+                    $request,
+                    'my-extension.write',
+                    'api_key_write'
+                );
+            },
+            'args' => [
+                'title' => [
+                    'required' => true,
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+            ],
+        ],
+    ]);
+});
+```
+
+The administrator policy table can raise an endpoint above your minimum security level but will not save a weaker policy than the route declares.
 
 ## Using Carbon Fields
 
-MDS uses Carbon Fields for options. You can add your own options:
+Million Dollar Script uses Carbon Fields for options. You can add your own options:
 
 ```php
 use Carbon_Fields\Container;
@@ -447,11 +618,11 @@ Before releasing your extension:
 - [ ] Tests passing
 - [ ] Code follows WordPress Coding Standards
 - [ ] Tested with latest WordPress and PHP versions
-- [ ] Tested with latest MDS version
+- [ ] Tested with latest Million Dollar Script version
 
 ## Resources
 
-- [Hooks Reference](/docs/hooks-reference) - Available MDS hooks
+- [Hooks Reference](/docs/hooks-reference) - Available Million Dollar Script hooks
 - [List Page Customization](/docs/list-page-customization) - Extending the advertiser list
 - [WordPress Plugin Handbook](https://developer.wordpress.org/plugins/)
 - [Carbon Fields Documentation](https://carbonfields.net/docs/)

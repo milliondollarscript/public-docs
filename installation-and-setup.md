@@ -1,6 +1,6 @@
 # Million Dollar Script: Installation & Setup
 
-This guide covers MDS3 installation. The core WordPress integration is built into a single plugin: Million Dollar Script. No separate WordPress integration plugin is required.
+This guide covers Million Dollar Script 3 installation. The core WordPress integration is built into a single plugin: Million Dollar Script. No separate WordPress integration plugin is required.
 
 ## Requirements
 
@@ -10,7 +10,7 @@ This guide covers MDS3 installation. The core WordPress integration is built int
 
 ## Hosting Recommendation
 
-If you’re choosing hosting for a new MDS site, I’ve had consistently good results with Hostinger for performance, stability, and ease of setup. Their stack plays nicely with our grid/image generation and keeps ordering flows snappy.
+If you’re choosing hosting for a new Million Dollar Script site, I’ve had consistently good results with Hostinger for performance, stability, and ease of setup. Their stack plays nicely with our grid/image generation and keeps ordering flows snappy.
 
 - Fast page loads and solid uptime
 - Free SSL and automated backups
@@ -34,9 +34,9 @@ Use my affiliate link if you’d like to support development:
 
 After activation, the plugin automatically registers routes, flushes permalinks, sets up options, schedules cron jobs, and creates admin pages. You should now see "Million Dollar Script" in your WordPress admin menu.
 
-If MDS2 is installed, activation redirects to the MDS3 setup screen and shows the MDS2 upgrade choice. MDS3 does not migrate old data or deactivate MDS2 unless you explicitly choose that action. See [MDS3 Upgrade From MDS2](/docs/mds3-upgrade-from-mds2).
+If Million Dollar Script 2 is installed, activation redirects to the Million Dollar Script setup screen and shows the upgrade choice. Million Dollar Script does not migrate old data or deactivate Million Dollar Script 2 unless you explicitly choose that action. See [Upgrade From Million Dollar Script 2](/docs/mds3-upgrade-from-mds2).
 
-**Note:** Permalinks are automatically flushed during activation. If you experience 404 errors on MDS routes after activation, manually flush permalinks by visiting Settings > Permalinks and clicking "Save Changes".
+**Note:** Permalinks are automatically flushed during activation. If you experience 404 errors on Million Dollar Script routes after activation, manually flush permalinks by visiting Settings > Permalinks and clicking "Save Changes".
 
 **Note:** If you encounter any errors during installation, see the [Troubleshooting Guide](/docs/troubleshooting#installation-issues).
 
@@ -125,9 +125,10 @@ Million Dollar Script uses the same branch names as the release workflow:
 
 Older saved values are normalized automatically: `stable` maps to `main`, and `development` maps to `alpha`.
 
-## WooCommerce Integration (optional)
+## Payment Provider (optional)
 
-- Enable WooCommerce checkout under Million Dollar Script > Settings > General. When enabled, Million Dollar Script creates linked WooCommerce orders and sends customers to WooCommerce checkout after artwork upload; refunds and account pages integrate cleanly.
+- Choose a payment provider under Million Dollar Script > Setup. Standalone/manual checkout is built in.
+- For WooCommerce, install WooCommerce, activate **Million Dollar Script WooCommerce Checkout**, then choose WooCommerce as the provider. Million Dollar Script creates linked WooCommerce orders and sends customers to WooCommerce checkout after artwork upload.
 - There’s an optional login redirect (Options > Login) to control where users land after WooCommerce login.
 - For standalone/manual payment pages, use the Checkout URL option. Million Dollar Script supports the Million Dollar Script 2 placeholder format and falls back to the thank-you/order-summary page when no checkout URL is configured. See [Million Dollar Script Checkout And Payments](/docs/mds3-checkout-and-payments).
 

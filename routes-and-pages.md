@@ -1,6 +1,6 @@
 # Routes & Pages
 
-MDS supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes). Use either or both.
+Million Dollar Script supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes). Use either or both.
 
 ## Routes (pretty URLs)
 
@@ -18,8 +18,9 @@ MDS supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes
 
 - You can change the permalinks of these pages to whatever you want on your site.
 - Use the Setup Wizard to create standard WordPress pages with the correct blocks.
-- You can also manually insert the “Million Dollar Script” block or the `[milliondollarscript]` shortcode into any page.
-- Blocks let you use `{width}`/`{height}` placeholders for the Grid to match exact dimensions automatically.
+- You can also manually insert the Million Dollar Script Grid block, the Million Dollar Script Stats block, or shortcodes into any page.
+- The Grid block lets you use `{width}` and `{height}` placeholders to match the selected grid’s exact dimensions automatically.
+- Statistics can be embedded with the Stats block or `[mds3_page type="stats" grid_id="1"]`; they do not need a dedicated setup page.
 
 ## Dynamic Page Container (advanced)
 
@@ -36,4 +37,3 @@ MDS supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes
 - Old installs sometimes used a separate integration or different paths.
 - After upgrading to 2.5/2.6, use the Setup Wizard to (re)create pages and confirm Options.
 - If you previously hardcoded paths, update links to the new routes or to your created pages.
-
