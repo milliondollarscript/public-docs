@@ -144,6 +144,34 @@ add_filter('mds_list_cell_launch_date', function (array $cell, array $column, ar
 
 See [List Page Customization](/docs/list-page-customization) for detailed examples.
 
+## MDS3 Checkout Hooks
+
+MDS3 exposes checkout routing hooks for custom gateway extensions.
+
+### mds3_commerce_provider
+
+Select the commerce provider stored on new MDS3 orders.
+
+```php
+add_filter('mds3_commerce_provider', function (string $provider): string {
+    return 'my_gateway';
+});
+```
+
+### mds3_checkout_payload
+
+Return the checkout URL that should be used after artwork upload.
+
+```php
+add_filter('mds3_checkout_payload', function (array $payload, int $mds_order_id): array {
+    $payload['provider'] = 'my_gateway';
+    $payload['checkout_url'] = add_query_arg('mds_order_id', $mds_order_id, 'https://pay.example.com/checkout');
+    return $payload;
+}, 10, 2);
+```
+
+Gateway callbacks should update the linked MDS3 order status through the MDS3 order update flow so blocks and placements stay synchronized.
+
 ## Form Hooks
 
 ### mds_form_fields

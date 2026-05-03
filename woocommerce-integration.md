@@ -1,16 +1,18 @@
 # WooCommerce Integration
 
-MDS integrates with WooCommerce for checkout, refunds, and account/login coordination.
+MDS integrates with WooCommerce for checkout, refunds, and account/login coordination. For non-WooCommerce manual or external checkout URLs, see [MDS3 Checkout And Payments](/docs/mds3-checkout-and-payments).
 
 ## Enable integration
 
 - Install and configure WooCommerce following their docs (gateways, taxes, emails, checkout page).
 - In MDS Options → WooCommerce, enable the integration.
-- Result: the `payment` step redirects to WooCommerce checkout when appropriate.
+- Result: MDS3 creates a linked WooCommerce order and redirects to WooCommerce checkout after artwork upload.
 
 ## Behavior & options
 
 - Refund handling hooks into WooCommerce refunds.
+- WooCommerce `processing`, `completed`, and `payment_complete` events mark the linked MDS3 order paid.
+- WooCommerce `cancelled`, `failed`, and `refunded` events cancel the linked MDS3 order and release its blocks.
 - MDS can coordinate login/register with Woo’s My Account pages. See Options → Login (WooCommerce Login Redirect).
 - On MDS routes, the plugin disables Woo’s “empty checkout” redirect to avoid hijacking grid flows.
 
@@ -22,4 +24,3 @@ MDS integrates with WooCommerce for checkout, refunds, and account/login coordin
 ## Troubleshooting
 
 For WooCommerce-related issues, see [Troubleshooting: WooCommerce Issues](/docs/troubleshooting#woocommerce-issues).
-

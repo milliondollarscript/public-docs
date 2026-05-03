@@ -10,6 +10,7 @@ Look for the **wrench icon** in your WordPress admin sidebar under the Million D
 
 ## What it does
 
+- Detects an installed MDS2 plugin and asks whether to keep it active, review migration, import data, or deactivate it.
 - Creates common pages (Grid, Order, Manage, List, Payment/Thank‑You) with the correct blocks/shortcodes.
 - Applies sensible defaults and saves Options to generate dynamic CSS.
 - Hooks up the endpoint base (routes) to work alongside those pages.
@@ -17,6 +18,7 @@ Look for the **wrench icon** in your WordPress admin sidebar under the Million D
 ## Typical flow
 
 - Confirm your grid settings (size and block dimensions) and save.
+- If MDS2 is detected, choose whether to keep it active for now or review/import migration. MDS3 will not migrate or deactivate MDS2 automatically.
 - Let the wizard create recommended pages. You can customize titles, slugs, or templates later.
 - Save Options to generate the dynamic CSS.
 - Test the order flow end‑to‑end.
@@ -24,7 +26,7 @@ Look for the **wrench icon** in your WordPress admin sidebar under the Million D
 ## WooCommerce (optional)
 
 - Install and configure WooCommerce following their documentation (payment gateways, checkout, emails).
-- In MDS Options, enable WooCommerce integration. The Payment step will redirect to Woo checkout.
+- In MDS Options, enable WooCommerce integration when WooCommerce should process payment. MDS3 sends customers to WooCommerce checkout after artwork upload.
 - Optional: set the MDS Login Redirect for WooCommerce under Options > Login.
 
 ## After the wizard
@@ -34,10 +36,10 @@ Look for the **wrench icon** in your WordPress admin sidebar under the Million D
 
 ## Editor tips
 
-- In the block editor, insert the “Million Dollar Script” block and choose a Type (Grid, Order, List, Stats, Manage, etc.).
-- For Grid pages, set width/height to `{width}`/`{height}` to match your configured grid exactly.
-- For List/Manage/Order/Confirm/Thank‑You, `width="100%" height="auto"` usually integrates best with themes.
-- The shortcode `[milliondollarscript ...]` mirrors the block settings; see Shortcode Reference for full options.
+- In the block editor, insert the “MDS Grid” block for grid pages.
+- Use `[mds_grid id="1" read_only="false"]` for an interactive grid, replacing `1` with the grid id you want to show.
+- Use `[mds3_page type="manage" grid_id="1"]`, `[mds3_page type="list" grid_id="1"]`, and the other standard page types for supporting pages, replacing `1` per page when you run multiple grids.
+- Legacy `[milliondollarscript ...]` embeds are supported after MDS2 is inactive; see Shortcode Reference for full options.
 
 ## Hosting tip
 

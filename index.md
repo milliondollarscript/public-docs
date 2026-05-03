@@ -6,11 +6,14 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 
 - **[Installation & Setup](/docs/installation-and-setup)** - Requirements, installation methods, and first steps
 - **[Setup Wizard](/docs/setup-wizard)** - Automated setup for pages and configuration
+- **[MDS3 Upgrade From MDS2](/docs/mds3-upgrade-from-mds2)** - Install MDS3 beside MDS2, review migration, and choose when to import/deactivate
+- **[MDS3 And MDS2 Workflow Parity](/docs/mds3-mds2-workflow-parity)** - What is covered, what changed, and what still needs validation before live migration
 
 ## Configuration
 
 - **[Routes & Pages](/docs/routes-and-pages)** - Pretty URLs vs. page-based embeds
 - **[Blocks & Shortcodes](/docs/shortcode-reference)** - Complete shortcode reference and block usage
+- **[MDS3 Grid Pricing And Renderers](/docs/mds3-grid-pricing-and-renderers)** - Packages, price zones, order limits, unavailable regions, and renderer choices
 - **[Pixel Permalinks](/docs/pixel-permalinks-and-migration)** - Custom URL patterns for pixel pages
 - **[Styling & Themes](/docs/dynamic-css-and-theme-modes)** - Dynamic CSS, light/dark modes
 - **[Admin Navigation](/docs/admin-navigation)** - Guide to admin pages and menus
@@ -20,6 +23,8 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 
 - **[WordPress Integration](/docs/wordpress-integration)** - How MDS integrates with WordPress
 - **[WooCommerce](/docs/woocommerce-integration)** - Checkout, refunds, and account coordination
+- **[MDS3 Checkout And Payments](/docs/mds3-checkout-and-payments)** - WooCommerce, standalone/manual checkout, MDS2 placeholders, and custom gateway hooks
+- **[ImageGrid](/docs/imagegrid)** - Optional remote rendering, account status, billing portal links, quotas, and local fallback
 
 ## For Developers
 
@@ -41,9 +46,14 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 | Task | Where to Go |
 |------|-------------|
 | Install the plugin | [Installation & Setup](/docs/installation-and-setup) |
+| Upgrade from MDS2 to MDS3 | [MDS3 Upgrade From MDS2](/docs/mds3-upgrade-from-mds2) |
+| Check MDS2 workflow coverage in MDS3 | [MDS3 And MDS2 Workflow Parity](/docs/mds3-mds2-workflow-parity) |
 | Create pages for my grid | [Setup Wizard](/docs/setup-wizard) |
 | Add grid to a page | [Blocks & Shortcodes](/docs/shortcode-reference) |
+| Configure packages, price zones, or renderers | [MDS3 Grid Pricing And Renderers](/docs/mds3-grid-pricing-and-renderers) |
 | Enable WooCommerce checkout | [WooCommerce](/docs/woocommerce-integration) |
+| Configure manual/external checkout | [MDS3 Checkout And Payments](/docs/mds3-checkout-and-payments) |
+| Connect or troubleshoot ImageGrid | [ImageGrid](/docs/imagegrid) |
 | Fix 404 errors | [Troubleshooting](/docs/troubleshooting#routes--404-errors) |
 | Grid alignment issues | [Troubleshooting](/docs/troubleshooting#grid-alignment) |
 | Update failed | [Troubleshooting](/docs/troubleshooting#plugin-updates) |

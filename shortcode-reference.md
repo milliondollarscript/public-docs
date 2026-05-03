@@ -1,6 +1,115 @@
-# Shortcode Reference
+# Million Dollar Script Blocks And Shortcodes
 
-The plugin provides a single shortcode, `[milliondollarscript]`, which renders different views depending on the `type` parameter. Most page layouts can also be added via the “Million Dollar Script” Gutenberg block, which sets the same parameters under the hood.
+Million Dollar Script provides native grid and stats blocks plus two primary shortcodes:
+
+```text
+[mds_grid id="1" read_only="false"]
+[mds3_page type="order" grid_id="1"]
+```
+
+Legacy Million Dollar Script 2 embeds using `[milliondollarscript ...]` are supported when Million Dollar Script 2 is not active. If Million Dollar Script 2 remains active for side-by-side testing, Million Dollar Script leaves those legacy embeds to Million Dollar Script 2.
+
+## Million Dollar Script Grid Block
+
+In the block editor, add **Million Dollar Script Grid**. Choose:
+
+- grid
+- read-only or interactive mode
+- width
+- height
+- renderer: `auto`, `openlayers`, or `classic`
+
+The block renders dynamically, so changes to the grid record appear without editing the page again. The width defaults to `100%`, so it follows the page column unless you set a value such as `960px` or `80vw`.
+
+If you deselect the block in the editor, click anywhere inside the grid preview or select it from the editor list view to reopen the block settings sidebar.
+
+## Million Dollar Script Stats Block
+
+In the block editor, add **Million Dollar Script Stats**. Choose:
+
+- grid
+- display unit: site setting, blocks, or pixels
+- width
+- number, label, background, and border colors
+
+The stats block shows sold and available inventory. The site setting comes from **Settings > Display > Stats Display Mode**.
+
+## `[mds_grid]`
+
+Use `[mds_grid]` for the public grid itself.
+
+### Attributes
+
+- `id` (int) — Million Dollar Script grid id. If omitted, Million Dollar Script uses the first available grid as a fallback.
+- `read_only` (bool) — `true` for showcase mode, `false` for ordering/selection mode. Default: `true`.
+- `width` (string) — CSS width such as `100%`, `960px`, or `80vw`. Default: `100%`.
+- `height` (string) — CSS height such as `640px`, `80vh`, or `100%`. Default: `640px`.
+- `renderer` (string) — `auto`, `openlayers`, or `classic`.
+
+Renderer details, package pricing, and price zones are covered in [Million Dollar Script Grid Pricing And Renderers](/docs/mds3-grid-pricing-and-renderers).
+
+### Examples
+
+Interactive order page:
+
+```text
+[mds_grid id="1" read_only="false"]
+```
+
+Constrained responsive width:
+
+```text
+[mds_grid id="1" read_only="false" width="960px" height="560px"]
+```
+
+Read-only showcase:
+
+```text
+[mds_grid id="1" read_only="true"]
+```
+
+Classic canvas fallback:
+
+```text
+[mds_grid id="1" read_only="false" renderer="classic"]
+```
+
+## `[mds3_page]`
+
+Use `[mds3_page]` for standard Million Dollar Script pages and migrated Million Dollar Script 2 page roles.
+
+Each page shortcode can target a specific grid. If you omit the grid id, Million Dollar Script uses the first available grid only as a fallback for that embed.
+
+### Attributes
+
+- `type` (string) — one of `grid`, `order`, `write-ad`, `confirm-order`, `payment`, `manage`, `list`, `stats`, `thank-you`, `upload`, `no-orders`.
+- `grid_id` (int) — Million Dollar Script grid id. If omitted, Million Dollar Script uses the first available grid as a fallback.
+- `width` (string) — CSS size used by grid and stats embeds. Default: `100%` for grids, `240px` for stats.
+- `height` (string) — passed to the grid renderer when `type="grid"`.
+- `renderer` (string) — passed to the grid renderer when `type="grid"`.
+- `unit` (string) — for `type="stats"` only. Use `settings`, `blocks`, or `pixels`.
+- `number_color` (hex color) — for `type="stats"` only. Sets the sold/available number color.
+- `label_color` (hex color) — for `type="stats"` only. Sets the label color.
+- `background_color` (hex color) — for `type="stats"` only. Sets the stats panel background.
+- `border_color` (hex color) — for `type="stats"` only. Sets the stats panel border.
+
+### Examples
+
+```text
+[mds3_page type="grid" grid_id="1"]
+[mds3_page type="order" grid_id="1"]
+[mds3_page type="manage" grid_id="1"]
+[mds3_page type="list" grid_id="1"]
+[mds3_page type="stats" grid_id="1"]
+[mds3_page type="stats" grid_id="1" unit="pixels" width="240px"]
+[mds3_page type="stats" grid_id="1" unit="pixels" width="260px" number_color="#0f766e" label_color="#475569"]
+[mds3_page type="payment" grid_id="1"]
+[mds3_page type="thank-you" grid_id="1"]
+```
+
+Million Dollar Script page roles are grid-first. `order` opens the interactive grid flow, `list` displays active advertiser placements, `manage` lists the signed-in customer's orders, and `upload`, `payment`, `confirm-order`, and `thank-you` show order-specific content when opened with a Million Dollar Script order id and order key.
+
+## Legacy Million Dollar Script 2 Shortcodes
 
 ## Attributes
 
@@ -33,7 +142,7 @@ Notes:
     - `[milliondollarscript id="1" type="write-ad"]`
     - `[milliondollarscript id="1" type="confirm-order"]`
 
-- `payment` — Payment step; when WooCommerce is enabled and conditions are met, redirects to the Woo checkout.
+- `payment` — Payment step. With an order id/key, it shows the order summary and a WooCommerce or standalone checkout link when one is available.
   - Example: `[milliondollarscript type="payment"]`
 
 - `manage` — Public-facing manage pixels page for users to update their ad.
@@ -43,7 +152,9 @@ Notes:
   - Example: `[milliondollarscript type="list" width="100%" height="auto"]`
 
 - `stats` — Compact stats box.
-  - Recommended: `width="150px" height="60px"`
+  - Shows sold and available inventory.
+  - Unit follows Settings > Display > Stats Display Mode unless `unit="blocks"` or `unit="pixels"` is set on the shortcode or stats block.
+  - Recommended: `width="240px"`
   - Example: `[milliondollarscript id="1" type="stats" width="150px" height="60px"]`
 
 - `thank-you` — Thank-you view after payment.
@@ -95,4 +206,3 @@ Payment handoff (with WooCommerce enabled):
 - Grid: match your grid’s exact pixel dimensions or use the block with `{width}`/`{height}` placeholders.
 - List/Manage/Users/Order/Confirm/Thank-you: generally `width="100%" height="auto"` integrates best with themes.
 - Stats: `150px × 60px` keeps the UI crisp.
-

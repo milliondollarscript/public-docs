@@ -2,68 +2,55 @@
 
 This is a quick map of the Million Dollar Script admin pages so you know where to look when configuring or troubleshooting.
 
-## Top-level
+## WordPress Sidebar
 
-- **Million Dollar Script (Dashboard)**  
-  Landing page with links to key areas and version info.
-
-## Key submenus
-
-- **Admin**  
-  Legacy core administration (Manage Grids, Price Zones, Not For Sale, Backgrounds, Orders lists, Click Reports, Process Pixels, Main Config, System Information, License, etc.).  
-  Use this when you need fine‑grained grid controls or to view operational reports.
-
-- **Options**  
-  Carbon Fields options for routes, theme, pixels, login, WooCommerce, logging, and more.  
-  Saving Options regenerates dynamic CSS.
-
-- **Setup Wizard**  
-  Creates recommended pages (Grid, Order, Manage, List, Payment/Thank‑You), applies defaults, and saves Options.
-
-- **Logs**  
-  Toggle logging, clear the log, and view live updates. Useful during setup and payment flow testing.
-
-- **Emails**  
-  Configure email settings/messages used by the plugin (where applicable).
-
-- **Changelog**  
-  View recent feature and fix summaries bundled with the plugin.
+- **Million Dollar Script (Dashboard)**
+  Landing page with the hero, internal dashboard menu, metrics, recent orders, system status, and service cards.
 
 - **Extensions**
-  The Extensions hub is a curated launch point for installed MDS extensions. When you install extensions (from the MDS marketplace or custom builds), their admin interfaces appear here automatically.
+  The extension hub. This is the only operational submenu shown in the WordPress sidebar by default so users can quickly see that Million Dollar Script is extendable.
 
-  Extensions are WordPress plugins that integrate with MDS to add features like custom fields, translation tools, analytics, and more. They follow MDS patterns and appear seamlessly in your admin without cluttering the WordPress sidebar.
+## Dashboard Menu
 
-  Extensions register their menu items via the `mds_register_dashboard_menu` action and `Menu_Registry` API. For developers building extensions, see [Extension Development](/docs/extension-development). Example:
-  ```php
-  add_action( 'mds_register_dashboard_menu', function ( string $registry_class ): void {
-      $registry_class::register( [
-          'slug'     => 'mds-example',
-          'title'    => __( 'Example Extension', 'mds-example' ),
-          'url'      => admin_url( 'admin.php?page=mds-example' ),
-          'parent'   => 'mds-extensions',
-          'position' => 10,
-      ] );
-  } );
-  ```
+Most day-to-day pages are linked from the dashboard itself instead of being exposed as extra WordPress sidebar items.
 
-- **Approve Pixels (utility)**  
-  Dedicated screen for reviewing and bulk‑approving orders/pixels.
+- **Setup Wizard**
+  First-run setup, standard pages, WooCommerce preference, and Million Dollar Script 2 upgrade choices.
 
-## Hidden legacy submenus & filters
+- **Grids**
+  Grid details, packages, price zones, unavailable regions, public page controls, and renderer settings.
 
-- Hidden entries are tagged with the CSS class `mds-hidden-submenu`, preventing the “flash” on load while keeping the pages directly accessible via URL.  
-- To expose additional Million Dollar Script submenus, use the filter:
-  ```php
-  add_filter( 'mds_extensions_visible_submenus', function ( array $slugs ) {
-      $slugs[] = 'mds-example';
-      $slugs[] = 'mds-example2';
-      return $slugs;
-  } );
-  ```
-  Any slug you add is shown immediately without modifying the core plugin.
+- **Orders**
+  Reservations, payment state, customer details, block assignments, and order status actions.
+
+- **Settings**
+  General, URLs, checkout, display, pixels, accounts, orders, and system settings.
+
+- **Migration**
+  Read-only migration dry run and import tools for Million Dollar Script 2 sites.
+
+- **Documentation and Changelog**
+  Links to current hosted docs and release notes.
+
+## Extension Menu Items
+
+Extensions should add their own internal dashboard links with the `mds3_dashboard_menu_items` filter. They can still register hidden admin pages, but they should avoid crowding the WordPress sidebar.
+
+```php
+add_filter( 'mds3_dashboard_menu_items', function ( array $groups ): array {
+    $groups['extend']['items'][] = [
+        'label' => __( 'Example Extension', 'example-extension' ),
+        'url'   => admin_url( 'admin.php?page=example-extension' ),
+        'icon'  => 'dashicons-admin-plugins',
+    ];
+
+    return $groups;
+} );
+```
+
+For developers building extensions, see [Extension Development](/docs/extension-development).
 
 ## Notes
 
-- Some screens are modern wrappers around the legacy MDS core; others are fully WordPress‑native.
-- If you don’t see a submenu referenced here, it may be hidden until certain options are saved or features are enabled (e.g., WooCommerce).
+- Hidden pages remain directly accessible by URL and are linked from the dashboard menu.
+- If you do not see an extension menu item, confirm the extension is active.

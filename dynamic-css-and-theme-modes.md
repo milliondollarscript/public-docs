@@ -15,6 +15,6 @@ MDS generates a dynamic CSS file based on Options, enabling light/dark themes, a
 ## Tips
 
 - Prefer theme options over custom CSS so updates remain compatible.
+- In MDS3, **Settings > General > Theme Mode** applies to admin screens and frontend MDS3 grid/page embeds. Light and Dark force that mode; System follows `prefers-color-scheme`.
 - Link colors and badges are accessible by default; your theme can override within the `.mds-container` scope.
 - If styles appear off after an update, save Options once to recompute the CSS.
-

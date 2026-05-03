@@ -25,11 +25,10 @@ Use whichever fits your theme and navigation. Routes require no extra pages; blo
 
 ## WooCommerce notes
 
-- Enable under Options > WooCommerce. When enabled, the Payment step redirects to the WooCommerce checkout.
+- Enable under Options > WooCommerce. When enabled, MDS3 creates linked WooCommerce orders and sends customers to WooCommerce checkout after artwork upload.
 - Refund hooks are supported. Login/register can be coordinated with Woo’s My Account when the option is enabled.
 
 ## Migration notes (legacy installs)
 
 - If you’re coming from an older 2.x install with a separate WP bridge, use the current plugin directly. The `mds-pixel` permalink base and slug pattern are configurable; a migration tool helps update existing slugs and preserves redirects.
 - After enabling the plugin, flush permalinks once if you see 404s on `/milliondollarscript/...` routes.
-
