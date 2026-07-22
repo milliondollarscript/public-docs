@@ -1,12 +1,27 @@
+---
+slug: installation-and-setup
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+---
+
 # Million Dollar Script: Installation & Setup
 
-This guide covers Million Dollar Script 3 installation. The core WordPress integration is built into a single plugin: Million Dollar Script. No separate WordPress integration plugin is required.
+This guide covers Million Dollar Script 3.0 installation. The core WordPress integration is built into a single plugin: Million Dollar Script. No separate WordPress integration plugin is required.
 
 ## Requirements
 
-- WordPress 6.7+ (tested up to 6.9.1)
+- WordPress 6.7+ (tested up to 7.0.2)
 - PHP 8.1+
+- PHP memory limit of 256 MB or greater
 - Optional: WooCommerce (for checkout, refunds, and account integration)
+
+The memory limit is per PHP request. Check the effective value in **Million Dollar Script > System Status** or **Tools > Site Health**, because a hosting plan can advertise a higher maximum while WordPress is configured to use less.
 
 ## Hosting Recommendation
 
@@ -34,11 +49,11 @@ Use my affiliate link if you’d like to support development:
 
 After activation, the plugin automatically registers routes, flushes permalinks, sets up options, schedules cron jobs, and creates admin pages. You should now see "Million Dollar Script" in your WordPress admin menu.
 
-If Million Dollar Script 2 is installed, activation redirects to the Million Dollar Script setup screen and shows the upgrade choice. Million Dollar Script does not migrate old data or deactivate Million Dollar Script 2 unless you explicitly choose that action. See [Upgrade From Million Dollar Script 2](/docs/mds3-upgrade-from-mds2).
+If Million Dollar Script 2 is installed, activation redirects to the Million Dollar Script setup screen and shows the upgrade choice. Million Dollar Script does not migrate old data or deactivate Million Dollar Script 2 unless you explicitly choose that action. See [Upgrade From Million Dollar Script 2](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-upgrade-from-mds2).
 
 **Note:** Permalinks are automatically flushed during activation. If you experience 404 errors on Million Dollar Script routes after activation, manually flush permalinks by visiting Settings > Permalinks and clicking "Save Changes".
 
-**Note:** If you encounter any errors during installation, see the [Troubleshooting Guide](/docs/troubleshooting#installation-issues).
+**Note:** If you encounter any errors during installation, see the [Troubleshooting Guide](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting#installation-issues).
 
 ### Advanced Installation (Manual)
 
@@ -51,12 +66,12 @@ The plugin will automatically flush permalinks on activation. If needed, you can
 
 ## Troubleshooting
 
-Having issues with installation, updates, or configuration? See the comprehensive [Troubleshooting Guide](/docs/troubleshooting) which covers:
+Having issues with installation, updates, or configuration? See the comprehensive [Troubleshooting Guide](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting) which covers:
 
-- [Installation Issues](/docs/troubleshooting#installation-issues) - Upload limits, activation errors, permissions
-- [Plugin Updates](/docs/troubleshooting#plugin-updates) - Download failures, update errors
-- [Routes & 404s](/docs/troubleshooting#routes--404-errors) - Permalink issues
-- [Grid Alignment](/docs/troubleshooting#grid-alignment) - Selection boxes not matching grid
+- [Installation Issues](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting#installation-issues) - Upload limits, activation errors, permissions
+- [Plugin Updates](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting#plugin-updates) - Download failures, update errors
+- [Routes & 404s](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting#routes--404-errors) - Permalink issues
+- [Grid Alignment](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting#grid-alignment) - Selection boxes not matching grid
 
 ## First Steps
 
@@ -75,7 +90,7 @@ You can adjust or delete any created page later and use blocks/shortcodes as nee
 
 ### Recommended Pages (optional)
 
-Create pages and insert the **Million Dollar Script Grid** block, or use the `[mds_grid ...]` shortcode. Legacy `[milliondollarscript ...]` embeds are handled after Million Dollar Script 2 is inactive or after migration.
+Create pages and insert the **Grid Embed** block, or use the `[mds_grid ...]` shortcode. Legacy `[milliondollarscript ...]` embeds are handled after Million Dollar Script 2 is inactive or after migration.
 
 - Grid
   - Block type: Grid
@@ -130,14 +145,14 @@ Older saved values are normalized automatically: `stable` maps to `main`, and `d
 - Choose a payment provider under Million Dollar Script > Setup. Standalone/manual checkout is built in.
 - For WooCommerce, install WooCommerce, activate **Million Dollar Script WooCommerce Checkout**, then choose WooCommerce as the provider. Million Dollar Script creates linked WooCommerce orders and sends customers to WooCommerce checkout after artwork upload.
 - There’s an optional login redirect (Options > Login) to control where users land after WooCommerce login.
-- For standalone/manual payment pages, use the Checkout URL option. Million Dollar Script supports the Million Dollar Script 2 placeholder format and falls back to the thank-you/order-summary page when no checkout URL is configured. See [Million Dollar Script Checkout And Payments](/docs/mds3-checkout-and-payments).
+- For standalone/manual payment pages, use the Checkout URL option. Million Dollar Script supports the Million Dollar Script 2 placeholder format and falls back to the thank-you/order-summary page when no checkout URL is configured. See [Million Dollar Script Checkout And Payments](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-checkout-and-payments).
 
 ## Notes & Tips
 
 - Grid dimensions: define grid width/height and block size under Million Dollar Script > Dashboard > Grids. Million Dollar Script stores only sold, reserved, unavailable, custom-priced, or media-bearing blocks, so large grids remain manageable.
-- Packages, price zones, order caps, unavailable regions, and renderer defaults are managed under Million Dollar Script > Dashboard > Grids > Edit Grid. See [Million Dollar Script Grid Pricing And Renderers](/docs/mds3-grid-pricing-and-renderers).
+- Packages, price zones, order caps, unavailable regions, and renderer defaults are managed under Million Dollar Script > Dashboard > Grids > Edit Grid. See [Million Dollar Script Grid Pricing And Renderers](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-grid-pricing-and-renderers).
 - Theme Mode controls both Million Dollar Script admin screens and frontend grid/page embeds. Use Light or Dark for a fixed appearance, or System to follow the visitor's device preference.
-- ImageGrid remote rendering is optional. Million Dollar Script uses local rendering until the Million Dollar Script ImageGrid extension is active; then configure API and quota settings under Settings > Rendering and review account/fallback status under Extensions. See [ImageGrid](/docs/imagegrid).
+- ImageGrid remote rendering is optional. Million Dollar Script uses local rendering until the Million Dollar Script ImageGrid extension is active; then configure API and quota settings under Settings > Rendering and review account/fallback status under Extensions. See [ImageGrid](/docs/mds-3/million-dollar-script/3.0.0/main/imagegrid).
 - Multiple grids per page are supported. The UI and tooltips are scoped so clicks and popups map to the correct grid.
 - If you switch your endpoint base (Options > Routes), flush permalinks.
-- If block selections don't align with the image, see [Troubleshooting: Grid Alignment](/docs/troubleshooting#grid-alignment).
+- If block selections don't align with the image, see [Troubleshooting: Grid Alignment](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting#grid-alignment).

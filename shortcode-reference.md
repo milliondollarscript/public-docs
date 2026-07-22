@@ -1,3 +1,15 @@
+---
+slug: shortcode-reference
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [developers, administrators]
+published: true
+---
+
 # Million Dollar Script Blocks And Shortcodes
 
 Million Dollar Script provides native grid and stats blocks plus two primary shortcodes:
@@ -9,9 +21,9 @@ Million Dollar Script provides native grid and stats blocks plus two primary sho
 
 Legacy Million Dollar Script 2 embeds using `[milliondollarscript ...]` are supported when Million Dollar Script 2 is not active. If Million Dollar Script 2 remains active for side-by-side testing, Million Dollar Script leaves those legacy embeds to Million Dollar Script 2.
 
-## Million Dollar Script Grid Block
+## Grid Embed Block
 
-In the block editor, add **Million Dollar Script Grid**. Choose:
+In the block editor, add **Grid Embed**. Choose:
 
 - grid
 - read-only or interactive mode
@@ -23,9 +35,9 @@ The block renders dynamically, so changes to the grid record appear without edit
 
 If you deselect the block in the editor, click anywhere inside the grid preview or select it from the editor list view to reopen the block settings sidebar.
 
-## Million Dollar Script Stats Block
+## Stats Widget Block
 
-In the block editor, add **Million Dollar Script Stats**. Choose:
+In the block editor, add **Stats Widget**. Choose:
 
 - grid
 - display unit: site setting, blocks, or pixels
@@ -46,7 +58,7 @@ Use `[mds_grid]` for the public grid itself.
 - `height` (string) — CSS height such as `640px`, `80vh`, or `100%`. Default: `640px`.
 - `renderer` (string) — `auto`, `openlayers`, or `classic`.
 
-Renderer details, package pricing, and price zones are covered in [Million Dollar Script Grid Pricing And Renderers](/docs/mds3-grid-pricing-and-renderers).
+Renderer details, package pricing, and price zones are covered in [Million Dollar Script Grid Pricing And Renderers](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-grid-pricing-and-renderers).
 
 ### Examples
 
@@ -102,7 +114,7 @@ Each page shortcode can target a specific grid. If you omit the grid id, Million
 [mds3_page type="list" grid_id="1"]
 [mds3_page type="stats" grid_id="1"]
 [mds3_page type="stats" grid_id="1" unit="pixels" width="240px"]
-[mds3_page type="stats" grid_id="1" unit="pixels" width="260px" number_color="#0f766e" label_color="#475569"]
+[mds3_page type="stats" grid_id="1" unit="pixels" width="260px" number_color="#2563eb" label_color="#475569"]
 [mds3_page type="payment" grid_id="1"]
 [mds3_page type="thank-you" grid_id="1"]
 ```

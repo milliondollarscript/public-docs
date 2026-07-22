@@ -1,3 +1,16 @@
+---
+slug: upgrade-guide-2.3.5-to-2.6
+product_generation: mds-2
+package_slug: million-dollar-script
+package_type: core
+package_version: "2.6"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+tags: [mds2, legacy]
+---
+
 # Upgrade Guide: 2.3.5 → 2.5/2.6
 
 This guide highlights key changes when upgrading from older 2.3.5 sites to current 2.5/2.6.

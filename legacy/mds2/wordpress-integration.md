@@ -1,18 +1,19 @@
 ---
 slug: wordpress-integration
-product_generation: mds-3
+product_generation: mds-2
 package_slug: million-dollar-script
 package_type: core
-package_version: "3.0.0"
+package_version: "2.6"
 channel: main
 access: public
 audience: [developers, administrators]
 published: true
+tags: [mds2, legacy]
 ---
 
 # WordPress Integration
 
-The integration is no longer a separate plugin or service. Million Dollar Script is a single WordPress plugin that embeds the core application and native WordPress features.
+The integration is no longer a separate plugin or service - Million Dollar Script Two is a single WordPress plugin that embeds the full MDS core and native WP features.
 
 ## What you get
 
@@ -29,7 +30,7 @@ No. The legacy approach (separate subdomain with a bridge) is replaced. The plug
 
 ## Blocks vs. shortcodes vs. routes
 
-- Blocks: easiest way to add Million Dollar Script views to pages in the editor.
+- Blocks: easiest way to add MDS views to pages in the editor.
 - Shortcode: `[milliondollarscript id="1" type="grid|users|list|stats|manage|payment|thank-you" width="100%" height="auto"]`
 - Routes: visit `/milliondollarscript/order`, `/milliondollarscript/manage`, `/milliondollarscript/list`, etc. Change the base in Options.
 
@@ -37,11 +38,11 @@ Use whichever fits your theme and navigation. Routes require no extra pages; blo
 
 ## WooCommerce notes
 
-- Install **Million Dollar Script WooCommerce Checkout** and choose WooCommerce under Million Dollar Script -> Setup -> Payment Provider.
-- The provider creates linked WooCommerce orders and sends customers to WooCommerce checkout after artwork upload.
+- Enable under Options > WooCommerce. When enabled, the Payment step redirects to the WooCommerce checkout.
 - Refund hooks are supported. Login/register can be coordinated with Woo’s My Account when the option is enabled.
 
 ## Migration notes (legacy installs)
 
 - If you’re coming from an older 2.x install with a separate WP bridge, use the current plugin directly. The `mds-pixel` permalink base and slug pattern are configurable; a migration tool helps update existing slugs and preserves redirects.
 - After enabling the plugin, flush permalinks once if you see 404s on `/milliondollarscript/...` routes.
+

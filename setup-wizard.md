@@ -1,12 +1,22 @@
+---
+slug: setup-wizard
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+---
+
 # Setup Wizard
 
 The Setup Wizard helps you create the core pages and confirm essential options so you can go live faster without manual page building.
 
 ## Where to Find It
 
-**WP Admin → Million Dollar Script → 🔧 Setup Wizard**
-
-Look for the **wrench icon** in your WordPress admin sidebar under the Million Dollar Script menu.
+Open **WP Admin > Million Dollar Script > Setup**. The page heading is **Setup Wizard**.
 
 ## What it does
 
@@ -38,8 +48,8 @@ Look for the **wrench icon** in your WordPress admin sidebar under the Million D
 
 ## Editor tips
 
-- In the block editor, insert the “Million Dollar Script Grid” block for grid pages.
-- Insert the “Million Dollar Script Stats” block anywhere you want to show sold and available totals. It can display blocks or pixels, depending on the block setting or the plugin default.
+- In the block editor, insert **Grid Embed** for grid pages.
+- Insert **Stats Widget** anywhere you want to show sold and available totals. It can display blocks or pixels, depending on the block setting or the plugin default.
 - Use `[mds_grid id="1" read_only="false"]` for an interactive grid, replacing `1` with the grid id you want to show.
 - Use `[mds3_page type="manage" grid_id="1"]`, `[mds3_page type="list" grid_id="1"]`, and the other standard page types for supporting pages, replacing `1` per page when you run multiple grids.
 - Legacy `[milliondollarscript ...]` embeds are supported after Million Dollar Script 2 is inactive; see Shortcode Reference for full options.

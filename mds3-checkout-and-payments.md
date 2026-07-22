@@ -1,3 +1,15 @@
+---
+slug: mds3-checkout-and-payments
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+---
+
 # Million Dollar Script Checkout And Payments
 
 Million Dollar Script routes checkout through the core payments API. The core plugin owns orders, reservations, upload state, blocks, placements, and payment status synchronization. Payment systems are provider extensions.
@@ -79,8 +91,8 @@ Leave this disabled when a provider extension or real gateway is responsible for
 
 Payment extensions register through:
 
-- `mds3_payment_provider_options`
-- `mds3_payment_providers`
+- `million-dollar-script/payment/provider/options`
+- `million-dollar-script/payment/providers`
 
 A provider entry can expose:
 

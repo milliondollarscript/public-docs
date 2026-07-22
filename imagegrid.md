@@ -1,3 +1,15 @@
+---
+slug: imagegrid
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+---
+
 # ImageGrid
 
 ImageGrid is optional. Million Dollar Script works without it and uses local rendering whenever ImageGrid is disconnected, unavailable, or over quota.

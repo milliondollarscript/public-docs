@@ -1,31 +1,38 @@
-# Pixel Permalinks & Migration
+---
+slug: pixel-permalinks-and-migration
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+tags: [urls, redirects, migration, compatibility]
+---
 
-MDS exposes an `mds-pixel` post type for individual advertiser pixels. You can enable public pixel pages and customize their URLs.
+# URLs, Redirects, and Legacy Pixel Pages
 
-## Pixel pages (on/off)
+MDS 3.0 uses standard WordPress pages for the public grid, ordering, upload, management, list, statistics, terms, and privacy workflows. The setup wizard can create or update those pages and store their assignments.
 
-- Options → Pixels → “Enable MDS Pixel pages”
-- When disabled, visiting a single pixel URL returns a 404 (by design).
-- When enabled, the plugin loads `templates/mds-pixel/single-mds-pixel.php`, or a theme override at `mds-pixel/single-mds-pixel.php` if present.
+## Current Pages
 
-## Permalink base and slug pattern
+Open **Million Dollar Script > Settings > URLs & Redirects** to review page assignments and destination behavior. Use the block editor or current shortcodes to place a specific grid. When several grids exist, selectors must remain searchable and paginated rather than assuming a single grid.
 
-- Base segment: default `mds-pixel`, configurable in Options.
-- Slug structure: tokenized pattern you can customize, e.g. `%username%`, `%display_name%`, `%order_id%`, `%grid%`, `%pixel_id%`, `%text%`, `%meta:field%`.
-- Developers can hook filters to add tokens or clamp lengths.
+After changing pages or rewrite-sensitive settings, visit **Settings > Permalinks** and save once if WordPress has not refreshed its rewrite rules.
 
-## Migration tool
+## Legacy Pixel URLs
 
-- If you change the base or the slug pattern, run the migration from the Options screen.
-- The tool updates existing pixel slugs in batches, preserves previous slugs, and registers automatic 301 redirects from legacy structures.
-- Good practice: Save Options first, then run the migration.
+MDS 2 could generate individual advertiser pixel pages and custom slug patterns. MDS 3.0 retains selected settings as compatibility data for migration and custom code, but they are not primary current workflow controls.
 
-## Search behavior
+During migration:
 
-- When enabled, pixel titles and popup text are searchable in WordPress while results remain limited to completed pixels.
+1. Run the dry run and review detected page IDs and URL settings.
+2. Keep MDS 2 active until old links and current pages have been compared on staging.
+3. Create explicit WordPress redirects for legacy URLs that must remain indexed or bookmarked.
+4. Preserve query parameters only when they are required and safe.
+5. Test logged-out, logged-in customer, and administrator destinations.
 
-## Upgrading from legacy 2.3.5
+Do not enable URL cloaking solely because MDS 2 used it. Choose redirects based on the current page flow and avoid concealing external checkout destinations from customers.
 
-- Earlier setups didn’t have the same permalink flexibility. After upgrading, set your preferred base/pattern and run the migration.
-- The tool preserves old links via redirects, so external backlinks continue to work.
-
+For the original MDS 2 permalink settings, switch to the MDS 2 documentation version.

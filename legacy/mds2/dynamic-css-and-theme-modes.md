@@ -1,18 +1,19 @@
 ---
 slug: dynamic-css-and-theme-modes
-product_generation: mds-3
+product_generation: mds-2
 package_slug: million-dollar-script
 package_type: core
-package_version: "3.0.0"
+package_version: "2.6"
 channel: main
 access: public
 audience: [site-owners, administrators]
 published: true
+tags: [mds2, legacy]
 ---
 
 # Dynamic CSS & Theme Modes
 
-Million Dollar Script generates a dynamic CSS file based on Options, enabling light/dark themes, accessible colors, and consistent UI styling.
+MDS generates a dynamic CSS file based on Options, enabling light/dark themes, accessible colors, and consistent UI styling.
 
 ## How it works
 
@@ -27,6 +28,6 @@ Million Dollar Script generates a dynamic CSS file based on Options, enabling li
 ## Tips
 
 - Prefer theme options over custom CSS so updates remain compatible.
-- In Million Dollar Script 3.0, **Settings > General > Theme Mode** applies to admin screens and frontend Million Dollar Script grid/page embeds. Light and Dark force that mode; System follows `prefers-color-scheme`.
 - Link colors and badges are accessible by default; your theme can override within the `.mds-container` scope.
 - If styles appear off after an update, save Options once to recompute the CSS.
+

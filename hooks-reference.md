@@ -1,293 +1,245 @@
+---
+slug: hooks-reference
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [developers, administrators]
+published: true
+tags: [developers, hooks, filters, actions]
+---
+
 # Hooks Reference
 
-Million Dollar Script provides actions and filters for extending functionality. This reference covers the most commonly used hooks for extension developers.
+This reference lists the primary MDS 3.0 extension hooks. Callback arguments shown here are part of the supported integration surface. Return the original value when a filter does not apply to your extension.
 
-## Menu Hooks
+Unless a section says otherwise, these hooks are available from MDS 3.0.0 and are not deprecated. Filters may change only the value they receive and must return the documented type. Actions do not use return values. Sanitize data before persistence, escape it at the final output boundary, and do not weaken a capability, nonce, API scope, or access decision made by core.
 
-Million Dollar Script uses a structured `Menu_Registry` system for admin menu integration. Extensions register menu items as structured data rather than echoing raw HTML.
+New integrations must use the `million-dollar-script/...` names below. Core does not dispatch aliases created during unreleased development. Selected Million Dollar Script 2 aliases remain only where this reference explicitly documents them for migration.
 
-### mds_register_dashboard_menu
+## Extension Registration and Navigation
 
-Register menu items in the Million Dollar Script admin dashboard. This is the primary hook for adding navigation entries.
-
-**Callback signature:** `function (string $registry_class): void`
-
-The callback receives the fully-qualified `Menu_Registry` class name, which you call statically to register items.
+### `million-dollar-script/extension/onboarding/items`
 
 ```php
-add_action('mds_register_dashboard_menu', function (string $registry_class): void {
-    $registry_class::register([
-        'slug'     => 'my-extension-settings',
-        'title'    => __('My Extension', 'my-extension'),
-        'url'      => admin_url('admin.php?page=my-extension-settings'),
-        'parent'   => 'mds-extensions',
-        'position' => 10,
-    ]);
-});
+function (array $items, array $context): array
 ```
 
-#### Parameters for `Menu_Registry::register()`
+Register an active extension's name, summary, setup actions, recommended pages, and legal-document drafts. Core uses the result in setup, dashboard cards, sidebar grouping, and admin-bar navigation.
 
-| Parameter  | Type   | Required | Description |
-|-----------|--------|----------|-------------|
-| `slug`     | string | Yes      | Unique identifier for the menu item |
-| `title`    | string | Yes      | Display label |
-| `url`      | string | Yes      | Full admin URL |
-| `parent`   | string | No       | Parent menu slug (see below) |
-| `position` | int    | No       | Sort order within the parent group |
-
-#### Available parent slugs
-
-| Parent Slug | Section | Contains |
-|------------|---------|----------|
-| `pixel-management` | Grid Management | Grid, Packages, Price Zones, Backgrounds, Not for Sale, Approve |
-| `orders` | Orders | All Orders, Process Pixels, etc. |
-| `reports` | Reports | Click Reports, Top Customers, Transaction Log |
-| `system` | System | Options, Logs, Emails, License, System Info, Changelog |
-| `mds-extensions` | Extensions | Extension hub (recommended for extensions) |
-
-#### Class method example
+### `million-dollar-script/dashboard/extension/cards`
 
 ```php
-add_action('mds_register_dashboard_menu', [$this, 'register_dashboard_menu_items']);
-
-public function register_dashboard_menu_items(string $registry_class): void {
-    $registry_class::register([
-        'slug'     => 'mds-translation-translations',
-        'title'    => __('Translations', 'mds-translation'),
-        'url'      => admin_url('admin.php?page=mds-translation-translations'),
-        'parent'   => 'mds-extensions',
-        'position' => 1,
-    ]);
-}
+function (array $cards, array $catalog, object $admin): array
 ```
 
-For most extensions, use `'parent' => 'mds-extensions'` so your item appears under the Extensions dropdown.
+Customize dashboard cards for active extensions. Prefer onboarding items unless the card needs additional status or actions.
 
-## Submenu Visibility
+### `million-dollar-script/admin/bar/extension/items`
 
-### mds_extensions_visible_submenus
+Filter extension shortcuts in the WordPress admin bar. Use it only when the destination differs from the primary onboarding action.
 
-Show additional submenus that are hidden by default. Some Million Dollar Script submenus are hidden with CSS but remain accessible via direct URL.
+### `million-dollar-script/extension/visual/metadata`
+
+Filter the icon and accessible accent metadata associated with an extension card or catalog entry.
+
+## Editor Blocks
+
+### `million-dollar-script/editor/extension/blocks`
 
 ```php
-add_filter('mds_extensions_visible_submenus', function (array $slugs) {
-    $slugs[] = 'my-custom-page';
-    $slugs[] = 'another-page';
-    return $slugs;
-});
+function (array $definitions): array
 ```
 
-## List Page Hooks
+Add dynamic editor blocks. Each definition should include `name`, `title`, `description`, `icon`, `attributes`, `controls`, `preview`, and `render_callback`. Core validates and registers the definition.
 
-The advertiser list (`/milliondollarscript/list/` route and `[milliondollarscript type="list"]` shortcode) exposes filters for customization.
+## Payments and Currency
 
-### mds_list_columns
-
-Add, remove, or reorder columns in the advertiser list.
+### `million-dollar-script/payment/provider/options`
 
 ```php
-add_filter('mds_list_columns', function (array $columns) {
-    $columns[] = [
-        'key'               => 'launch_date',
-        'label'             => __('Launch Date', 'my-extension'),
-        'render_callback'   => function (array $row_context) {
-            $timestamp = strtotime(carbon_get_post_meta($row_context['ad_id'], MDS_PREFIX . 'launch_date'));
-            if (!$timestamp) {
-                return __('Not set', 'my-extension');
-            }
-            return esc_html(date_i18n(get_option('date_format'), $timestamp));
-        },
-        'cell_attributes'    => ['class' => ['list-cell', 'list-cell--launch-date']],
-        'heading_attributes' => ['class' => ['list-heading', 'list-heading--launch-date']],
-        'grid_track'         => 'minmax(0, 1fr)', // Optional: CSS Grid track size
-    ];
-    return $columns;
-});
+function (array $options): array
 ```
 
-### mds_list_cell_{column_key}
+Add a provider choice to setup and settings.
 
-Modify a specific cell after rendering. The filter name includes the column key.
+### `million-dollar-script/payment/providers`
 
 ```php
-add_filter('mds_list_cell_launch_date', function (array $cell, array $column, array $row_context) {
-    $timestamp = strtotime(carbon_get_post_meta($row_context['ad_id'], MDS_PREFIX . 'launch_date'));
-    if ($timestamp && $timestamp > time()) {
-        $cell['content'] .= ' <span class="mds-badge mds-badge--scheduled">'
-            . esc_html__('Scheduled', 'my-extension')
-            . '</span>';
-    }
-    return $cell;
-}, 10, 3);
+function (array $providers): array
 ```
 
-### Other List Hooks
+Register provider readiness, checkout, completion, and currency callbacks. Monetized extensions should call `MillionDollarScript\Commerce\Payments` rather than provider plugins directly.
+
+### `million-dollar-script/payments/pre/checkout/payload`
+
+```php
+function (array $payload, array $transaction, array $provider): array
+```
+
+Adjust normalized checkout input before the provider callback.
+
+### `million-dollar-script/payments/checkout/payload`
+
+```php
+function (array $payload, array $transaction, array $provider): array
+```
+
+Adjust the checkout response returned to the source extension.
+
+### Payment status actions
+
+```php
+do_action('million-dollar-script/payment/source/paid', string $source, int $source_id, array $context);
+do_action('million-dollar-script/payment/source/cancelled', string $source, int $source_id, array $context);
+do_action('million-dollar-script/payment/source/released', string $source, int $source_id, string $status, array $context);
+do_action('million-dollar-script/payment/source/status', string $source, int $source_id, string $status, array $context);
+```
+
+Check `$source` before updating extension-owned records.
+
+## Placement Forms and Public Grids
+
+### `million-dollar-script/placement/form/fields`
+
+```php
+function ($grid = null, array $context = []): void
+```
+
+Render extension-owned placement fields. Interactive grids pass the grid object. The Manage Upload screen passes `null` plus `context`, `order`, and `placement`. One-argument callbacks remain compatible.
+
+### `million-dollar-script/validate/placement/submission`
+
+Filter placement validation results before a submission is saved. Return a `WP_Error` for invalid extension fields without exposing sensitive validation details.
+
+### `million-dollar-script/placement/saved`
+
+Runs after placement data is stored. Use it to persist extension-owned values linked to the placement or order.
+
+### Public payload filters
+
+| Filter | Arguments | Purpose |
+|---|---|---|
+| `million-dollar-script/public/grid/payload` | `$payload, $grid, $settings` | Adjust the frontend AJAX grid payload |
+| `million-dollar-script/rest/public/grid/payload` | `$payload, $grid` | Adjust the anonymous REST grid payload |
+| `million-dollar-script/placement/payload` | `$payload, $placement, $settings` | Add safe placement fields to frontend data |
+| `million-dollar-script/placement/popover/html` | `$html, $payload, $settings` | Adjust sanitized placement popover markup |
+| `million-dollar-script/popup/text/allowed/html` | `$allowed_html` | Extend the allowlist used for popup content |
+
+Never add private order, customer, manage-token, or unescaped HTML fields to public payloads.
+
+## REST API Governance
+
+### `million-dollar-script/api/endpoint/manifest`
+
+```php
+function (array $endpoints): array
+```
+
+Register extension REST endpoints for policy management and discovery. Each item needs:
+
+```php
+[
+    'id' => 'example-items-read',
+    'route' => '/million-dollar-script/v1/example/items',
+    'methods' => ['GET'],
+    'scope' => 'example.item.read',
+    'minimum_security_level' => 'api_key_read',
+    'description' => __('List Example items.', 'mds-example'),
+]
+```
+
+Valid public policy values are `public_read`, `public_write_nonce`, `api_key_read`, `api_key_write`, `wp_capability`, and `disabled`.
+
+### `million-dollar-script/api/openapi/document`
+
+```php
+function (array $document, object $governance): array
+```
+
+Add schemas, examples, or tags to the OpenAPI 3.1 document after endpoint normalization.
+
+### `million-dollar-script/admin/api/key/scope/options`
+
+Add named scopes to the API Access screen. Scope labels should explain the exact data and operations granted.
+
+## Grid and Order Administration
 
 | Hook | Purpose |
-|------|---------|
-| `mds_list_container_attributes` | Modify wrapper div attributes |
-| `mds_list_wrapper_attributes` | Modify inner wrapper attributes |
-| `mds_list_orders_sql` | Customize the SQL query for fetching records |
-| `mds_list_rows` | Filter the rows after fetching |
-| `mds_list_row_context` | Alter the data passed to each row |
-| `mds_list_row_cells` | Modify all cells in a row |
-| `mds_list_heading_cell` | Modify a heading cell |
-| `mds_list_heading_cells` | Modify all heading cells |
-| `mds_list_grid_tracks` | Control CSS Grid column track sizes |
-| `mds_list_grid_template` | Replace the final grid-template-columns string |
-| `mds_list_default_grid_tracks` | Override default track sizes |
-| `mds_list_fallback_grid_track` | Change the catch-all track for extra columns |
-| `mds_list_banner_markup` | Customize banner row markup |
-| `mds_list_link_attributes` | Modify advertiser link attributes |
-| `mds_list_link_text` | Modify advertiser link text |
+|---|---|
+| `million-dollar-script/admin/grid/tabs` | Add a grid-edit tab |
+| `million-dollar-script/admin/grid/list/extra/columns` | Declare an extra grid-list column |
+| `million-dollar-script/admin/grid/list/column/html` | Render sanitized content for an extra column |
+| `million-dollar-script/admin/grid/list/row/actions` | Add a capability-checked row action |
+| `million-dollar-script/admin/grid/saved` | React after a grid is saved |
+| `million-dollar-script/admin/validate/grid` | Return grid validation errors before save |
+| `million-dollar-script/order/placement/moved` | React after an administrator moves an order placement |
+| `million-dollar-script/order/renewal/started` | React after renewal checkout is created |
 
-See [List Page Customization](/docs/list-page-customization) for detailed examples.
+`million-dollar-script/order/placement/moved` receives the order ID, destination grid ID, move summary, and context. Do not duplicate core block-release or overlap handling in an extension.
 
-## Million Dollar Script Payment Provider Hooks
+## Settings
 
-Million Dollar Script exposes payment provider hooks for custom gateway extensions.
+| Filter | Purpose |
+|---|---|
+| `million-dollar-script/admin/settings/tabs` | Add a settings tab owned by an active extension |
+| `million-dollar-script/admin/settings/groups` | Add a settings group |
+| `million-dollar-script/settings/field/schema` | Extend a known field schema |
+| `million-dollar-script/settings/help` | Supply concise field help text |
+| `million-dollar-script/admin/sanitize/settings` | Sanitize extension values during save |
+| `million-dollar-script/admin/validate/settings` | Return validation errors before persistence |
+| `million-dollar-script/admin/settings/transfer/fields` | Include extension-owned values in import/export |
+| `million-dollar-script/admin/settings/saved` | React after settings persist |
+| `million-dollar-script/admin/settings/imported` | React after a settings import |
 
-### mds3_payment_provider_options
+Prefer a separate extension settings screen when a feature needs several sections, reports, or operational records. Use a core settings tab only for a small, directly related set of fields.
 
-Add a provider to the Setup wizard selector.
+## Email Notifications
 
-```php
-add_filter('mds3_payment_provider_options', function (array $options): array {
-    $options['my-gateway'] = __('My Gateway', 'my-extension');
-    return $options;
-});
-```
+| Hook | Purpose |
+|---|---|
+| `million-dollar-script/order/notification/definitions` | Add or adjust notification definitions |
+| `million-dollar-script/order/notification/recipients` | Filter recipient addresses |
+| `million-dollar-script/order/notification/subject` | Filter a plain-text subject |
+| `million-dollar-script/order/notification/message` | Filter the HTML message |
+| `million-dollar-script/order/notification/headers` | Filter mail headers |
+| `million-dollar-script/order/notification/placeholder/values` | Add safe template placeholders |
+| `million-dollar-script/order/notification/type/for/status` | Map an order transition to a notification type |
+| `million-dollar-script/order/notification/sent` | Observe each delivery result |
 
-### mds3_payment_providers
+Million Dollar Script sends through `wp_mail()`. Do not assume a specific SMTP or logging plugin.
 
-Register the provider runtime callbacks.
+## Documentation Packages
 
-```php
-add_filter('mds3_payment_providers', function (array $providers): array {
-    $providers['my-gateway'] = [
-        'id' => 'my-gateway',
-        'label' => __('My Gateway', 'my-extension'),
-        'ready' => true,
-        'create_checkout' => 'my_gateway_create_checkout',
-        'complete_source_order' => 'my_gateway_complete_source_order',
-    ];
-
-    return $providers;
-});
-```
-
-Gateway callbacks should call `MDS3\Commerce\Payments::mark_source_paid()` or `MDS3\Commerce\Payments::mark_source_cancelled()` so blocks, placements, and extension-owned records stay synchronized.
-
-### mds3_payments_pre_checkout_payload
-
-Filter the normalized checkout payload before provider-specific callbacks run.
-
-**Callback signature:** `function (array $payload, array $transaction, array $provider): array`
-
-Use this for adding extension metadata that the active payment provider should see.
-
-### mds3_payments_checkout_payload
-
-Filter the final checkout payload returned by `MDS3\Commerce\Payments::create_checkout()`.
-
-**Callback signature:** `function (array $payload, array $transaction, array $provider): array`
-
-Use this for read-only presentation changes such as custom labels or extension-owned manage URLs.
-
-### mds3_payment_source_paid
-
-Runs when the core payments API marks an extension-owned source record as paid.
-
-**Callback signature:** `function (string $source, int $source_id, array $context): void`
-
-### mds3_payment_source_cancelled
-
-Runs when the core payments API marks an extension-owned source record as cancelled.
-
-**Callback signature:** `function (string $source, int $source_id, array $context): void`
-
-### mds3_payment_source_status
-
-Runs for every source payment status transition.
-
-**Callback signature:** `function (string $source, int $source_id, string $status, array $context): void`
-
-## API Governance Hooks
-
-Million Dollar Script exposes endpoint discovery, policy management, scoped API keys, key rotation, and an OpenAPI contract for core and extension routes.
-
-### mds3_api_endpoint_manifest
-
-Register extension REST endpoints so they appear in **API Access**, discovery, and OpenAPI output.
-
-**Callback signature:** `function (array $endpoints): array`
-
-Each endpoint should provide:
-
-| Key | Type | Description |
-|-----|------|-------------|
-| `id` | string | Stable endpoint ID, unique across core and extensions |
-| `route` | string | Full REST route pattern, such as `/mds/v3/my-extension/items` |
-| `methods` | array | HTTP methods governed by this policy |
-| `scope` | string | Required API key scope |
-| `minimum_security_level` | string | Minimum policy level core should enforce |
-| `description` | string | Human-readable description for admins and OpenAPI |
-
-Supported policy levels are `public_read`, `public_write_nonce`, `api_key_read`, `api_key_write`, `wp_capability`, and `disabled`. Internal stronger levels may be listed for future signed-token and service-to-service flows; treat them as administrator-only unless your extension implements and documents the verifier.
-
-### mds3_api_openapi_document
-
-Customize the generated OpenAPI 3.1 document.
-
-**Callback signature:** `function (array $document, MDS3\Rest\ApiGovernance $governance): array`
-
-Use this to add extension schemas, examples, or tags after your routes have been included through `mds3_api_endpoint_manifest`.
-
-## Form Hooks
-
-### mds_form_fields
-
-Add custom fields to forms using Carbon Fields.
+### `million-dollar-script/docs/manifest/paths`
 
 ```php
-use Carbon_Fields\Field\Field;
-
-add_filter('mds_form_fields', function (array $fields, string $prefix) {
-    $fields[] = Field::make('date', $prefix . 'launch_date', __('Launch Date', 'my-extension'))
-        ->set_help_text(__('When this campaign goes live.', 'my-extension'))
-        ->set_storage_format('Y-m-d');
-    return $fields;
-}, 10, 2);
+function (array $paths, object $registry): array
 ```
 
-The `$prefix` parameter (typically `_mds_`) ensures consistent meta key naming.
+Register an extension's bundled manifest path when local package documentation is appropriate.
 
-## Best Practices
+### `million-dollar-script/docs/packages`
 
-1. **Always check capabilities** before rendering admin content
-   ```php
-   if (!current_user_can('manage_options')) {
-       return;
-   }
-   ```
+```php
+function (array $packages, object $registry): array
+```
 
-2. **Use proper escaping** for all output
-   - `esc_url()` for URLs
-   - `esc_html()` for text content
-   - `esc_attr()` for HTML attributes
+Add normalized local or remote documentation packages. Paid extension bodies must remain entitlement-gated by the documentation service.
 
-3. **Keep callbacks lightweight** - Avoid heavy database queries or API calls in hook callbacks
+## Migration
 
-4. **Use meaningful keys** for columns and fields that won't conflict with core or other extensions
+| Filter | Purpose |
+|---|---|
+| `million-dollar-script/migration/legacy/mds/field/definitions` | Extend imported field definitions |
+| `million-dollar-script/migration/legacy/mds/fields` | Map recognized ad field values |
+| `million-dollar-script/migration/legacy/ad/metadata` | Preserve or transform non-core ad metadata |
+| `million-dollar-script/migration/legacy/order/metadata` | Preserve or transform order metadata |
 
-5. **Document your hooks** so other developers can extend your extension
+Migration filters should be deterministic and idempotent because an administrator may run multiple dry runs before importing.
 
-6. **Test with multiple grids** - Ensure your customizations work correctly when multiple grids appear on the same page
+## Load Hooks
 
-## Menu CSS and Behavior
-
-- Dropdowns open with hover intent (approximately 100ms open, 400ms close delay) and keyboard focus
-- The menu supports wrapping to multiple lines on narrow screens
-- Submenu items are left-aligned with comfortable line-height and padding
-- Hidden legacy submenus use the CSS class `mds-hidden-submenu`
+`million-dollar-script/loaded` is the current load action. The older `mds_initialized`, `mds_loaded`, and `mds-loaded` actions remain silent compatibility aliases for side-by-side Million Dollar Script 2 migration. New extensions should use `plugins_loaded` with a later priority or `million-dollar-script/loaded` and declare the WordPress plugin dependency.

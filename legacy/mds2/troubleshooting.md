@@ -1,18 +1,19 @@
 ---
 slug: troubleshooting
-product_generation: mds-3
+product_generation: mds-2
 package_slug: million-dollar-script
 package_type: core
-package_version: "3.0.0"
+package_version: "2.6"
 channel: main
 access: public
 audience: [site-owners, administrators]
 published: true
+tags: [mds2, legacy]
 ---
 
 # Troubleshooting
 
-This guide consolidates common issues and their solutions. If you don't find your answer here, check the [Known Compatibility Notes](/docs/mds-3/million-dollar-script/3.0.0/main/known-compatibility-issues) or contact support.
+This guide consolidates common issues and their solutions. If you don't find your answer here, check the [Known Compatibility Notes](/docs/mds-2/million-dollar-script/2.6/main/known-compatibility-issues) or contact support.
 
 ## Installation Issues
 
@@ -162,7 +163,7 @@ After changing grid settings or images, clear page/CDN caches to eliminate stale
 **Solutions:**
 - Verify WooCommerce's checkout page is configured and published
 - Ensure you're logged in and an order ID is present
-- Confirm **Million Dollar Script WooCommerce Checkout** is active and WooCommerce is selected under Million Dollar Script -> Setup -> Payment Provider
+- Confirm WooCommerce integration is enabled in MDS Options > WooCommerce
 - Clear caches after changing Woo settings
 
 ### Empty checkout redirect conflicts
@@ -194,18 +195,14 @@ wp eval '\\MillionDollarScript\\Classes\\Web\\Styles::save_dynamic_css_file(); e
 
 ## Performance & Memory
 
-### PHP memory errors
+### Memory errors during grid generation
 
-Million Dollar Script requires an effective PHP memory limit of at least 256 MB for supported operation with checkout and extensions. Check the value under **Million Dollar Script > System Status** or **Tools > Site Health**. A hosting plan's advertised maximum can differ from the per-request value PHP actually applies.
+Large grids require more memory for image processing.
 
 **Solutions:**
-- Increase the effective PHP `memory_limit` to at least 256 MB through the hosting control panel or hosting support.
-- Confirm the new value in System Status after the configuration change.
-- Update WordPress, Million Dollar Script, the payment provider, and active extensions.
-- Reproduce the request in staging with unrelated plugins disabled to identify expensive combinations.
-- Use hosted ImageGrid rendering when large-grid processing is not reliable on the available shared-host resources.
-
-The filename and line in an allowed-memory-size fatal show where the final allocation failed, not necessarily which plugin or earlier operation consumed most of the memory. A request that continues growing after the limit is raised should be investigated for unbounded queries or processing.
+- Increase PHP memory limit (consult hosting provider)
+- Use smaller grid dimensions if possible
+- Consider managed WordPress hosting optimized for image processing
 
 ---
 

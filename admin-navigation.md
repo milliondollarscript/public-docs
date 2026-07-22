@@ -1,3 +1,15 @@
+---
+slug: admin-navigation
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+---
+
 # Admin Navigation
 
 This is a quick map of the Million Dollar Script admin pages so you know where to look when configuring or troubleshooting.
@@ -34,10 +46,10 @@ Most day-to-day pages are linked from the dashboard itself instead of being expo
 
 ## Extension Menu Items
 
-Extensions should add their own internal dashboard links with the `mds3_dashboard_menu_items` filter. They can still register hidden admin pages, but they should avoid crowding the WordPress sidebar.
+Extensions should add their own internal dashboard links with the `million-dollar-script/dashboard/menu/items` filter. They can still register hidden admin pages, but they should avoid crowding the WordPress sidebar.
 
 ```php
-add_filter( 'mds3_dashboard_menu_items', function ( array $groups ): array {
+add_filter( 'million-dollar-script/dashboard/menu/items', function ( array $groups ): array {
     $groups['extend']['items'][] = [
         'label' => __( 'Example Extension', 'example-extension' ),
         'url'   => admin_url( 'admin.php?page=example-extension' ),
@@ -48,7 +60,7 @@ add_filter( 'mds3_dashboard_menu_items', function ( array $groups ): array {
 } );
 ```
 
-For developers building extensions, see [Extension Development](/docs/extension-development).
+For developers building extensions, see [Extension Development](/docs/mds-3/million-dollar-script/3.0.0/main/extension-development).
 
 ## Notes
 

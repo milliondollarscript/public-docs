@@ -1,3 +1,15 @@
+---
+slug: mds3-grid-pricing-and-renderers
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+---
+
 # Grid Pricing And Renderers
 
 Million Dollar Script keeps the Million Dollar Script 2 grid-selling model, but the controls are now grouped under **Million Dollar Script > Grids > Edit Grid**.

@@ -1,8 +1,20 @@
+---
+slug: mds3-upgrade-from-mds2
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+---
+
 # Upgrade From Million Dollar Script 2
 
 Million Dollar Script is designed so existing Million Dollar Script 2 site owners can install it beside the old plugin, review the migration, and choose when to move. Million Dollar Script does not automatically import Million Dollar Script 2 data or deactivate Million Dollar Script 2.
 
-For a feature-by-feature view of what is covered and what still needs validation for a live site, see [Million Dollar Script 2 Workflow Parity](/docs/mds3-mds2-workflow-parity).
+For a feature-by-feature view of what is covered and what still needs validation for a live site, see [Million Dollar Script 2 Workflow Parity](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-mds2-workflow-parity).
 
 ## Before You Start
 
@@ -109,7 +121,7 @@ Existing migrated pages are preserved. Million Dollar Script only creates missin
 1. Open Million Dollar Script > Grids and check the imported grid dimensions, block size, packages, price zones, and unavailable regions.
 2. Open the public grid page and verify the grid renders.
 3. Test a small block selection and image upload.
-4. Review checkout settings. WooCommerce sites should test checkout with a sandbox gateway. Standalone/manual sites should verify the Checkout URL and any Million Dollar Script 2 placeholders. See [Million Dollar Script Checkout And Payments](/docs/mds3-checkout-and-payments).
+4. Review checkout settings. WooCommerce sites should test checkout with a sandbox gateway. Standalone/manual sites should verify the Checkout URL and any Million Dollar Script 2 placeholders. See [Million Dollar Script Checkout And Payments](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-checkout-and-payments).
 5. Review Million Dollar Script > Orders for imported orders and new test orders.
 6. Keep the old Million Dollar Script 2 tables until you are confident the site is stable.
 

@@ -1,628 +1,193 @@
+---
+slug: extension-development
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [developers, administrators]
+published: true
+tags: [developers, extensions, hooks, blocks]
+---
+
 # Extension Development
 
-Learn how to build your own Million Dollar Script extensions using the official skeleton plugin and best practices.
+A Million Dollar Script extension is a separate WordPress plugin that adds one focused capability while using core for grids, orders, payments, API governance, setup, and shared admin navigation.
 
-## Getting Started
-
-### Use the Skeleton Plugin
-
-The **Million Dollar Script Skeleton** plugin provides a clean starting point for new extensions:
-
-1. Copy the `mds-skeleton` folder from the extensions repository
-2. Rename the folder and main PHP file to match your extension name
-3. Update namespaces and text domain throughout
-4. Run `composer install` to set up autoloading
-5. Activate and test in WordPress
-
-### File Structure
-
-A typical Million Dollar Script extension follows this structure:
-
-```
-my-extension/
-├── my-extension.php           # Main plugin file (bootstrap)
-├── README.md                  # Documentation
-├── readme.txt                 # WordPress.org-style readme
-├── composer.json              # Composer dependencies & autoload
-├── assets/
-│   ├── css/
-│   │   ├── admin.css          # Admin styles
-│   │   └── frontend.css       # Frontend styles
-│   └── js/
-│       ├── admin.js           # Admin JavaScript
-│       └── frontend.js        # Frontend JavaScript
-├── src/
-│   └── Plugin.php             # Main plugin class
-├── includes/                  # Additional PHP classes (alternative to src/)
-├── languages/
-│   └── my-extension.pot       # Translation template
-└── tests/
-    └── ...                    # PHPUnit test suite
-```
-
-## Essential Components
-
-### Main Plugin File
-
-The main plugin file bootstraps your extension:
+## Minimal Plugin
 
 ```php
 <?php
 /**
- * Plugin Name: My Million Dollar Script Extension
- * Plugin URI: https://example.com/my-extension
- * Description: Description of what your extension does.
- * Version: 1.0.0
- * Author: Your Name
- * Author URI: https://example.com
- * Text Domain: my-mds-extension
- * Domain Path: /languages
- * Requires at least: 6.7
- * Requires PHP: 8.1
- * License: GPL-2.0-or-later
+ * Plugin Name:       Million Dollar Script - Example
+ * Description:       Adds an example workflow to Million Dollar Script.
+ * Version:           1.0.0
+ * Requires at least: 6.0
+ * Requires PHP:      8.1
+ * Requires Plugins:  million-dollar-script
+ * Requires MDS:      3.0.0
+ * Requires MDS API:  1
+ * MDS Generation:    3
+ * MDS Compatible:    MDS 3.0
+ * Text Domain:       mds-example
  */
 
-// Prevent direct access
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// Define constants
-define('MY_EXT_VERSION', '1.0.0');
-define('MY_EXT_DIR', plugin_dir_path(__FILE__));
-define('MY_EXT_URL', plugin_dir_url(__FILE__));
-define('MY_EXT_BASENAME', plugin_basename(__FILE__));
-
-// Composer autoloader
-if (file_exists(MY_EXT_DIR . 'vendor/autoload.php')) {
-    require_once MY_EXT_DIR . 'vendor/autoload.php';
-}
-
-// Initialize after plugins are loaded (ensures Million Dollar Script is available)
-add_action('plugins_loaded', function () {
-    // Check if Million Dollar Script core is active
-    if (!class_exists('MillionDollarScript')) {
-        add_action('admin_notices', function () {
-            echo '<div class="notice notice-error"><p>';
-            echo esc_html__('My Million Dollar Script Extension requires Million Dollar Script to be installed and activated.', 'my-mds-extension');
-            echo '</p></div>';
-        });
-        return;
+final class MDS_Example_Plugin {
+    public function boot(): void {
+        add_filter('million-dollar-script/extension/onboarding/items', [$this, 'onboarding']);
+        add_filter('million-dollar-script/editor/extension/blocks', [$this, 'blocks']);
+        add_shortcode('mds_example', [$this, 'shortcode']);
     }
 
-    // Initialize the extension
-    My_Extension\Plugin::instance();
-});
-```
+    public function onboarding(array $items): array {
+        $items['mds-example'] = [
+            'name' => __('Example', 'mds-example'),
+            'summary' => __('Configure the example workflow.', 'mds-example'),
+            'priority' => 100,
+            'actions' => [[
+                'label' => __('Open Example', 'mds-example'),
+                'url' => admin_url('admin.php?page=mds-example'),
+                'primary' => true,
+            ]],
+        ];
 
-### Plugin Class
-
-The main plugin class handles initialization and hooks:
-
-```php
-<?php
-namespace My_Extension;
-
-class Plugin {
-    private static ?Plugin $instance = null;
-
-    public static function instance(): Plugin {
-        if (null === self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
+        return $items;
     }
 
-    private function __construct() {
-        $this->init_hooks();
+    public function blocks(array $blocks): array {
+        $blocks[] = [
+            'name' => 'mds-example/content',
+            'title' => __('Example', 'mds-example'),
+            'description' => __('Display Example content from Million Dollar Script.', 'mds-example'),
+            'icon' => 'screenoptions',
+            'category' => 'widgets',
+            'attributes' => [
+                'title' => ['type' => 'string', 'default' => __('Example', 'mds-example')],
+            ],
+            'controls' => [[
+                'attribute' => 'title',
+                'type' => 'text',
+                'label' => __('Title', 'mds-example'),
+                'help' => __('Heading shown above the content.', 'mds-example'),
+            ]],
+            'preview' => [
+                'title' => __('Example', 'mds-example'),
+                'description' => __('Shows the configured Example content.', 'mds-example'),
+            ],
+            'render_callback' => [$this, 'render_block'],
+        ];
+
+        return $blocks;
     }
 
-    private function init_hooks(): void {
-        // Load translations
-        add_action('init', [$this, 'load_textdomain']);
-
-        // Admin hooks
-        add_action('admin_menu', [$this, 'register_admin_page']);
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
-
-        // Frontend hooks
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_assets']);
-
-        // Million Dollar Script integration
-        add_action('mds_register_dashboard_menu', [$this, 'register_dashboard_menu_items']);
-
-        // Register shortcode
-        add_shortcode('my_extension', [$this, 'shortcode_callback']);
-    }
-
-    public function load_textdomain(): void {
-        load_plugin_textdomain(
-            'my-mds-extension',
-            false,
-            dirname(MY_EXT_BASENAME) . '/languages'
-        );
-    }
-
-    public function register_admin_page(): void {
-        add_submenu_page(
-            'milliondollarscript',          // Parent slug
-            __('My Extension', 'my-mds-extension'),  // Page title
-            __('My Extension', 'my-mds-extension'),  // Menu title
-            'manage_options',               // Capability
-            'my-extension',                 // Menu slug
-            [$this, 'render_admin_page']    // Callback
-        );
-    }
-
-    public function register_dashboard_menu_items(string $registry_class): void {
-        $registry_class::register([
-            'slug'     => 'my-extension',
-            'title'    => __('My Extension', 'my-mds-extension'),
-            'url'      => admin_url('admin.php?page=my-extension'),
-            'parent'   => 'mds-extensions',
-            'position' => 10,
+    public function render_block(array $attributes = []): string {
+        return $this->shortcode([
+            'title' => sanitize_text_field((string) ($attributes['title'] ?? '')),
         ]);
     }
 
-    public function render_admin_page(): void {
-        // Check permissions
-        if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to access this page.', 'my-mds-extension'));
-        }
-        ?>
-        <div class="wrap">
-            <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-            <!-- Your admin content here -->
-        </div>
-        <?php
-    }
-
-    public function enqueue_admin_assets(string $hook): void {
-        // Only load on our admin page
-        if ('million-dollar-script_page_my-extension' !== $hook) {
-            return;
-        }
-
-        wp_enqueue_style(
-            'my-extension-admin',
-            MY_EXT_URL . 'assets/css/admin.css',
-            [],
-            MY_EXT_VERSION
+    public function shortcode(array $attributes = []): string {
+        $attributes = shortcode_atts(['title' => ''], $attributes, 'mds_example');
+        return sprintf(
+            '<section class="mds-example"><h2>%s</h2></section>',
+            esc_html((string) $attributes['title'])
         );
-
-        wp_enqueue_script(
-            'my-extension-admin',
-            MY_EXT_URL . 'assets/js/admin.js',
-            ['jquery'],
-            MY_EXT_VERSION,
-            true
-        );
-    }
-
-    public function enqueue_frontend_assets(): void {
-        wp_enqueue_style(
-            'my-extension-frontend',
-            MY_EXT_URL . 'assets/css/frontend.css',
-            [],
-            MY_EXT_VERSION
-        );
-    }
-
-    public function shortcode_callback(array $atts): string {
-        $atts = shortcode_atts([
-            'title'   => __('Default Title', 'my-mds-extension'),
-            'option'  => 'value',
-        ], $atts, 'my_extension');
-
-        ob_start();
-        ?>
-        <div class="my-extension-wrapper">
-            <h3><?php echo esc_html($atts['title']); ?></h3>
-            <!-- Shortcode output here -->
-        </div>
-        <?php
-        return ob_get_clean();
     }
 }
+
+add_action('plugins_loaded', static function (): void {
+    if (!class_exists(\MillionDollarScript\Core\Runtime::class) || !\MillionDollarScript\Core\Runtime::is_ready()) {
+        return;
+    }
+    (new MDS_Example_Plugin())->boot();
+}, 20);
 ```
 
-## Adding to the Million Dollar Script Menu
+## Recommended Structure
 
-The recommended way to add admin links is via the `mds_register_dashboard_menu` action and `Menu_Registry`:
-
-```php
-add_action('mds_register_dashboard_menu', function (string $registry_class): void {
-    $registry_class::register([
-        'slug'     => 'my-extension',
-        'title'    => __('My Extension', 'my-mds-extension'),
-        'url'      => admin_url('admin.php?page=my-extension'),
-        'parent'   => 'mds-extensions',
-        'position' => 10,
-    ]);
-});
+```text
+mds-example/
+├── mds-example.php
+├── src/
+│   ├── Plugin.php
+│   ├── Admin/
+│   ├── Domain/
+│   └── Rest/
+├── templates/
+├── assets/
+│   ├── css/
+│   └── js/
+├── languages/
+├── tests/
+├── composer.json
+└── readme.txt
 ```
 
-## Payment Provider Extensions
+Keep request handling, persistence, rendering, and business rules separate. Load admin assets only on the extension's screens and frontend assets only when its output is present.
 
-Payment systems should integrate with the Million Dollar Script payments API instead of being called directly by monetization extensions. A SponsorBoard-style extension should create its own booking, campaign, or inventory record, then ask core to create checkout for that source. The active provider extension handles the payment system.
+## Supported Core Access
 
-Register a provider with:
+Use the version-neutral facades documented in the [Developer Overview](/docs/mds-3/million-dollar-script/3.0.0/main/developer-overview). Implementation namespaces and ambiguous globals such as `MDS_VERSION` are not extension contracts.
 
-```php
-add_filter('mds3_payment_provider_options', function (array $options): array {
-    $options['my-provider'] = __('My Provider', 'my-extension');
-    return $options;
-});
+For browser code, publish configuration with `MillionDollarScript\Extensions\Support::add_browser_config()`. Read it from `window.MillionDollarScript.extensions`; do not add standalone globals.
 
-add_filter('mds3_payment_providers', function (array $providers): array {
-    $providers['my-provider'] = [
-        'id' => 'my-provider',
-        'label' => __('My Provider', 'my-extension'),
-        'ready' => my_provider_is_ready(),
-        'create_checkout' => 'my_provider_create_checkout',
-        'complete_source_order' => 'my_provider_complete_source_order',
-        'locks_currency' => true,
-        'currency_code' => 'my_provider_currency_code',
-        'currency_symbol' => 'my_provider_currency_symbol',
-    ];
+## Admin Navigation and Setup
 
-    return $providers;
-});
-```
+Register extension actions with `million-dollar-script/extension/onboarding/items`. Core uses this information in setup, dashboard cards, and extension navigation while the plugin is active. Do not modify the WordPress admin menu DOM.
 
-Start checkout from an extension with:
+Use `million-dollar-script/dashboard/extension/cards` only when the default card needs additional actions or status. Use `million-dollar-script/admin/bar/extension/items` only when the admin-bar destination differs from the primary onboarding action.
+
+An extension may include `recommended_pages` and `legal_documents` in its onboarding item. Legal drafts must state that they are not legal advice and should use setup placeholders supplied by core instead of hardcoded site contact details.
+
+## Blocks
+
+Register dynamic blocks through `million-dollar-script/editor/extension/blocks`. Provide a clear title, customer-facing description, icon, attributes, controls, preview, and server render callback. Prefer selection controls for existing records; offer a custom ID only as an explicit fallback when a large data set cannot be loaded.
+
+The block preview should resemble the frontend or show a legible placeholder. Do not expose shortcode syntax as the visual preview.
+
+## Payments
+
+Monetized extensions call `MillionDollarScript\Commerce\Payments::create_checkout()` and identify their record with `source` and `source_id`. They must not call WooCommerce or another gateway directly.
 
 ```php
-$checkout = \MDS3\Commerce\Payments::create_checkout([
-    'source' => 'my-extension',
-    'source_id' => $booking_id,
-    'user_id' => get_current_user_id(),
+$checkout = \MillionDollarScript\Commerce\Payments::create_checkout([
+    'source' => 'mds-example',
+    'source_id' => $record_id,
     'email' => $customer_email,
-    'currency' => 'USD',
-    'total' => 100.00,
-    'items' => [
-        [
-            'name' => 'Sponsor slot',
-            'amount' => 100.00,
-            'quantity' => 1,
-            'metadata' => ['booking_id' => $booking_id],
-        ],
-    ],
+    'currency' => \MillionDollarScript\Commerce\Currency::current_code(),
+    'total' => 49.00,
+    'items' => [[
+        'name' => 'Example placement',
+        'amount' => 49.00,
+        'quantity' => 1,
+    ]],
     'manage_url' => $private_manage_url,
 ]);
 ```
 
-When the gateway confirms or cancels payment, call:
+Listen to `million-dollar-script/payment/source/status` and update only records whose source matches your extension. Provider extensions register through `million-dollar-script/payment/provider/options` and `million-dollar-script/payment/providers`.
 
-```php
-\MDS3\Commerce\Payments::mark_source_paid('my-extension', $booking_id, [
-    'provider' => 'my-provider',
-    'provider_order_id' => $gateway_order_id,
-]);
+## REST API Integration
 
-\MDS3\Commerce\Payments::mark_source_cancelled('my-extension', $booking_id, [
-    'provider' => 'my-provider',
-    'provider_order_id' => $gateway_order_id,
-]);
-```
+Register routes with the WordPress REST API, then describe every governed route through `million-dollar-script/api/endpoint/manifest`. Supply a stable endpoint ID, full `/million-dollar-script/v1/...` route pattern, methods, scope, minimum security level, and description. Core omits incomplete entries instead of assigning permissive defaults.
 
-Extensions that own monetized records should also listen to `mds3_payment_source_status` for their source name so local statuses stay synchronized.
+Use `million-dollar-script/api/openapi/document` to add schemas and examples to the generated OpenAPI 3.1 document.
 
-Use `'parent' => 'mds-extensions'` so your item appears under the Extensions dropdown. This keeps extensions organized and doesn't clutter the WordPress sidebar. See [Hooks Reference](/docs/hooks-reference) for all available parent slugs.
+## Packaging and Updates
 
-## API-First Extensions
+- Keep the extension slug and main plugin basename stable.
+- Use semantic versions without a `v` prefix.
+- Update both plugin headers and readme stable tags.
+- Do not bundle development dependencies or tests in production ZIPs unless they are needed at runtime.
+- Paid extensions must validate entitlement through the extension server and fail closed for package downloads and private documentation.
+- Declare whether the extension is compatible with MDS 3.0 so MDS 2 and MDS 3.0 catalogs remain separated.
+- Run the workspace release audit before packaging. Extension packaging rejects private namespaces, pre-release browser globals, and ambiguous core constants.
 
-Million Dollar Script exposes a governed REST API at `/wp-json/mds/v3`. Extensions should expose their own REST routes when they need to support external apps, automations, or LLM tools.
+## Verification
 
-Administrators manage API keys in **Million Dollar Script > API Access**. Keys can be scoped, rate limited, revoked, and rotated. A rotated key immediately invalidates the old secret and shows the new secret only once.
-
-API clients can authenticate with either:
-
-```http
-Authorization: Bearer milliondollarscript_...
-X-Million-Dollar-Script-API-Key: milliondollarscript_...
-```
-
-Browser-based write actions that use the `public_write_nonce` security level must send a valid WordPress REST nonce:
-
-```http
-X-WP-Nonce: <wp_create_nonce('wp_rest')>
-```
-
-Do not accept legacy or shorthand key headers in new integrations. Use the full product header or Bearer authentication.
-
-### Register Endpoint Policies
-
-Register your extension endpoints with `mds3_api_endpoint_manifest` so they appear in API discovery, the OpenAPI contract, and the administrator policy table.
-
-```php
-add_filter('mds3_api_endpoint_manifest', function (array $endpoints): array {
-    $endpoints[] = [
-        'id' => 'my-extension-items-read',
-        'route' => '/mds/v3/my-extension/items',
-        'methods' => ['GET'],
-        'scope' => 'my-extension.read',
-        'minimum_security_level' => 'api_key_read',
-        'description' => __('Read extension items.', 'my-extension'),
-    ];
-
-    $endpoints[] = [
-        'id' => 'my-extension-items-write',
-        'route' => '/mds/v3/my-extension/items',
-        'methods' => ['POST'],
-        'scope' => 'my-extension.write',
-        'minimum_security_level' => 'api_key_write',
-        'description' => __('Create extension items.', 'my-extension'),
-    ];
-
-    return $endpoints;
-});
-```
-
-Use stable endpoint IDs and scopes. Suggested scope format is `{extension-slug}.read`, `{extension-slug}.write`, or a narrower action-specific scope such as `{extension-slug}.booking.write`.
-
-Available policy levels are:
-
-| Level | Use for |
-|-------|---------|
-| `public_read` | Public read-only content |
-| `public_write_nonce` | Browser writes protected by a WordPress REST nonce |
-| `api_key_read` | External read access using a scoped API key |
-| `api_key_write` | External write access using a scoped API key |
-| `wp_capability` | Administrator-only routes |
-| `disabled` | Temporarily disabling an endpoint |
-
-Stronger internal levels may appear for future signed-token and service-to-service flows. Treat those as administrator-only unless your extension explicitly documents and implements the required verifier.
-
-### Register REST Routes
-
-Use the same route and scope in your REST permission callback:
-
-```php
-add_action('rest_api_init', function (): void {
-    register_rest_route('mds/v3', '/my-extension/items', [
-        [
-            'methods' => WP_REST_Server::READABLE,
-            'callback' => 'my_extension_read_items',
-            'permission_callback' => function (WP_REST_Request $request) {
-                return (new \MDS3\Rest\ApiGovernance())->authorize(
-                    $request,
-                    'my-extension.read',
-                    'api_key_read'
-                );
-            },
-        ],
-        [
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => 'my_extension_create_item',
-            'permission_callback' => function (WP_REST_Request $request) {
-                return (new \MDS3\Rest\ApiGovernance())->authorize(
-                    $request,
-                    'my-extension.write',
-                    'api_key_write'
-                );
-            },
-            'args' => [
-                'title' => [
-                    'required' => true,
-                    'sanitize_callback' => 'sanitize_text_field',
-                ],
-            ],
-        ],
-    ]);
-});
-```
-
-The administrator policy table can raise an endpoint above your minimum security level but will not save a weaker policy than the route declares.
-
-## Using Carbon Fields
-
-Million Dollar Script uses Carbon Fields for options. You can add your own options:
-
-```php
-use Carbon_Fields\Container;
-use Carbon_Fields\Field;
-
-add_action('carbon_fields_register_fields', function () {
-    Container::make('theme_options', __('My Extension Settings', 'my-mds-extension'))
-        ->set_page_parent('milliondollarscript')
-        ->add_fields([
-            Field::make('text', 'my_ext_api_key', __('API Key', 'my-mds-extension'))
-                ->set_help_text(__('Enter your API key here.', 'my-mds-extension')),
-
-            Field::make('checkbox', 'my_ext_enabled', __('Enable Feature', 'my-mds-extension'))
-                ->set_option_value('yes'),
-
-            Field::make('select', 'my_ext_mode', __('Mode', 'my-mds-extension'))
-                ->add_options([
-                    'basic'    => __('Basic', 'my-mds-extension'),
-                    'advanced' => __('Advanced', 'my-mds-extension'),
-                ]),
-        ]);
-});
-
-// Retrieve option values
-$api_key = carbon_get_theme_option('my_ext_api_key');
-$enabled = carbon_get_theme_option('my_ext_enabled');
-```
-
-## Creating Shortcodes
-
-```php
-public function __construct() {
-    add_shortcode('my_extension', [$this, 'shortcode_callback']);
-}
-
-public function shortcode_callback($atts): string {
-    $atts = shortcode_atts([
-        'title'       => __('Default Title', 'my-mds-extension'),
-        'show_option' => 'true',
-        'class'       => '',
-    ], $atts, 'my_extension');
-
-    // Sanitize attributes
-    $show_option = filter_var($atts['show_option'], FILTER_VALIDATE_BOOLEAN);
-    $class = sanitize_html_class($atts['class']);
-
-    ob_start();
-    ?>
-    <div class="my-extension <?php echo esc_attr($class); ?>">
-        <h3><?php echo esc_html($atts['title']); ?></h3>
-        <?php if ($show_option) : ?>
-            <p><?php esc_html_e('Option is enabled', 'my-mds-extension'); ?></p>
-        <?php endif; ?>
-    </div>
-    <?php
-    return ob_get_clean();
-}
-```
-
-## AJAX Handlers
-
-```php
-// Register AJAX actions
-add_action('wp_ajax_my_extension_action', [$this, 'handle_ajax']);
-add_action('wp_ajax_nopriv_my_extension_action', [$this, 'handle_ajax']); // For non-logged-in users
-
-public function handle_ajax(): void {
-    // Verify nonce
-    if (!check_ajax_referer('my_extension_nonce', 'nonce', false)) {
-        wp_send_json_error(['message' => __('Security check failed.', 'my-mds-extension')]);
-    }
-
-    // Check permissions if needed
-    if (!current_user_can('manage_options')) {
-        wp_send_json_error(['message' => __('Permission denied.', 'my-mds-extension')]);
-    }
-
-    // Process the request
-    $data = isset($_POST['data']) ? sanitize_text_field($_POST['data']) : '';
-
-    // Return response
-    wp_send_json_success([
-        'message' => __('Success!', 'my-mds-extension'),
-        'data'    => $data,
-    ]);
-}
-```
-
-## Testing
-
-The skeleton includes PHPUnit setup with Brain Monkey for WordPress mocks:
-
-```bash
-# Install dependencies
-composer install
-
-# Run tests
-composer test
-# or
-./vendor/bin/phpunit
-```
-
-Example test:
-
-```php
-<?php
-namespace My_Extension\Tests;
-
-use PHPUnit\Framework\TestCase;
-use Brain\Monkey;
-use Brain\Monkey\Functions;
-
-class PluginTest extends TestCase {
-    protected function setUp(): void {
-        parent::setUp();
-        Monkey\setUp();
-    }
-
-    protected function tearDown(): void {
-        Monkey\tearDown();
-        parent::tearDown();
-    }
-
-    public function test_shortcode_returns_html(): void {
-        Functions\when('shortcode_atts')->returnArg(1);
-        Functions\when('esc_html')->returnArg(1);
-        Functions\when('__')->returnArg(1);
-
-        $plugin = new \My_Extension\Plugin();
-        $output = $plugin->shortcode_callback(['title' => 'Test']);
-
-        $this->assertStringContainsString('Test', $output);
-    }
-}
-```
-
-## Activation and Deactivation
-
-Handle plugin lifecycle events:
-
-```php
-// In main plugin file
-register_activation_hook(__FILE__, [My_Extension\Plugin::class, 'activate']);
-register_deactivation_hook(__FILE__, [My_Extension\Plugin::class, 'deactivate']);
-
-// In Plugin class
-public static function activate(): void {
-    // Create database tables
-    // Set default options
-    // Flush rewrite rules if registering custom post types
-    flush_rewrite_rules();
-}
-
-public static function deactivate(): void {
-    // Clean up scheduled events
-    wp_clear_scheduled_hook('my_extension_cron');
-    // Flush rewrite rules
-    flush_rewrite_rules();
-}
-```
-
-## Uninstall Cleanup
-
-Create `uninstall.php` in your plugin root:
-
-```php
-<?php
-// Exit if not called by WordPress
-if (!defined('WP_UNINSTALL_PLUGIN')) {
-    exit;
-}
-
-// Delete options
-delete_option('my_extension_settings');
-
-// Delete custom tables (if any)
-global $wpdb;
-$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}my_extension_data");
-
-// Delete user meta (if any)
-delete_metadata('user', 0, 'my_extension_preference', '', true);
-```
-
-## Release Checklist
-
-Before releasing your extension:
-
-- [ ] Unique text domain that won't conflict with other plugins
-- [ ] All strings wrapped in translation functions
-- [ ] Proper capability checks on all admin functions
-- [ ] Nonce verification on all form submissions
-- [ ] Input sanitization on all user data
-- [ ] Output escaping on all rendered content
-- [ ] Activation/deactivation hooks handle setup/cleanup
-- [ ] Uninstall.php removes all plugin data
-- [ ] README.md with installation and usage instructions
-- [ ] Changelog documenting all versions
-- [ ] Tests passing
-- [ ] Code follows WordPress Coding Standards
-- [ ] Tested with latest WordPress and PHP versions
-- [ ] Tested with latest Million Dollar Script version
-
-## Resources
-
-- [Hooks Reference](/docs/hooks-reference) - Available Million Dollar Script hooks
-- [List Page Customization](/docs/list-page-customization) - Extending the advertiser list
-- [WordPress Plugin Handbook](https://developer.wordpress.org/plugins/)
-- [Carbon Fields Documentation](https://carbonfields.net/docs/)
+Test activation, deactivation, uninstall policy, capability failures, nonce failures, multisite behavior where supported, mobile admin layouts, keyboard navigation, dark and light admin themes, API rate limits, payment cancellation, and plugin updates. Run PHP syntax checks and the extension's automated test suite before packaging.

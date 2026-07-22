@@ -1,6 +1,18 @@
+---
+slug: woocommerce-integration
+product_generation: mds-3
+package_slug: million-dollar-script
+package_type: core
+package_version: "3.0.0"
+channel: main
+access: public
+audience: [site-owners, administrators]
+published: true
+---
+
 # WooCommerce Integration
 
-WooCommerce support is provided by the **Million Dollar Script WooCommerce Checkout** extension. The core plugin exposes the payments API; the WooCommerce extension registers WooCommerce as a payment provider. For non-WooCommerce manual or external checkout URLs, see [Checkout And Payments](/docs/mds3-checkout-and-payments).
+WooCommerce support is provided by the **Million Dollar Script WooCommerce Checkout** extension. The core plugin exposes the payments API; the WooCommerce extension registers WooCommerce as a payment provider. For non-WooCommerce manual or external checkout URLs, see [Checkout And Payments](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-checkout-and-payments).
 
 ## Enable integration
 
@@ -25,4 +37,4 @@ WooCommerce support is provided by the **Million Dollar Script WooCommerce Check
 
 ## Troubleshooting
 
-For WooCommerce-related issues, see [Troubleshooting: WooCommerce Issues](/docs/troubleshooting#woocommerce-issues).
+For WooCommerce-related issues, see [Troubleshooting: WooCommerce Issues](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting#woocommerce-issues).
