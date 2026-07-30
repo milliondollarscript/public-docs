@@ -80,7 +80,17 @@ Approving a placement reserves one inventory unit. Repeating the approval does n
 
 The add forms stay collapsed until needed. Use **Edit** beside a partner or inventory record to update it. Lists use accurate totals and pagination. Placement selectors suggest eligible records; an admin can enter an exact numeric ID when a large catalog is not fully represented in the suggestion list.
 
-Use revocation when a partner should no longer access the cooperative. Revocation and placement actions are recorded in audit entries.
+Use revocation when a partner should no longer access the cooperative. Partner rejection, revocation, a pool change, or privacy anonymization immediately revokes that partner's service credentials. Revocation and placement actions are recorded in audit entries.
+
+## Service Credentials
+
+An approved partner in an active, reviewed cooperative can receive a placement service credential from the partner's **Service credentials** panel. Creation, rotation, and revocation require a WordPress administrator.
+
+The credential has an opaque `acsvc_...` service ID and a cryptographically random secret separate from its display label. The secret is shown once after creation or rotation; save it directly in the partner service's secret manager. It is never shown again. Stored secrets use authenticated encryption and are excluded from public inventory, discovery examples, exports, activity details, and credential tables.
+
+Credentials expire after 90 days by default; an administrator may choose 1–365 days at creation. Rotation creates a new service ID and secret while the old credential remains valid for 24 hours, allowing a controlled cutover. Revoke the old credential immediately after confirming the replacement. A revoked credential stops working immediately. Sites with no configured credential deny remote service requests.
+
+By default, encryption derives a key from the site's WordPress secure-auth and nonce salts. Advanced deployments can define a stable, high-entropy `MDS_ATTENTION_COOPERATIVE_MASTER_KEY` of at least 32 characters in `wp-config.php` before creating credentials. Preserve the salts and any configured master key in backups: losing the key material makes the affected credentials unreadable, and they must be replaced.
 
 ## Legal And Privacy
 
@@ -103,7 +113,20 @@ POST /wp-json/million-dollar-script/v1/cooperative/placements/{id}/approve
 POST /wp-json/million-dollar-script/v1/cooperative/placements/{id}/revoke
 ```
 
-Application writes require the relevant nonce or API policy. Approval and revocation actions require administrator access. Service placement writes require the configured Million Dollar Script service-signature policy and are limited by the selected partner's hourly limit.
+Application writes require the relevant nonce or API policy. Approval and revocation actions require administrator access. Service placement writes require a valid Attention Cooperative v1 service signature and an `X-Idempotency-Key`. The credential identifies the partner and cooperative; request fields cannot substitute another partner or pool. The approved same-pool relationship, inventory allowance, terms, source approval, capacity, moderation, and hourly partner limit are still checked.
+
+The signature uses the [Million Dollar Script v1 service-signature contract](/api-reference/#service-signature-version-1). For this endpoint:
+
+```text
+method: POST
+canonical route: /million-dollar-script/v1/cooperative/placements
+scope: cooperative.placement.write
+idempotency: required
+```
+
+Use a new random nonce for each network attempt. Reuse the same idempotency key only when retrying the exact same placement body. A successful repeat returns the original placement instead of creating a duplicate. Reusing the key with a different request returns `409`.
+
+A valid signature authenticates only the partner service. It does not create a WordPress session or grant administrator capability. The new placement is always `pending_destination`, and local administrator approval remains required before publication or inventory consumption.
 
 The inventory response includes public site, terms, privacy, takedown, disclosure, inventory, and provider details. It does not expose the cooperative contact email, partner or sponsor contacts, private notes, or credential labels.
 

@@ -178,6 +178,28 @@ Register routes with the WordPress REST API, then describe every governed route 
 
 Use `million-dollar-script/api/openapi/document` to add schemas and examples to the generated OpenAPI 3.1 document.
 
+For an endpoint whose minimum security level is `service_signature`, register each extension-owned credential through the stable public facade:
+
+```php
+use MillionDollarScript\Core\ApiAccess;
+use MillionDollarScript\Core\ServiceSignatureRequest;
+
+ApiAccess::register_service_signature_verifier(
+    'your-stable-endpoint-id',
+    'your.scope.write',
+    $opaque_service_id,
+    static function (ServiceSignatureRequest $signature, WP_REST_Request $request) {
+        // Check status, expiry, revocation, scope, ownership, HMAC, nonce, and rate.
+        return $verified_and_nonce_claimed
+            ? true
+            : ApiAccess::service_signature_error('invalid');
+    },
+    ['v1']
+);
+```
+
+Core accepts only literal `true`. A safe `WP_Error` is normalized, exceptions and malformed returns are denied, and no registration means remote access remains unavailable. Read the verified non-administrator identity with `ApiAccess::service_identity($request)`. Extensions must own credential creation, one-time secret exchange, encryption, rotation, revocation, replay storage, and relationship checks; do not use private `V3` classes or treat a label, URL, service ID, or header as authentication.
+
 ## Packaging and Updates
 
 - Keep the extension slug and main plugin basename stable.

@@ -26,7 +26,7 @@ Download the [static OpenAPI 3.1 document](/assets/mds-3.0-openapi.json) for cod
 
 ## Authentication
 
-Public-read routes return only fields intended for anonymous display. All other integration routes require a scoped API key unless an administrator has strengthened or disabled the endpoint policy.
+Public-read routes return only fields intended for anonymous display. Other routes use the authentication method declared by their effective endpoint policy. Most integration routes use scoped API keys; browser nonce, resource-owned manage-token, service-signature, and administrator routes use their own boundaries.
 
 ```http
 Authorization: Bearer milliondollarscript_your_key
@@ -52,10 +52,59 @@ Browser writes configured for `public_write_nonce` require a valid WordPress RES
 | `public_write_nonce` | Browser write with a valid WordPress REST nonce |
 | `api_key_read` | Scoped API key with read permission |
 | `api_key_write` | Scoped API key with write permission |
+| `signed_manage_token` | Endpoint-owned private manage token or authorized owner; otherwise administrator |
+| `service_signature` | Exact trusted service verifier registered by the owning extension, or administrator |
 | `wp_capability` | Authenticated WordPress administrator |
 | `disabled` | Endpoint blocked by policy |
 
 An administrator may strengthen or disable an endpoint policy, but cannot weaken its minimum security level.
+
+## Service-Signature Version 1
+
+`service_signature` authenticates an extension-owned server identity. A service ID, label, endpoint URL, header, or ordinary API key is not sufficient. Core accepts an authenticated WordPress administrator for local administration; otherwise it validates the common envelope and invokes only the verifier registered for the exact endpoint ID, scope, service ID, and signature version. Missing verifiers and every non-`true` result fail closed.
+
+Send these headers over HTTPS:
+
+```text
+X-MDS-Service-Id
+X-MDS-Signature-Version: v1
+X-MDS-Timestamp
+X-MDS-Nonce
+X-MDS-Content-SHA256
+X-MDS-Signature
+X-Idempotency-Key          # only when the endpoint uses it
+```
+
+`X-MDS-Timestamp` is a ten-digit Unix timestamp no more than 300 seconds in the past or future. `X-MDS-Nonce` is the 43-character unpadded base64url encoding of 32 cryptographically random bytes. The content hash is lowercase hexadecimal SHA-256 of the exact raw request body. The signature is lowercase hexadecimal HMAC-SHA256.
+
+Build the canonical string by joining these eight values with a single LF and no trailing LF:
+
+```text
+v1
+<SERVICE_ID>
+<UPPERCASE_METHOD>
+<CANONICAL_ROUTE>
+<TIMESTAMP>
+<NONCE>
+<BODY_SHA256>
+<IDEMPOTENCY_KEY_OR_EMPTY_STRING>
+```
+
+The canonical route starts at `/million-dollar-script/v1/`; omit scheme, host, `/wp-json`, query, and fragment. Do not parse and re-serialize JSON after hashing it. Compare signatures in constant time.
+
+```text
+body_hash = hex_sha256(exact_body_bytes)
+nonce = base64url(random_bytes(32), no_padding)
+canonical = join_with_lf("v1", service_id, upper(method), route,
+                         timestamp, nonce, body_hash, idempotency_key_or_empty)
+signature = hex_hmac_sha256(secret, canonical)
+```
+
+The owning extension stores credentials and must enforce status, expiry, scope, revocation, domain-object ownership, rate limits, and an atomic nonce claim retained for at least the accepted timestamp window. Use a new nonce for every attempt; reuse only the endpoint's idempotency key when retrying the same logical operation.
+
+Invalid, unknown, expired, revoked, replayed, malformed, or tampered requests return the same generic `401`. HTTPS failures use `403`, rate limits use `429`, and a privacy-safe temporary verifier failure may use `503`. Responses and authorization audits never include the secret, expected signature, signature header, nonce, or raw body.
+
+The protocol protects request integrity and replay within its window; it cannot protect a copied secret or a compromised signing or WordPress host. Keep secrets in server-side secret storage, rotate exposed credentials, and retain endpoint domain validation and local moderation.
 
 ## Response and Error Format
 

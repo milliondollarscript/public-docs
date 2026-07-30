@@ -671,6 +671,10 @@
             "minimum": 0,
             "type": "integer"
           },
+          "subscription_plan_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
           "user_id": {
             "minimum": 0,
             "type": "integer"
@@ -692,6 +696,12 @@
         "scheme": "bearer",
         "type": "http"
       },
+      "ServiceSignatureV1": {
+        "description": "HMAC-SHA256 request signature using the Million Dollar Script v1 service-signature contract.",
+        "in": "header",
+        "name": "X-MDS-Signature",
+        "type": "apiKey"
+      },
       "WpCookieNonce": {
         "in": "header",
         "name": "X-WP-Nonce",
@@ -702,7 +712,8 @@
   "info": {
     "description": "Static contract for the Million Dollar Script core API.",
     "title": "Million Dollar Script API",
-    "version": "3.0.0"
+    "version": "3.0.0",
+    "x-generated-from": "MillionDollarScript\\V3\\Rest\\ApiGovernance"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4242,9 +4253,33 @@
       "api_key_read",
       "api_key_write",
       "signed_manage_token",
-      "wp_capability",
       "service_signature",
+      "wp_capability",
       "disabled"
-    ]
+    ],
+    "service_signature": {
+      "algorithm": "HMAC-SHA256",
+      "canonical_fields": [
+        "version",
+        "service_id",
+        "method",
+        "route",
+        "timestamp",
+        "nonce",
+        "body_sha256",
+        "idempotency_key"
+      ],
+      "canonical_route": "/million-dollar-script/v1/...",
+      "clock_skew_seconds": 300,
+      "required_headers": [
+        "X-MDS-Service-Id",
+        "X-MDS-Signature-Version",
+        "X-MDS-Timestamp",
+        "X-MDS-Nonce",
+        "X-MDS-Content-SHA256",
+        "X-MDS-Signature"
+      ],
+      "version": "v1"
+    }
   }
 }

@@ -48,7 +48,7 @@ Each board also controls:
 - The number of booking or checkout attempts allowed per visitor and slot each hour.
 - How many days private sponsor contact and draft creative data is retained.
 
-When a board exists, the admin workspace opens on **Bookings** so sponsor requests are visible first. The workspace also provides **Overview**, **Boards**, **Slots**, and **Hosted service** tabs. Board creation and configuration stay under **Boards**, while inventory stays under **Slots**. Tab URLs preserve the selected board, filters, and pagination so administrators can return to a specific workflow directly.
+When a board exists, the admin workspace opens on **Bookings** so sponsor requests are visible first. The workspace also provides **Overview**, **Boards**, and **Slots** tabs. Board creation and configuration stay under **Boards**, while inventory stays under **Slots**. Tab URLs preserve the selected board, filters, and pagination so administrators can return to a specific workflow directly.
 
 ## Block
 
@@ -120,6 +120,10 @@ To enable paid checkout:
 
 Available slots then show **Buy this slot**. The sponsor enters the same sponsor details and consent, SponsorBoard atomically creates a pending booking, and the active provider starts payment. Completed, processing, and paid callbacks move the booking to `Paid`. Failed, cancelled, expired, denied, and refunded callbacks close the booking and release inventory only when no other live booking owns the slot. Unknown payment states are ignored.
 
+When the optional Subscriptions extension is enabled, an eligible sponsor can use a configured booking allowance for the selected slot. SponsorBoard consumes the allowance idempotently, marks the booking paid, and opens the normal signed manage page without starting a second checkout. Customers without an eligible allowance continue through the configured one-time payment provider.
+
+A subscription configured to manage the booking term can extend the booking end date after a paid cycle. SponsorBoard only moves the date forward; retries cannot shorten the term or create a replacement booking.
+
 ## Analytics, Exports, and Privacy
 
 Public boards track approved sponsor impressions and clicks with a throttled local AJAX endpoint. SponsorBoard stores hashed IP and user-agent fingerprints only for rate limiting and abuse control; raw IP addresses are not stored.
@@ -132,8 +136,6 @@ The SponsorBoard admin dashboard shows:
 - Impressions, clicks, and CTR.
 
 The selected board's booking section includes CSV exports for bookings and events. Large exports are generated in batches and then downloaded from an administrator-only endpoint. Booking exports include sponsor contact details and creative status. Event exports include event IDs, board/slot/booking IDs, event type, event value, source, rollup date when applicable, and timestamp without IP or user-agent hashes.
-
-The hosted service settings can mirror aggregate impression and click events when an administrator enables it. Hosted event mirroring sends only the hosted board ID, hosted slot ID, hosted booking ID, event type, count, and timestamp. It does not send raw IP addresses, user-agent strings, local IP hashes, local user-agent hashes, sponsor emails, sponsor names, creative notes, or uploaded files as part of event mirroring.
 
 Raw event retention controls how long detailed local impression and click rows are kept. When rollups are enabled, old raw rows are aggregated by board, slot, booking, event type, and day before cleanup so local reporting remains usable after detailed rows are removed.
 
