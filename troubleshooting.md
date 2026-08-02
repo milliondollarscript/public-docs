@@ -8,277 +8,197 @@ channel: main
 access: public
 audience: [site-owners, administrators]
 published: true
+tags: [troubleshooting, updates, extensions, checkout, security]
 ---
 
 # Troubleshooting
 
-This guide consolidates common issues and their solutions. If you don't find your answer here, check the [Known Compatibility Notes](/docs/mds-3/million-dollar-script/3.0.0/main/known-compatibility-issues) or contact support.
+Use this guide when installation, routes, extensions, checkout, rendering, updates, documentation, or emails do not behave as expected. If the issue is not covered here, review the [Known Compatibility Notes](/docs/mds-3/million-dollar-script/3.0.0/main/known-compatibility-issues) or contact support with the relevant error message and environment details.
 
-## Installation Issues
+## Installation
 
-### "The link you followed has expired"
+### “The link you followed has expired”
 
-**Cause:** The plugin ZIP file exceeds your server's upload file size limits.
+The plugin ZIP may exceed the upload limit applied to the current PHP request.
 
-**Solutions:**
+1. Check the maximum upload size under **Media > Add New**.
+2. Increase `upload_max_filesize` and `post_max_size` through your hosting control panel or ask the hosting provider to change them.
+3. If browser upload is unavailable, extract the package and upload the `million-dollar-script` directory to `wp-content/plugins/` using your host's file manager, SFTP, or SSH.
 
-1. **Check your current limits:** Go to Media > Add New in WordPress admin. The maximum upload size is displayed at the bottom.
+Avoid changing `.htaccess`, `php.ini`, or `wp-config.php` unless your hosting provider documents that method. A hosting-level limit can override values placed in WordPress files.
 
-2. **Increase PHP limits** in `php.ini`:
-   ```
-   upload_max_filesize = 64M
-   post_max_size = 64M
-   max_execution_time = 300
-   ```
+### Activation fails with a fatal error
 
-3. **Alternative methods:**
-   - **Apache `.htaccess`:** Add to your WordPress root:
-     ```
-     php_value upload_max_filesize 64M
-     php_value post_max_size 64M
-     php_value max_execution_time 300
-     ```
-   - **`wp-config.php`:** Add before "That's all, stop editing!":
-     ```php
-     @ini_set('upload_max_filesize', '64M');
-     @ini_set('post_max_size', '64M');
-     ```
+- Confirm the site runs WordPress 6.0 or newer and PHP 8.1 or newer.
+- Confirm the extracted directory contains the complete plugin package.
+- Review `wp-content/debug.log`, the hosting error log, or the fatal-error email from WordPress.
+- Record the complete error, PHP version, WordPress version, and active plugin list before contacting support.
 
-4. **Contact hosting provider:** Many hosts have control panel options to adjust limits.
+### Installation cannot create a directory
 
-5. **Manual installation:** Upload via FTP/SSH instead. Extract the ZIP and upload the `milliondollarscript-two` folder to `wp-content/plugins/`.
+Confirm that WordPress can write to `wp-content/plugins/`. Typical permissions are `755` for directories and `644` for files, but the correct ownership and permissions depend on the host. Do not make the directory world-writable.
 
-### Plugin Activation Errors
+## PHP Memory
 
-**"Plugin could not be activated because it triggered a fatal error"**
+Million Dollar Script requires an effective PHP memory limit of at least 256 MB for supported operation with checkout and extensions. Check the applied value under **Million Dollar Script > System Status** or **Tools > Site Health**; the hosting plan maximum can differ from the value assigned to an individual WordPress request.
 
-This usually indicates PHP version incompatibility or missing dependencies.
+If PHP reports an allowed-memory-size error:
 
-**Solutions:**
-- Verify your server meets minimum requirements (PHP 8.1+, WordPress 6.7+)
-- Check error logs (`wp-content/debug.log` or hosting control panel)
-- Contact support with the specific error message
+- Increase the effective `memory_limit` to at least 256 MB through the hosting control panel or hosting support.
+- Confirm the new value in System Status rather than assuming a configuration file was applied.
+- Update WordPress, Million Dollar Script, the active payment provider, and active extensions.
+- Reproduce the request on staging with unrelated plugins disabled.
+- Check whether a bulk operation, report, migration, or image job is processing an unexpectedly large data set.
+- Use hosted ImageGrid rendering when large-grid processing is not reliable on the available server resources.
 
-### "Missing plugin files" or "Corrupted ZIP"
+The filename and line in a memory fatal identify the final failed allocation, not necessarily the component that consumed most of the request memory. Continued growth after increasing the limit should be investigated as an unbounded operation.
 
-**Cause:** The ZIP file was incompletely downloaded or corrupted.
-
-**Solutions:**
-- Re-download from https://milliondollarscript.com/plugin
-- Verify the download completed fully (check file size)
-- Try a different browser
-- Use manual FTP/SSH installation
-
-### Permission Errors
-
-**"Could not create directory" or "Installation failed"**
-
-**Cause:** WordPress doesn't have write permissions to the plugins directory.
-
-**Solutions:**
-- Contact hosting provider to verify permissions on `wp-content/plugins/`
-- Recommended: directories `755`, files `644`
-- Use manual installation via FTP/SSH
-
----
-
-## Plugin Updates
-
-### "Download failed: Forbidden"
-
-**Cause:** The download link expired before you clicked "Update Now". Update download links are time-limited for security.
-
-**Solution:** Simply retry the update. WordPress will fetch a fresh download link. If you see this error repeatedly, try:
-1. Click "Check for updates" to refresh the update information
-2. Immediately click "Update Now"
-3. If the issue persists, manually download the latest version from https://milliondollarscript.com/plugin and reinstall
-
----
-
-## Routes & 404 Errors
+## Routes and 404 Errors
 
 ### Routes return 404 after activation
 
-**Cause:** WordPress permalinks need to be flushed.
+Refresh WordPress rewrite rules:
 
-**Solutions:**
-1. Go to Settings > Permalinks and click "Save Changes" (no changes needed)
-2. Or via WP-CLI: `wp rewrite flush --hard`
+1. Go to **Settings > Permalinks**.
+2. Click **Save Changes** without changing the permalink structure.
+3. Clear any page, object, proxy, and CDN caches.
 
-### Routes 404 after changing the endpoint base
-
-If you changed the route base in Options (e.g., from `/milliondollarscript/` to `/pixels/`):
-
-1. Save Options
-2. Flush permalinks (Settings > Permalinks > Save)
-3. Clear any page caches
-
----
-
-## Grid Alignment
-
-If block highlights or selection boxes don't align with the grid image:
-
-### 1) Match grid dimensions
-
-- In MDS Admin > Manage Grids, confirm your grid width/height and block size
-- **Block users:** Set width/height to `{width}`/`{height}` for automatic sizing
-- **Shortcode users:** Ensure dimensions match exactly (grid_width × block_width, grid_height × block_height)
-  ```
-  [milliondollarscript id="1" type="grid" width="1000px" height="1000px"]
-  ```
-
-### 2) Use correct display types
-
-- Grid: `type="grid"`
-- Ordering: `type="users"` (legacy) or split into `order`, `write-ad`, `confirm-order`
-- List/Manage/Stats: Use `width="100%" height="auto"`
-
-### 3) Regenerate images after changes
-
-When grid or backdrop settings change, the grid image updates automatically. If misalignment persists, save the grid again to trigger a refresh.
-
-### 4) Check CSS scaling
-
-- Avoid custom CSS that scales the grid image independently of the selection layer
-- If your theme applies `img { max-width: 100%; height: auto; }`, ensure the container preserves the grid's intended size
-
-### 5) Multiple grids on one page
-
-Multiple grids are supported. If selections affect the wrong grid:
-- Ensure each block/shortcode has the correct `id`
-- Check that containers aren't unexpectedly clamping widths
-
-### 6) Clear caches
-
-After changing grid settings or images, clear page/CDN caches to eliminate stale assets.
-
----
-
-## WooCommerce Issues
-
-### Payment redirect not working
-
-**Solutions:**
-- Verify WooCommerce's checkout page is configured and published
-- Ensure you're logged in and an order ID is present
-- Confirm **Million Dollar Script WooCommerce Checkout** is active and WooCommerce is selected under Million Dollar Script -> Setup -> Payment Provider
-- Clear caches after changing Woo settings
-
-### Empty checkout redirect conflicts
-
-The plugin automatically suppresses WooCommerce's "empty checkout" redirect on MDS routes. If you experience conflicts:
-- Update to the latest MDS version
-- Keep WooCommerce up to date
-
----
-
-## Styling Issues
-
-### Styles appear wrong after update
-
-**Solution:** Save Options once to regenerate the dynamic CSS file.
-
-Or regenerate manually via WP-CLI:
-```bash
-wp eval '\\MillionDollarScript\\Classes\\Web\\Styles::save_dynamic_css_file(); echo "OK\n";'
-```
-
-### Theme conflicts with grid layout
-
-- Ensure styles work within the `.mds-container` scope
-- Check if page builders or themes are constraining image sizes
-- Try the grid on a page using a default theme to isolate the issue
-
----
-
-## Performance & Memory
-
-### PHP memory errors
-
-Million Dollar Script requires an effective PHP memory limit of at least 256 MB for supported operation with checkout and extensions. Check the value under **Million Dollar Script > System Status** or **Tools > Site Health**. A hosting plan's advertised maximum can differ from the per-request value PHP actually applies.
-
-**Solutions:**
-- Increase the effective PHP `memory_limit` to at least 256 MB through the hosting control panel or hosting support.
-- Confirm the new value in System Status after the configuration change.
-- Update WordPress, Million Dollar Script, the payment provider, and active extensions.
-- Reproduce the request in staging with unrelated plugins disabled to identify expensive combinations.
-- Use hosted ImageGrid rendering when large-grid processing is not reliable on the available shared-host resources.
-
-The filename and line in an allowed-memory-size fatal show where the final allocation failed, not necessarily which plugin or earlier operation consumed most of the memory. A request that continues growing after the limit is raised should be investigated for unbounded queries or processing.
-
----
-
-## Debugging
-
-### Enable logging
-
-1. Go to MDS Options > System
-2. Enable logging
-3. Log files are stored in `wp-content/uploads/milliondollarscript/`
-
-### Find and tail the current log
+With WP-CLI, run:
 
 ```bash
-LOG_FILE=$(wp eval 'echo \\MillionDollarScript\\Classes\\System\\Logs::get_log_file_path();')
-test -n "$LOG_FILE" && tail -f "$LOG_FILE"
+wp rewrite flush --hard
 ```
 
-### Run cron jobs manually
+If only one route fails, check for a WordPress page, attachment, taxonomy, or other plugin using the same slug. Review the configured route on the Million Dollar Script settings and setup screens before changing it.
 
-```bash
-wp cron event list | grep milliondollarscript
-wp cron event run milliondollarscript_cron_minute
-```
+## Grid Alignment and Rendering
 
----
+If selection highlights do not align with the grid image:
 
-## Extension Issues
+- Confirm the block or shortcode points to the intended grid.
+- Confirm grid dimensions and block size match the generated image.
+- Save the grid after changing dimensions, backdrop, or rendering settings so derived assets can be regenerated.
+- Check whether the theme or page builder scales the image independently of its selection layer.
+- Ensure containers do not constrain the image while leaving the overlay at its original width.
+- Clear page and CDN caches after regenerating grid assets.
 
-### Extension not appearing in admin
+If several grids appear on one page, verify each block or shortcode uses the correct grid identifier and inspect the browser console for JavaScript errors.
 
-**Cause:** The extension may not be activated, or may have a dependency issue.
+If grids load slowly or tiles are missing:
 
-**Solutions:**
-- Verify the extension is activated in Plugins > Installed Plugins
-- Ensure the MDS core plugin is active and up to date
-- For premium extensions, verify your license is activated in the extension's settings
-- Check PHP error logs for activation errors (`wp-content/debug.log` or hosting control panel)
+- Confirm the configured renderer mode.
+- Confirm generated files exist before public pages request them.
+- Check browser console and network requests for 404 responses or slow WordPress AJAX requests.
+- Use hosted ImageGrid rendering for very large grids or processing that exceeds shared-host limits.
 
-### Extension features not working
+## Extension Catalog
 
-**Solutions:**
-- Clear any caching plugins (page cache, object cache)
-- Ensure the extension version is compatible with your MDS core version
-- For premium extensions, verify the license is valid and activated
-- Try deactivating and reactivating the extension
-- Check for JavaScript errors in your browser's developer console (F12)
+The WordPress.org edition does not install extension ZIP files from the Million Dollar Script service. Use **Discover extensions** to browse compatible products, install free extensions through **Plugins > Add New**, and upload premium packages supplied with a purchase.
 
-### Extension conflicts
+For the direct-download edition, if the catalog does not load:
 
-If an extension causes issues with MDS or other plugins:
+- Confirm **Extension Server URL** under **Million Dollar Script > Settings**.
+- Confirm the server is reachable from WordPress and is not blocked by DNS, TLS, firewall, or hosting restrictions.
+- Confirm local development points to the intended local extension server.
+- Confirm the catalog is returning packages compatible with the installed core generation and API version.
 
-1. Deactivate all MDS extensions
-2. Verify the core MDS plugin works correctly
-3. Reactivate extensions one at a time to identify the conflict
-4. If a conflict is found, contact the extension developer with details about:
-   - WordPress version
-   - PHP version
-   - MDS core version
-   - Other active plugins/theme
+Custom clients that call the extension service directly must preserve the compatibility signals sent by core: `product_family=modern`, `core_version=<installed version>`, `core_api_version=1`, and the transitional `mds_generation=3` marker.
 
-### Extension update issues
+## Extension Installation and Activation
 
-**"Download failed" during extension update**
+If an extension fails to install or does not appear:
 
-This is similar to core plugin updates—the download link may have expired.
+- Confirm WordPress can write to `wp-content/plugins/`.
+- Confirm the package supports the installed Million Dollar Script generation and version.
+- Confirm the extension is activated under **Plugins > Installed Plugins**.
+- For premium extensions, confirm the license is active and grants access to that package.
+- Review the WordPress debug log and hosting error log for ZIP, permission, dependency, or PHP errors.
 
-**Solution:** Retry the update. If it persists, manually download the latest version from your MDS account and reinstall.
+To isolate an extension conflict on staging:
 
----
+1. Deactivate all Million Dollar Script extensions.
+2. Confirm core works by itself.
+3. Reactivate extensions one at a time.
+4. Record the first failing combination, along with WordPress, PHP, core, extension, and theme versions.
+
+## Updates
+
+### “Download failed: Forbidden”
+
+Signed update URLs are time-limited. Refresh the WordPress Updates screen or check for updates again, then retry immediately so WordPress receives a new URL.
+
+If an update still appears after installation:
+
+- Refresh the WordPress Updates and Plugins screens.
+- Confirm the installed version under **Plugins > Installed Plugins**.
+- Confirm the expected update channel is selected.
+- Clear stale plugin ZIP or response caches on development servers and proxies.
+- If necessary, download the current package and reinstall it manually without deleting its saved data.
+
+## Documentation
+
+Million Dollar Script keeps remotely delivered extension documentation in a short-lived local cache and clears affected entries when license, extension-pack, or tester access changes.
+
+If a guide remains outdated after a documentation release, use **Million Dollar Script > Documentation > Refresh documentation**. This clears the site's remote-documentation cache and retrieves the current guides allowed by its access. It does not change licenses, install extensions, edit server content, or bypass entitlement checks.
+
+Manual refreshes have a short site-wide cooldown. Use the action after a documentation release, an entitlement change, or recovery from a temporary extension-server problem rather than as routine maintenance.
+
+## Checkout and WooCommerce
+
+If checkout fails or does not redirect:
+
+- Confirm a payment provider is selected and reports ready.
+- When using WooCommerce, confirm WooCommerce and the Million Dollar Script WooCommerce Checkout extension are active.
+- Confirm the WooCommerce checkout page exists and is published.
+- Confirm the order is still payable or renewable and review its current status.
+- Review WooCommerce scheduled actions and logs for delayed or failed work.
+- Clear caches after changing payment-provider or checkout settings.
+
+If WooCommerce redirects an empty cart away from a Million Dollar Script checkout route, update core, WooCommerce, and the checkout extension before further diagnosis.
+
+## API Access
+
+If an API endpoint cannot be made public or less restrictive, check its minimum security level under **Million Dollar Script > API Access**. Policy choices weaker than the endpoint minimum are disabled so sensitive write, management, and service routes cannot be exposed accidentally.
+
+API clients should send `Authorization: Bearer ...` or `X-Million-Dollar-Script-API-Key`. Browser write endpoints governed by the public-write nonce policy also require a valid WordPress REST nonce in `X-WP-Nonce`.
+
+## Styling
+
+If styles appear incorrect after an update:
+
+- Clear browser, WordPress, proxy, and CDN caches.
+- Test the affected page with a default WordPress theme to isolate theme or page-builder rules.
+- Check whether global `img`, form, button, or container rules override Million Dollar Script components.
+- Inspect the browser console for missing assets and Content Security Policy errors.
+
+Avoid broad custom CSS that scales the grid image independently of its overlay or changes every image inside the Million Dollar Script container.
+
+## Diagnostics and Scheduled Work
+
+- Review **Million Dollar Script > System Status** for PHP, WordPress, memory, database, and integration health.
+- Enable WordPress debugging on staging when a reproducible PHP error needs investigation.
+- Inspect `wp-content/debug.log`, hosting logs, WooCommerce logs, and scheduled actions as appropriate.
+- Use `wp cron event list` to confirm WordPress cron is running before manually executing a Million Dollar Script event.
+
+Do not publish logs without removing customer data, license keys, API credentials, signed URLs, cookies, and server paths that should remain private.
+
+## Emails
+
+Million Dollar Script sends order email through WordPress mail and does not maintain a separate delivery log. If messages are missing:
+
+- Install an SMTP or mail-logging plugin and send a test message.
+- Confirm the site sender address is accepted by the configured mail service.
+- Check spam filtering, provider suppression lists, and DNS records used for mail authentication.
+- Confirm the related order event completed before expecting the message.
 
 ## Still Need Help?
 
-- **MDS Installation Service:** Professional installation assistance at https://milliondollarscript.com
-- **Hosting Support:** Your hosting provider can help with server configuration, PHP settings, and permissions
-- **Isolate the issue:** Test with a default WordPress theme and no other plugins to rule out conflicts
+Before contacting support, collect:
+
+- The exact error and time it occurred.
+- WordPress, PHP, Million Dollar Script, payment-provider, and extension versions.
+- The affected URL or workflow.
+- Relevant sanitized log entries.
+- Whether the issue reproduces with a default theme and unrelated plugins disabled on staging.
+
+Use the [contact page](https://milliondollarscript.com/contact/) for support or professional installation assistance.
