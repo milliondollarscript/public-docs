@@ -1,5 +1,6 @@
 ---
 slug: developer-upgrade-notes
+summary: Upgrade custom integrations safely with current public APIs, migration hooks, payment facades, settings ownership, and extension UI hooks.
 product_generation: mds-3
 package_slug: million-dollar-script
 package_type: core
