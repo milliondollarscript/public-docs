@@ -58,6 +58,7 @@ This usually indicates PHP version incompatibility or missing dependencies.
 **Solutions:**
 - Verify your server meets minimum requirements (PHP 8.1+, WordPress 6.7+)
 - Check error logs (`wp-content/debug.log` or hosting control panel)
+- If the message says `Call to undefined function imagecreate()`, follow the [PHP GD troubleshooting guide](/docs/mds-2/million-dollar-script/2.6/main/fatal-error-call-to-undefined-function-imagecreate) to verify the web runtime and enable the missing extension.
 - Contact support with the specific error message
 
 ### "Missing plugin files" or "Corrupted ZIP"
