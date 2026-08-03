@@ -1,5 +1,6 @@
 ---
 slug: troubleshooting
+navigation_title: Overview
 summary: Resolve common Million Dollar Script installation, route, rendering, extension, update, checkout, API, and email issues.
 product_generation: mds-3
 package_slug: million-dollar-script

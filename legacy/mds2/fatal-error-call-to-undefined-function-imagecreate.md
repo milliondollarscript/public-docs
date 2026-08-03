@@ -1,6 +1,7 @@
 ---
 slug: fatal-error-call-to-undefined-function-imagecreate
 title: Fix “Call to undefined function imagecreate()” in PHP
+navigation_title: PHP GD and image creation
 summary: Diagnose a missing PHP GD extension, enable it for the correct web runtime, and verify imagecreate() for WordPress or a legacy Million Dollar Script 2 installation.
 product_generation: mds-2
 package_slug: million-dollar-script

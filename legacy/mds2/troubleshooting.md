@@ -1,5 +1,6 @@
 ---
 slug: troubleshooting
+navigation_title: Overview
 product_generation: mds-2
 package_slug: million-dollar-script
 package_type: core

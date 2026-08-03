@@ -1,5 +1,6 @@
 ---
 slug: support
+navigation_title: Support and diagnostics
 product_generation: mds-3
 package_slug: million-dollar-script
 package_type: core

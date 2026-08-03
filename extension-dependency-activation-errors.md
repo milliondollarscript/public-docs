@@ -1,5 +1,6 @@
 ---
 slug: extension-dependency-activation-errors
+navigation_title: Extension activation
 summary: Resolve missing capability, extension conflict, and blocked deactivation errors in a safe activation order.
 product_generation: mds-3
 package_slug: million-dollar-script

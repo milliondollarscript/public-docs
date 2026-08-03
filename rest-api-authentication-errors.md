@@ -1,5 +1,6 @@
 ---
 slug: rest-api-authentication-errors
+navigation_title: REST API authentication
 summary: Identify and fix Million Dollar Script REST API policy, nonce, API key, scope, and rate-limit errors without weakening endpoint security.
 product_generation: mds-3
 package_slug: million-dollar-script

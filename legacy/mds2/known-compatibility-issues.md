@@ -1,5 +1,6 @@
 ---
 slug: known-compatibility-issues
+navigation_title: Compatibility issues
 product_generation: mds-2
 package_slug: million-dollar-script
 package_type: core

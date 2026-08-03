@@ -1,6 +1,7 @@
 ---
 slug: fatal-error-call-to-undefined-function-imagecreate
 title: Restore local grid tiles when PHP GD is unavailable
+navigation_title: PHP GD and image creation
 summary: Diagnose missing PHP GD when Million Dollar Script local grid tiles return 404 responses or an extension reports an undefined imagecreate() function.
 product_generation: mds-3
 package_slug: million-dollar-script

@@ -1,5 +1,6 @@
 ---
 slug: troubleshooting-grid-alignment
+navigation_title: Grid alignment
 product_generation: mds-2
 package_slug: million-dollar-script
 package_type: core
@@ -48,4 +49,3 @@ If block highlights or selection boxes don’t align with the grid image, check 
 - After changing grid settings or images, clear any page/CDN caches to eliminate stale assets.
 
 If issues persist, confirm that dynamic CSS is up to date (save Options to regenerate) and that your route/page isn’t overridden by a theme template with conflicting styles.
-
