@@ -116,6 +116,8 @@ If an extension fails to install or does not appear:
 - For premium extensions, confirm the license is active and grants access to that package.
 - Review the WordPress debug log and hosting error log for ZIP, permission, dependency, or PHP errors.
 
+If WordPress reports a missing extension capability, a conflicting active extension, or a provider required by another active extension, follow the [extension dependency and activation guide](/docs/mds-3/million-dollar-script/3.0.0/main/extension-dependency-activation-errors). It explains the safe provider-first activation and dependent-first deactivation order.
+
 To isolate an extension conflict on staging:
 
 1. Deactivate all Million Dollar Script extensions.
@@ -160,9 +162,9 @@ If WooCommerce redirects an empty cart away from a Million Dollar Script checkou
 
 ## API Access
 
-If an API endpoint cannot be made public or less restrictive, check its minimum security level under **Million Dollar Script > API Access**. Policy choices weaker than the endpoint minimum are disabled so sensitive write, management, and service routes cannot be exposed accidentally.
+Use the HTTP status and JSON error code to distinguish a missing nonce, invalid key, insufficient scope, disabled endpoint, administrator-only policy, or rate limit. The [REST API authentication error guide](/docs/mds-3/million-dollar-script/3.0.0/main/rest-api-authentication-errors) provides the exact error mapping and safe recovery steps.
 
-API clients should send `Authorization: Bearer ...` or `X-Million-Dollar-Script-API-Key`. Browser write endpoints governed by the public-write nonce policy also require a valid WordPress REST nonce in `X-WP-Nonce`.
+The [REST API Reference](/docs/mds-3/million-dollar-script/3.0.0/main/api-reference) lists route scopes and minimum security levels. An endpoint policy can strengthen or disable access, but it cannot be weakened below that minimum.
 
 ## Styling
 
