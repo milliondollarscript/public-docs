@@ -90,6 +90,7 @@ If grids load slowly or tiles are missing:
 - Confirm the configured renderer mode.
 - Confirm generated files exist before public pages request them.
 - Check browser console and network requests for 404 responses or slow WordPress AJAX requests.
+- If local PNG tile requests return `404` or an image workflow reports an undefined `imagecreate()` function, follow the [PHP GD troubleshooting guide](/docs/mds-3/million-dollar-script/3.0.0/main/fatal-error-call-to-undefined-function-imagecreate).
 - Use hosted ImageGrid rendering for very large grids or processing that exceeds shared-host limits.
 
 ## Extension Catalog
