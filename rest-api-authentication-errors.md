@@ -16,6 +16,10 @@ tags: [troubleshooting, api, rest, authentication, security]
 
 Million Dollar Script REST endpoints enforce the security policy shown under **Million Dollar Script > API Access**. Start with the error code and HTTP status in the JSON response, then use the matching authentication method. Do not make an endpoint public simply to work around a failed request.
 
+These errors stop the protected operation before it runs. Before changing a key or policy, record the route, HTTP method, status, error code, and current effective policy. Ensure an administrator can update the integration immediately if a key must be rotated.
+
+This guide applies to the Million Dollar Script 3.0 REST API. The `mds3_` prefix remains part of its technical error codes; Million Dollar Script 2 routes do not use this authentication contract.
+
 ## Identify the Error
 
 | Status | Error code | What it means |
@@ -88,5 +92,7 @@ Wait for the current limit window to clear, reduce unnecessary requests, and cac
 ## Verify the Fix
 
 Retry one request and confirm that it returns the expected success status. If it still fails, record the route, method, HTTP status, error code, required scope, effective endpoint policy, and a timestamp. Remove credentials, cookies, nonces, personal data, and private payload fields before sharing logs.
+
+If a policy or scope change does not resolve the request, restore the previous stronger policy, remove any temporary scope, and revoke any temporary key. A rotated or revoked key cannot be restored; create a new least-privilege key and update the client instead of reusing an exposed credential.
 
 See the [REST API Reference](/docs/mds-3/million-dollar-script/3.0.0/main/api-reference) for route scopes and security levels, or return to [Troubleshooting](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting) for other issues.
