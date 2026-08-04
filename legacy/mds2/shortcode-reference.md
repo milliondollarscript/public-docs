@@ -17,12 +17,12 @@ The plugin provides a single shortcode, `[milliondollarscript]`, which renders d
 
 ## Attributes
 
-- `type` (string) — One of: `grid`, `users` (legacy), `order`, `write-ad`, `confirm-order`, `payment`, `manage`, `list`, `stats`, `thank-you`, `upload`, `no-orders`. Default: `grid`.
-- `id` (int) — Grid/banner id. Default: `1`. For `list`, omitting `id` shows all grids.
-- `align` (string) — `left`, `right`, `center`. Default: `center`.
-- `width` (string) — CSS dimension, e.g. `100%`, `1000px`, `auto`. Default: `100%` (except Grid; see notes).
-- `height` (string) — CSS dimension, e.g. `auto`, `1000px`. Default: `auto` (except Grid; see notes).
-- `lang` (string) — Language code; default `EN` (legacy compatibility).
+- `type` (string): One of: `grid`, `users` (legacy), `order`, `write-ad`, `confirm-order`, `payment`, `manage`, `list`, `stats`, `thank-you`, `upload`, `no-orders`. Default: `grid`.
+- `id` (int): Grid/banner id. Default: `1`. For `list`, omitting `id` shows all grids.
+- `align` (string): `left`, `right`, `center`. Default: `center`.
+- `width` (string): CSS dimension, e.g. `100%`, `1000px`, `auto`. Default: `100%` (except Grid; see notes).
+- `height` (string): CSS dimension, e.g. `auto`, `1000px`. Default: `auto` (except Grid; see notes).
+- `lang` (string): Language code; default `EN` (legacy compatibility).
 
 Notes:
 
@@ -31,37 +31,37 @@ Notes:
 
 ## Types
 
-- `grid` — Public grid image and tooltip interactions.
+- `grid`: Public grid image and tooltip interactions.
   - Example: `[milliondollarscript id="1" type="grid" width="1000px" height="1000px" align="center"]`
   - Tip: When using the Gutenberg block, set width/height to `{width}`/`{height}` for exact sizing.
 
-- `users` (legacy) — Combined buy/ordering view. Kept for parity; prefer splitting into the newer steps below if you want more control over copy/layout.
+- `users` (legacy): Combined buy/ordering view. Kept for parity; prefer splitting into the newer steps below if you want more control over copy/layout.
   - Example: `[milliondollarscript id="1" type="users" width="100%" height="auto"]`
 
-- `order` — Start an order (select blocks and begin flow).
-- `write-ad` — Upload artwork and enter link/pop-up text.
-- `confirm-order` — Review and confirm before payment.
+- `order`: Start an order (select blocks and begin flow).
+- `write-ad`: Upload artwork and enter link/pop-up text.
+- `confirm-order`: Review and confirm before payment.
   - Example (step pages):
     - `[milliondollarscript id="1" type="order"]`
     - `[milliondollarscript id="1" type="write-ad"]`
     - `[milliondollarscript id="1" type="confirm-order"]`
 
-- `payment` — Payment step; when WooCommerce is enabled and conditions are met, redirects to the Woo checkout.
+- `payment`: Payment step; when WooCommerce is enabled and conditions are met, redirects to the Woo checkout.
   - Example: `[milliondollarscript type="payment"]`
 
-- `manage` — Public-facing manage pixels page for users to update their ad.
+- `manage`: Public-facing manage pixels page for users to update their ad.
   - Example: `[milliondollarscript id="1" type="manage" width="100%" height="auto"]`
 
-- `list` — Advertiser list; omit `id` to show all grids.
+- `list`: Advertiser list; omit `id` to show all grids.
   - Example: `[milliondollarscript type="list" width="100%" height="auto"]`
 
-- `stats` — Compact stats box.
+- `stats`: Compact stats box.
   - Recommended: `width="150px" height="60px"`
   - Example: `[milliondollarscript id="1" type="stats" width="150px" height="60px"]`
 
-- `thank-you` — Thank-you view after payment.
-- `upload` — Upload step (usually reached inside the flow).
-- `no-orders` — Fallback display when no orders are present.
+- `thank-you`: Thank-you view after payment.
+- `upload`: Upload step (usually reached inside the flow).
+- `no-orders`: Fallback display when no orders are present.
 
 ## Examples
 

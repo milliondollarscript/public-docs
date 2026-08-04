@@ -37,7 +37,7 @@ MDS supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes
 ## Dynamic Page Container (advanced)
 
 - The plugin can render routes inside a designated WP page so your theme’s template applies (header/footer). This uses the “dynamic page” option internally.
-- Most sites can ignore this—use the created pages and/or routes as needed.
+- Most sites can ignore this. Use the created pages and/or routes as needed.
 
 ## Changing the base
 
@@ -49,4 +49,3 @@ MDS supports “routes” (pretty URLs) and page-based embeds (blocks/shortcodes
 - Old installs sometimes used a separate integration or different paths.
 - After upgrading to 2.5/2.6, use the Setup Wizard to (re)create pages and confirm Options.
 - If you previously hardcoded paths, update links to the new routes or to your created pages.
-

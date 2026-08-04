@@ -52,11 +52,11 @@ Use `[mds_grid]` for the public grid itself.
 
 ### Attributes
 
-- `id` (int) — Million Dollar Script grid id. If omitted, Million Dollar Script uses the first available grid as a fallback.
-- `read_only` (bool) — `true` for showcase mode, `false` for ordering/selection mode. Default: `true`.
-- `width` (string) — CSS width such as `100%`, `960px`, or `80vw`. Default: `100%`.
-- `height` (string) — CSS height such as `640px`, `80vh`, or `100%`. Default: `640px`.
-- `renderer` (string) — `auto`, `openlayers`, or `classic`.
+- `id` (int): Million Dollar Script grid id. If omitted, Million Dollar Script uses the first available grid as a fallback.
+- `read_only` (bool): `true` for showcase mode, `false` for ordering/selection mode. Default: `true`.
+- `width` (string): CSS width such as `100%`, `960px`, or `80vw`. Default: `100%`.
+- `height` (string): CSS height such as `640px`, `80vh`, or `100%`. Default: `640px`.
+- `renderer` (string): `auto`, `openlayers`, or `classic`.
 
 Renderer details, package pricing, and price zones are covered in [Million Dollar Script Grid Pricing And Renderers](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-grid-pricing-and-renderers).
 
@@ -94,16 +94,16 @@ Each page shortcode can target a specific grid. If you omit the grid id, Million
 
 ### Attributes
 
-- `type` (string) — one of `grid`, `order`, `write-ad`, `confirm-order`, `payment`, `manage`, `list`, `stats`, `thank-you`, `upload`, `no-orders`.
-- `grid_id` (int) — Million Dollar Script grid id. If omitted, Million Dollar Script uses the first available grid as a fallback.
-- `width` (string) — CSS size used by grid and stats embeds. Default: `100%` for grids, `240px` for stats.
-- `height` (string) — passed to the grid renderer when `type="grid"`.
-- `renderer` (string) — passed to the grid renderer when `type="grid"`.
-- `unit` (string) — for `type="stats"` only. Use `settings`, `blocks`, or `pixels`.
-- `number_color` (hex color) — for `type="stats"` only. Sets the sold/available number color.
-- `label_color` (hex color) — for `type="stats"` only. Sets the label color.
-- `background_color` (hex color) — for `type="stats"` only. Sets the stats panel background.
-- `border_color` (hex color) — for `type="stats"` only. Sets the stats panel border.
+- `type` (string): one of `grid`, `order`, `write-ad`, `confirm-order`, `payment`, `manage`, `list`, `stats`, `thank-you`, `upload`, `no-orders`.
+- `grid_id` (int): Million Dollar Script grid id. If omitted, Million Dollar Script uses the first available grid as a fallback.
+- `width` (string): CSS size used by grid and stats embeds. Default: `100%` for grids, `240px` for stats.
+- `height` (string): passed to the grid renderer when `type="grid"`.
+- `renderer` (string): passed to the grid renderer when `type="grid"`.
+- `unit` (string): for `type="stats"` only. Use `settings`, `blocks`, or `pixels`.
+- `number_color` (hex color): for `type="stats"` only. Sets the sold/available number color.
+- `label_color` (hex color): for `type="stats"` only. Sets the label color.
+- `background_color` (hex color): for `type="stats"` only. Sets the stats panel background.
+- `border_color` (hex color): for `type="stats"` only. Sets the stats panel border.
 
 ### Examples
 
@@ -125,12 +125,12 @@ Million Dollar Script page roles are grid-first. `order` opens the interactive g
 
 ## Attributes
 
-- `type` (string) — One of: `grid`, `users` (legacy), `order`, `write-ad`, `confirm-order`, `payment`, `manage`, `list`, `stats`, `thank-you`, `upload`, `no-orders`. Default: `grid`.
-- `id` (int) — Grid/banner id. Default: `1`. For `list`, omitting `id` shows all grids.
-- `align` (string) — `left`, `right`, `center`. Default: `center`.
-- `width` (string) — CSS dimension, e.g. `100%`, `1000px`, `auto`. Default: `100%` (except Grid; see notes).
-- `height` (string) — CSS dimension, e.g. `auto`, `1000px`. Default: `auto` (except Grid; see notes).
-- `lang` (string) — Language code; default `EN` (legacy compatibility).
+- `type` (string): One of: `grid`, `users` (legacy), `order`, `write-ad`, `confirm-order`, `payment`, `manage`, `list`, `stats`, `thank-you`, `upload`, `no-orders`. Default: `grid`.
+- `id` (int): Grid/banner id. Default: `1`. For `list`, omitting `id` shows all grids.
+- `align` (string): `left`, `right`, `center`. Default: `center`.
+- `width` (string): CSS dimension, e.g. `100%`, `1000px`, `auto`. Default: `100%` (except Grid; see notes).
+- `height` (string): CSS dimension, e.g. `auto`, `1000px`. Default: `auto` (except Grid; see notes).
+- `lang` (string): Language code; default `EN` (legacy compatibility).
 
 Notes:
 
@@ -139,39 +139,39 @@ Notes:
 
 ## Types
 
-- `grid` — Public grid image and tooltip interactions.
+- `grid`: Public grid image and tooltip interactions.
   - Example: `[milliondollarscript id="1" type="grid" width="1000px" height="1000px" align="center"]`
   - Tip: When using the Gutenberg block, set width/height to `{width}`/`{height}` for exact sizing.
 
-- `users` (legacy) — Combined buy/ordering view. Kept for parity; prefer splitting into the newer steps below if you want more control over copy/layout.
+- `users` (legacy): Combined buy/ordering view. Kept for parity; prefer splitting into the newer steps below if you want more control over copy/layout.
   - Example: `[milliondollarscript id="1" type="users" width="100%" height="auto"]`
 
-- `order` — Start an order (select blocks and begin flow).
-- `write-ad` — Upload artwork and enter link/pop-up text.
-- `confirm-order` — Review and confirm before payment.
+- `order`: Start an order (select blocks and begin flow).
+- `write-ad`: Upload artwork and enter link/pop-up text.
+- `confirm-order`: Review and confirm before payment.
   - Example (step pages):
     - `[milliondollarscript id="1" type="order"]`
     - `[milliondollarscript id="1" type="write-ad"]`
     - `[milliondollarscript id="1" type="confirm-order"]`
 
-- `payment` — Payment step. With an order id/key, it shows the order summary and a WooCommerce or standalone checkout link when one is available.
+- `payment`: Payment step. With an order id/key, it shows the order summary and a WooCommerce or standalone checkout link when one is available.
   - Example: `[milliondollarscript type="payment"]`
 
-- `manage` — Public-facing manage pixels page for users to update their ad.
+- `manage`: Public-facing manage pixels page for users to update their ad.
   - Example: `[milliondollarscript id="1" type="manage" width="100%" height="auto"]`
 
-- `list` — Advertiser list; omit `id` to show all grids.
+- `list`: Advertiser list; omit `id` to show all grids.
   - Example: `[milliondollarscript type="list" width="100%" height="auto"]`
 
-- `stats` — Compact stats box.
+- `stats`: Compact stats box.
   - Shows sold and available inventory.
   - Unit follows Settings > Display > Stats Display Mode unless `unit="blocks"` or `unit="pixels"` is set on the shortcode or stats block.
   - Recommended: `width="240px"`
   - Example: `[milliondollarscript id="1" type="stats" width="150px" height="60px"]`
 
-- `thank-you` — Thank-you view after payment.
-- `upload` — Upload step (usually reached inside the flow).
-- `no-orders` — Fallback display when no orders are present.
+- `thank-you`: Thank-you view after payment.
+- `upload`: Upload step (usually reached inside the flow).
+- `no-orders`: Fallback display when no orders are present.
 
 ## Examples
 

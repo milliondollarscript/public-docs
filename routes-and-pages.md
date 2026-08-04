@@ -37,7 +37,7 @@ Million Dollar Script supports “routes” (pretty URLs) and page-based embeds 
 ## Dynamic Page Container (advanced)
 
 - The plugin can render routes inside a designated WP page so your theme’s template applies (header/footer). This uses the “dynamic page” option internally.
-- Most sites can ignore this—use the created pages and/or routes as needed.
+- Most sites can ignore this. Use the created pages and/or routes as needed.
 
 ## Changing the base
 

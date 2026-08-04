@@ -54,7 +54,7 @@ If the error names a specific extension, update that extension and include its n
 
 ## Related resources
 
-- [Million Dollar Script troubleshooting](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting) — Diagnose other rendering, route, extension, and update issues.
-- [ImageGrid rendering](/docs/mds-3/mds-imagegrid/current/main/usage) — Configure and verify hosted rendering and CDN delivery.
-- [PHP `imagecreatetruecolor()` manual](https://www.php.net/manual/en/function.imagecreatetruecolor.php) — Review the GD function used by local tile generation.
-- [WordPress Site Health](https://wordpress.org/documentation/article/site-health-screen/) — Find the active image editor and media capabilities.
+- [Million Dollar Script troubleshooting](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting): Diagnose other rendering, route, extension, and update issues.
+- [ImageGrid rendering](/docs/mds-3/mds-imagegrid/current/main/usage): Configure and verify hosted rendering and CDN delivery.
+- [PHP `imagecreatetruecolor()` manual](https://www.php.net/manual/en/function.imagecreatetruecolor.php): Review the GD function used by local tile generation.
+- [WordPress Site Health](https://wordpress.org/documentation/article/site-health-screen/): Find the active image editor and media capabilities.

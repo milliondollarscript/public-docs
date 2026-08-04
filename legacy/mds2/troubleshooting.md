@@ -270,7 +270,7 @@ If an extension causes issues with MDS or other plugins:
 
 **"Download failed" during extension update**
 
-This is similar to core plugin updates—the download link may have expired.
+This is similar to core plugin updates. The download link may have expired.
 
 **Solution:** Retry the update. If it persists, manually download the latest version from your MDS account and reinstall.
 

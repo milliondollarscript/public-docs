@@ -47,9 +47,9 @@ If `extension_loaded("gd")` or `function_exists("imagecreate")` returns `false`,
 
 ## Related resources
 
-- [PHP `imagecreate()` manual](https://www.php.net/manual/en/function.imagecreate.php) — Current function signature, return value, and GD behavior.
-- [PHP `extension_loaded()` manual](https://www.php.net/manual/en/function.extension-loaded.php) — How to verify whether an extension is loaded.
-- [WordPress Site Health](https://wordpress.org/documentation/article/site-health-screen/) — Where WordPress reports its active image editor and GD capabilities.
-- [MDS 2 troubleshooting](/docs/mds-2/million-dollar-script/2.6/main/troubleshooting) — Installation, routes, image generation, logs, and extension checks for supported MDS 2 WordPress releases.
+- [PHP `imagecreate()` manual](https://www.php.net/manual/en/function.imagecreate.php): Current function signature, return value, and GD behavior.
+- [PHP `extension_loaded()` manual](https://www.php.net/manual/en/function.extension-loaded.php): How to verify whether an extension is loaded.
+- [WordPress Site Health](https://wordpress.org/documentation/article/site-health-screen/): Where WordPress reports its active image editor and GD capabilities.
+- [MDS 2 troubleshooting](/docs/mds-2/million-dollar-script/2.6/main/troubleshooting): Installation, routes, image generation, logs, and extension checks for supported MDS 2 WordPress releases.
 
 _First published June 25, 2010. Reviewed and updated August 3, 2026._

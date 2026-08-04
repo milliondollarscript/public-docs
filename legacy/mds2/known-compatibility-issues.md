@@ -35,7 +35,7 @@ Review these requirements and integration notes before installing Million Dollar
 
 ## Theme/Plugin Interactions
 
-- Page builders and custom themes generally work. If a builder template strips the content container or overly constrains image sizes, selections can appear offset—see [Troubleshooting: Grid Alignment](/docs/mds-2/million-dollar-script/2.6/main/troubleshooting#grid-alignment).
+- Page builders and custom themes generally work. If a builder template strips the content container or overly constrains image sizes, selections can appear offset. See [Troubleshooting: Grid Alignment](/docs/mds-2/million-dollar-script/2.6/main/troubleshooting#grid-alignment).
 - Elementor: earlier conflicts were addressed; upgrade to the latest MDS version if you experienced activation conflicts in the past.
 
 ## Multisite

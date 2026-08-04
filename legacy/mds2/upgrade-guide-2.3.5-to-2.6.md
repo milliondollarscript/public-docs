@@ -22,7 +22,7 @@ This guide highlights key changes when upgrading from older 2.3.5 sites to curre
 
 ## Core changes
 
-- Single WordPress plugin embeds the MDS core—no separate integration plugin.
+- A single WordPress plugin embeds the MDS core. No separate integration plugin is required.
 - Routes and pages: pretty endpoints and Gutenberg blocks/shortcodes; Setup Wizard can create pages for you.
 - Database access via `$wpdb` for stability and performance.
 - Dynamic CSS for theme modes and UI consistency.
@@ -52,4 +52,3 @@ This guide highlights key changes when upgrading from older 2.3.5 sites to curre
 - Test multiple grids, selection alignment, and tooltip content.
 - Confirm email templates, language, and currency settings.
 - For WooCommerce: confirm checkout, order completion, and (optionally) refunds.
-

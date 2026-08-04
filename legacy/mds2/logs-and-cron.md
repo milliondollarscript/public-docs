@@ -35,5 +35,5 @@ MDS ships with optional logging and scheduled tasks for housekeeping.
 
 ## Notes
 
-- Logging adds useful context while setting up payment or WooCommerce flows—remember to disable it in production if you prefer quieter disks.
+- Logging adds useful context while setting up payment or WooCommerce flows. Remember to disable it in production if you prefer quieter disks.
 - Daily cleanup removes logs older than 30 days by default.
