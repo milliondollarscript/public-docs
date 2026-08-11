@@ -35,6 +35,7 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 - **[Placement Media And Draft Recovery](/docs/mds-3/million-dollar-script/3.0.0/main/media-and-draft-recovery)** - Secure image drafts, previews, replacement, and restored progress
 - **[Backups And Recovery](/docs/mds-3/million-dollar-script/3.0.0/main/backups-and-recovery)** - Settings transfer, migration rollback, and operational recovery
 - **[Privacy, Security, And Accessibility](/docs/mds-3/million-dollar-script/3.0.0/main/privacy-security-and-accessibility)** - Launch checks, data handling, access, and inclusive operation
+- **[Licenses And The Complete Extension Pack](/docs/mds-3/million-dollar-script/3.0.0/main/licenses-and-complete-extension-pack)** - Monthly, yearly, and CAD 500 lifetime access, activations, updates, and pack membership
 
 ## Integrations
 
@@ -70,6 +71,8 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 ## Licensed Extensions
 
 Licensed extension guides are available in the Documentation page and customer portal when the corresponding license is active. Review each extension's catalog page for its purpose and plans:
+
+- **[Complete Extension Pack plans](/docs/mds-3/million-dollar-script/3.0.0/main/licenses-and-complete-extension-pack)** - Compare monthly, yearly, and lifetime access to all current pack members
 
 - **[Advertiser Workspace](/catalog/mds-advertiser-workspace)** - A private, verified workspace where purchasers manage eligible placements and bookings
 - **[Campaign Scheduler](/catalog/mds-campaign-scheduler)** - Time-based visibility controls for approved core and compatible extension inventory
