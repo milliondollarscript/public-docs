@@ -54,3 +54,11 @@ If a theme overrides Million Dollar Script styles, keep the override scoped and 
 ## Incident Response
 
 If a key, token, customer record, or private document may have been exposed, revoke the credential or access immediately, preserve relevant audit information, investigate the affected records, and follow applicable notification requirements. Report a reproducible Million Dollar Script security issue privately through the contact method on the official site rather than posting exploit details publicly.
+
+## Service Access Diagnostics
+
+Open **Million Dollar Script -> System Status** and run **Network diagnostics** when extension discovery, updates, licensing, or hosted rendering cannot connect. Each endpoint is checked independently so an extension-catalog failure is not confused with an ImageGrid readiness or account problem. The report keeps only the endpoint path, result class, timing, and a provider request ID when one is returned; it does not store response bodies, API keys, license keys, or signed URLs.
+
+A `401` or `403` result does not identify the cause by itself. It may come from missing authorization, account or payment policy, an operator WAF rule, IP reputation, a provider restriction, or a legally required trade-control decision. Keep the timestamp and request ID for support. Do not attempt to evade an access decision.
+
+Public grids continue using Million Dollar Script's local renderer when ImageGrid is unavailable. Extension installation, premium entitlement checks, purchases, and hosted processing require their respective services and cannot be guaranteed in every region or during every provider outage. Keep current package backups and export important site data before a service change or account closure.

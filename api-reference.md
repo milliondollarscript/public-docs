@@ -188,7 +188,7 @@ curl -X POST \
   https://example.com/wp-json/million-dollar-script/v1/grids/1/reservations
 ```
 
-The placement creation route accepts an existing WordPress Media Library `attachment_id`; it is not a raw file-upload endpoint. Upload and validate media through WordPress first, then create the placement with the returned attachment ID and the intended order, block, geometry, fit mode, destination URL, alternative text, and popup text.
+The placement creation route accepts an existing WordPress Media Library `attachment_id`; it is not a raw file-upload endpoint. Upload and validate media through WordPress first, then create the placement with the returned attachment ID and the intended order, block, geometry, fit mode, destination URL, alternative text, and popup text. The site-wide **Advertiser URL Field** and **Popup Text Field** settings also govern REST writes: required fields reject blank values, optional fields accept them, and hidden fields ignore submitted values.
 
 Public placement responses include safe geometry, fit mode, destination URL, alternative text, popup text, status, source-image dimensions and MIME type, and the placement mask. Private customer details and raw order metadata are not included in anonymous responses.
 

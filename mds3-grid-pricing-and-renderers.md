@@ -63,3 +63,28 @@ Set the grid default in **Grids > Edit Grid > Details**, or override a page embe
 ```
 
 Both renderer paths share the same selection, pricing, package, tooltip, image-placement, and checkout logic.
+
+## Grid Background Images
+
+Edit a grid and open **Grid Background** to choose an optional Media Library image. You can control whether it covers, contains, stretches, or uses its original size; choose its position and repeat behavior; and set its opacity from 0 to 100 percent. The grid background color remains the fallback.
+
+Backgrounds stay beneath grid lines, price and availability overlays, selections, approved ads, controls, and popovers. Clearing the field does not delete the Media Library image. If the attachment is later deleted or unavailable, the grid continues with its background color.
+
+Background images currently use local browser composition in both renderer modes. A grid with a background image does not use previously generated ImageGrid tiles or submit a new hosted render because the hosted operation does not yet support the same image-fit contract. Remove the background image to resume hosted rendering.
+
+Grid exports identify the background by URL instead of exporting a site-specific attachment ID. The image reconnects automatically when the package is imported on the same site. On another site, choose the image again after import; the remaining presentation settings are retained.
+
+## Capacity Planning
+
+Million Dollar Script stores empty cells virtually. A 10,000 by 10,000-pixel grid with 10-pixel blocks represents 1,000,000 selectable blocks without creating 1,000,000 database rows. Database and browser work grows with stored blocks, price or availability regions, and active placements instead of empty space.
+
+For the Classic Pixel Grid renderer:
+
+- Keep fewer than 5,000 active placements on one interactive grid for the recommended range.
+- Treat 5,000 through 9,999 active placements as a capacity-planning range. Test the target host, theme, common customer devices, and the exact page layout.
+- Review the rendering design at 10,000 or more active placements. Consider separate grids, fewer grids on one page, or ImageGrid rendering rather than relying on a larger PHP limit.
+- Prefer the grid picker or separate pages over embedding many populated interactive grids on one page.
+
+These are planning thresholds, not purchase limits. Existing larger grids remain editable and exportable. **Million Dollar Script > System Status** and **Tools > Site Health** report the largest active grid and show a review recommendation when it reaches the measured planning threshold.
+
+Grid dimensions above 1,000,000 virtual blocks remain sparse, but they are outside the currently measured range. Test selection accuracy, rendering, and exports before launching such a grid publicly.

@@ -84,11 +84,12 @@ Enabled sections use these routes:
 /sitemap-posts.xml
 /sitemap-pages.xml
 /sitemap-grids.xml
+/sitemap-advertisers.xml
 ```
 
 Large sections are split into pages of 1,000 URLs. Additional pages use routes such as `/sitemap-grids-2.xml`. Each request reads current published content; the extension does not create a static XML file.
 
-Grid discovery supports public grid page post types, page metadata, Million Dollar Script grid shortcodes, and native grid blocks. Standard ordering, account, upload, and management pages are not included unless they contain a public grid view.
+Grid discovery supports public grid page post types, page metadata, Million Dollar Script grid shortcodes, and native grid blocks. Individual advertiser pages are included only while core advertiser pages are enabled and **Exclude Advertiser Pages From Search** is disabled. Standard ordering, account, upload, and management pages are not included unless they contain a public grid view.
 
 Use **Refresh sitemap routes** after changing permalink behavior or when a server cache still reports a stale route. The action refreshes WordPress rewrite rules; it does not rebuild sitemap content.
 

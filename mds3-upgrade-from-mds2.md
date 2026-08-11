@@ -54,18 +54,26 @@ Open the migration dry run before importing. The dry run reports:
 - page-wizard pages and shortcode/block pages
 - Million Dollar Script 2 options that can be mapped
 - target Million Dollar Script tables
+- imported, skipped, repaired, and warning totals
+- anonymous source record identifiers and reasons for anything that needs review
 - warnings that should be reviewed before import
 
 The dry run is read-only. It does not change Million Dollar Script 2 tables and does not create Million Dollar Script records.
+
+Page detection is limited to legacy Million Dollar Script shortcodes, blocks, configured page options, and pages already associated with the selected migration source. Pages owned by the current Million Dollar Script installation and pages tied to a different legacy grid source are left unchanged.
 
 ### Import Million Dollar Script 2 Data And Deactivate Million Dollar Script 2
 
 Choose this when you are ready to move to Million Dollar Script.
 
-- Million Dollar Script imports supported Million Dollar Script 2 grids, blocks, unavailable/NFS blocks, packages, price zones, orders, media references, page mappings, and settings.
+- Million Dollar Script imports supported Million Dollar Script 2 grids, blocks, unavailable/NFS blocks, packages, price zones, orders, placement media, grid background images and opacity, page mappings, and settings.
+- Order inventory is reconciled with its linked legacy block rows so a stale saved block list does not silently omit paid inventory.
+- Each legacy grid, order, block, placement, and page is connected through a migration identity rather than relying on matching database numbers.
 - Original Million Dollar Script 2 page content is backed up in post meta before Million Dollar Script replaces the page embed.
 - Million Dollar Script 2 source tables are not dropped or modified.
 - After import completes, Million Dollar Script deactivates the old Million Dollar Script 2 plugin.
+
+If an import is interrupted, run it again from the migration screen. A recovery run reconnects supported records and repairs missing migration relationships without creating duplicate orders or placements. Review the reconciliation details before deactivating Million Dollar Script 2; every supported source record should be imported once or listed with a reason it was skipped.
 
 If deactivation cannot be completed, Million Dollar Script reports that clearly so you can handle it from Plugins.
 
@@ -116,14 +124,17 @@ The setup screen can create missing standard pages:
 
 Existing migrated pages are preserved. Million Dollar Script only creates missing page roles.
 
+Pages that specify a legacy grid keep that grid relationship after import, including sites with several grids. A legacy page without an explicit grid uses a grid from the same migration source rather than an unrelated grid that may already exist in Million Dollar Script.
+
 ## After Import
 
-1. Open Million Dollar Script > Grids and check the imported grid dimensions, block size, packages, price zones, and unavailable regions.
+1. Open Million Dollar Script > Grids and check the imported grid dimensions, block size, background presentation, packages, price zones, and unavailable regions.
 2. Open the public grid page and verify the grid renders.
 3. Test a small block selection and image upload.
 4. Review checkout settings. WooCommerce sites should test checkout with a sandbox gateway. Standalone/manual sites should verify the Checkout URL and any Million Dollar Script 2 placeholders. See [Million Dollar Script Checkout And Payments](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-checkout-and-payments).
 5. Review Million Dollar Script > Orders for imported orders and new test orders.
-6. Keep the old Million Dollar Script 2 tables until you are confident the site is stable.
+6. Review the migration reconciliation totals. Investigate every skipped or warning entry before relying on the migrated site.
+7. Keep the old Million Dollar Script 2 tables until you are confident the site is stable.
 
 ## Rollback Notes
 

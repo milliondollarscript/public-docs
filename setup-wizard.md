@@ -45,6 +45,7 @@ Open **WP Admin > Million Dollar Script > Setup**. The page heading is **Setup W
 
 - Routes work out of the box with pretty permalinks enabled. You can change the base under Options if you want a different path.
 - Prefer the created pages for editing/layout control. You can also use the direct routes if you don’t want pages.
+- Add the customer-facing pages you want to publish to your classic menu or block-theme Navigation. See [Routes & Pages](/docs/mds-3/million-dollar-script/3.0.0/main/routes-and-pages#add-pages-to-your-site-navigation) for both WordPress workflows.
 
 ## Editor tips
 

@@ -46,6 +46,8 @@ Upgrades preserve the existing automatic-rendering value. Reconnecting an older 
 
 The current remote render operation is `grid_render`. Million Dollar Script core builds the grid manifest and exposes hooks, while the ImageGrid extension owns API credentials, remote job submission, polling, remote tile metadata, and CDN delivery checks. ImageGrid returns a standard Deep Zoom pyramid whose full-resolution level is derived from the grid dimensions; Million Dollar Script uses the same level geometry for browser zooming and edge-tile requests.
 
+The hosted operation currently supports a background color but not a WordPress background image with fit, position, repeat, and opacity settings. A grid that has a background image therefore remains on local browser rendering, does not use stale remote tiles, and cannot be submitted manually or automatically until the image is cleared. Approved placements and grid controls remain above the locally composed background.
+
 ## CDN Delivery
 
 Hosted rendering and CDN delivery are separate capabilities. A connected ImageGrid API key can authorize rendering without authorizing CDN delivery. If CDN access is not included, public delivery remains local. When CDN Delivery is active, completed jobs can return a signed, versioned public tile URL template that browsers load directly from ImageGrid instead of routing tile traffic through WordPress.
@@ -95,6 +97,8 @@ Before using hosted rendering:
 - Confirm the local rendering safeguards are appropriate for the site.
 - Render a test grid.
 - Confirm the public page loads without slow admin-ajax tile requests.
+
+If connection results are unclear, open **Million Dollar Script -> System Status** and run **Network diagnostics**. ImageGrid contributes separate unauthenticated health and readiness checks. These establish whether the service can be reached from WordPress; use the ImageGrid connection test separately to verify the saved site credential and account state.
 
 For a local service integration check, pass `IMAGEGRID_API_URL` and `IMAGEGRID_API_KEY` to WP-CLI and run `tests/live-imagegrid-fixture.php`. The fixture does not store the credential in WordPress. It creates a small render job, polls it, verifies standard Deep Zoom metadata, and downloads a valid edge tile.
 

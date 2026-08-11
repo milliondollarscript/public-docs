@@ -21,6 +21,14 @@ Placement uploads accept JPEG, PNG, GIF, and WebP images. WordPress and the web 
 
 Use **Cover** when the image should fill the purchased area and may be cropped. Use **Contain** when the whole image must remain visible and empty space around it is acceptable. The order form updates its preview when this choice changes.
 
+## Placement Fields And Popup Layouts
+
+Open **Million Dollar Script -> Settings -> Orders & Uploads** to set the built-in **Advertiser URL Field** and **Popup Text Field** to Required, Optional, or Hidden. Required fields must be completed before a placement can be saved. Optional fields remain available but can be left blank. Hidden fields do not appear on customer order, upload, or manage forms, while values already saved on existing or migrated placements remain intact.
+
+The **Use Rich Text Popup Field** option adds a small formatting toolbar for popup copy. Million Dollar Script saves only basic safe formatting: paragraphs, line breaks, bold, and italic. The same field rules and sanitization apply to the browser forms, customer account edits, and REST placement creation.
+
+The **Popup Layout Template** under **Display & Interaction** controls presentation only. Its `%image%`, `%alt_text%`, `%url%`, `%text%`, `%advertiser_page_url%`, and `%advertiser_page_link%` placeholders decide which saved values and full-page actions appear in a visitor popup. Removing a placeholder does not hide the corresponding customer field or delete its data. Leave the template blank for the built-in layout; Million Dollar Script also uses that accessible fallback if a custom layout has no displayable content for a placement.
+
 ## Saved Progress
 
 Text fields and selections are stored in the browser for up to seven days. If an unfinished order is opened again in the same browser, a **Restore details** or **Restore order** action appears when recoverable progress is available.

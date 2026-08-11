@@ -90,7 +90,7 @@ Classic canvas fallback:
 
 Use `[mds3_page]` for standard Million Dollar Script pages and migrated Million Dollar Script 2 page roles.
 
-Each page shortcode can target a specific grid. If you omit the grid id, Million Dollar Script uses the first available grid only as a fallback for that embed.
+Each page shortcode can target a specific grid. Most page types use the first available grid as a fallback when you omit the grid id. The advertiser list is the exception: `type="list"` without a grid id searches published advertisers across every active grid.
 
 ### Attributes
 
@@ -104,6 +104,11 @@ Each page shortcode can target a specific grid. If you omit the grid id, Million
 - `label_color` (hex color): for `type="stats"` only. Sets the label color.
 - `background_color` (hex color): for `type="stats"` only. Sets the stats panel background.
 - `border_color` (hex color): for `type="stats"` only. Sets the stats panel border.
+- `list_layout` (string): for `type="list"` only. Use `list`, `cards`, or `accordion`.
+- `list_columns` (string): for `type="list"` only. Comma-separated public columns such as `image,title,url,popup,alt,grid`, or `all`.
+- `list_search` (bool): for `type="list"` only. Enables bounded server-side advertiser search and pagination. Default: `yes`.
+- `list_accent_color` (hex color): for `type="list"` only. Sets the list accent color.
+- `list_background_color` (hex color): for `type="list"` only. Sets the advertiser-card surface color.
 
 ### Examples
 
@@ -112,6 +117,7 @@ Each page shortcode can target a specific grid. If you omit the grid id, Million
 [mds3_page type="order" grid_id="1"]
 [mds3_page type="manage" grid_id="1"]
 [mds3_page type="list" grid_id="1"]
+[mds3_page type="list" list_layout="cards" list_columns="image,title,url,grid"]
 [mds3_page type="stats" grid_id="1"]
 [mds3_page type="stats" grid_id="1" unit="pixels" width="240px"]
 [mds3_page type="stats" grid_id="1" unit="pixels" width="260px" number_color="#2563eb" label_color="#475569"]
@@ -119,7 +125,7 @@ Each page shortcode can target a specific grid. If you omit the grid id, Million
 [mds3_page type="thank-you" grid_id="1"]
 ```
 
-Million Dollar Script page roles are grid-first. `order` opens the interactive grid flow, `list` displays active advertiser placements, `manage` lists the signed-in customer's orders, and `upload`, `payment`, `confirm-order`, and `thank-you` show order-specific content when opened with a Million Dollar Script order id and order key.
+Million Dollar Script page roles are grid-first. `order` opens the interactive grid flow, a grid-scoped `list` displays that grid's active placements, and a `list` without `grid_id` searches all active grids while labeling each result. `manage` lists the signed-in customer's orders, and `upload`, `payment`, `confirm-order`, and `thank-you` show order-specific content when opened with a Million Dollar Script order id and order key.
 
 ## Legacy Million Dollar Script 2 Shortcodes
 
