@@ -16,6 +16,8 @@ Million Dollar Script is designed so existing Million Dollar Script 2 site owner
 
 For a feature-by-feature view of what is covered and what still needs validation for a live site, see [Million Dollar Script 2 Workflow Parity](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-mds2-workflow-parity).
 
+The [browser demo](/demo) is useful for learning the Million Dollar Script 3.0 setup and order workflow without changing an existing site. It contains synthetic data only and does not replace a migration dry run against an isolated copy of your real Million Dollar Script 2 installation.
+
 ## Before You Start
 
 - Back up the WordPress database and `wp-content/uploads`.

@@ -14,6 +14,8 @@ published: true
 
 The Setup Wizard helps you create the core pages and confirm essential options so you can go live faster without manual page building.
 
+If you want to see the finished flow before configuring your own site, [try the browser demo](/demo). It opens a private, disposable WordPress workspace with synthetic campaign data and guided missions.
+
 ## Where to Find It
 
 Open **WP Admin > Million Dollar Script > Setup**. The page heading is **Setup Wizard**.

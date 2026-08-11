@@ -16,12 +16,14 @@ This guide covers Million Dollar Script 3.0 installation. The core WordPress int
 
 ## Requirements
 
-- WordPress 6.7+ (tested up to 7.0.2)
+- WordPress 6.7+ (tested up to 7.0.3)
 - PHP 8.1+
 - PHP memory limit of 256 MB or greater
 - Optional: WooCommerce (for checkout, refunds, and account integration)
 
 The memory limit is per PHP request. Check the effective value in **Million Dollar Script > System Status** or **Tools > Site Health**, because a hosting plan can advertise a higher maximum while WordPress is configured to use less.
+
+Want to understand the workflow before installing anything? [Open the private browser demo](/demo) to explore a ready-made campaign, complete a guided mission, and reset or export the disposable site when you are finished.
 
 ## Hosting Recommendation
 

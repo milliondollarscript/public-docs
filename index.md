@@ -16,6 +16,7 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 
 ## Getting Started
 
+- **[Try the Browser Demo](/demo)** - Explore a private, disposable WordPress workspace with a ready-made campaign and guided missions
 - **[Installation & Setup](/docs/mds-3/million-dollar-script/3.0.0/main/installation-and-setup)** - Requirements, installation methods, and first steps
 - **[Setup Wizard](/docs/mds-3/million-dollar-script/3.0.0/main/setup-wizard)** - Automated setup for pages and configuration
 - **[Upgrade From Million Dollar Script 2](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-upgrade-from-mds2)** - Install Million Dollar Script 3.0 beside Million Dollar Script 2, review migration, and choose when to import or deactivate
@@ -91,6 +92,7 @@ Licensed extension guides are available in the Documentation page and customer p
 
 | Task | Where to Go |
 |------|-------------|
+| Explore Million Dollar Script before installing | [Try the Browser Demo](/demo) |
 | Install the plugin | [Installation & Setup](/docs/mds-3/million-dollar-script/3.0.0/main/installation-and-setup) |
 | Upgrade from Million Dollar Script 2 to Million Dollar Script 3.0 | [Upgrade From Million Dollar Script 2](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-upgrade-from-mds2) |
 | Check Million Dollar Script 2 workflow coverage in Million Dollar Script 3.0 | [Million Dollar Script 3.0 And Million Dollar Script 2 Workflow Parity](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-mds2-workflow-parity) |
