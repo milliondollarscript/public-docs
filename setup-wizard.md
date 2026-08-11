@@ -33,8 +33,19 @@ Open **WP Admin > Million Dollar Script > Setup**. The page heading is **Setup W
 - Confirm your grid settings (size and block dimensions) and save.
 - If Million Dollar Script 2 is detected, choose whether to keep it active for now or review/import migration. Million Dollar Script will not migrate or deactivate Million Dollar Script 2 automatically.
 - Let the wizard create recommended pages. You can customize titles, slugs, or templates later.
+- If you are building a new site, optionally select **Create the optional starter site when setup is saved**. This adds Blog, Contact, and About pages and prepares navigation for Home, Blog, Order Pixels, Manage Pixels, Contact, and About.
 - Save Options to generate the dynamic CSS.
 - Test the order flow end‑to‑end.
+
+## Optional starter site
+
+The starter-site option is unchecked by default and becomes available after the standard Million Dollar Script pages are ready. It is intended for a new site that needs a useful editable starting structure.
+
+The workflow preserves an existing static front page. When the site does not already use a static front page, it assigns the grid page as Home. It reuses matching published Blog and About pages, creates only the missing pages, and never replaces their content on later setup saves.
+
+The Contact page uses a Million Dollar Script wrapper rather than an extension shortcode that could appear broken. Until the free Contact Form extension is active, visitors see a short unavailable message and administrators see an activation link. Activating Contact Form makes the same page render the form automatically.
+
+For a new block-theme site without saved Navigation, the workflow creates an editable Navigation containing the six recommended links. For a classic theme, it creates an editable menu and assigns it only when a suitable menu location is unoccupied. Existing Navigation, menus, location assignments, and front-page choices are preserved. Setup labels the navigation for review when manual placement is needed; use the steps in [Routes & Pages](/docs/mds-3/million-dollar-script/3.0.0/main/routes-and-pages#add-pages-to-your-site-navigation) to add the new pages to an existing header.
 
 ## Payment Provider
 
@@ -47,7 +58,7 @@ Open **WP Admin > Million Dollar Script > Setup**. The page heading is **Setup W
 
 - Routes work out of the box with pretty permalinks enabled. You can change the base under Options if you want a different path.
 - Prefer the created pages for editing/layout control. You can also use the direct routes if you don’t want pages.
-- Add the customer-facing pages you want to publish to your classic menu or block-theme Navigation. See [Routes & Pages](/docs/mds-3/million-dollar-script/3.0.0/main/routes-and-pages#add-pages-to-your-site-navigation) for both WordPress workflows.
+- If you did not use the optional starter site, or it preserved an existing menu, add the customer-facing pages you want to publish to your classic menu or block-theme Navigation. See [Routes & Pages](/docs/mds-3/million-dollar-script/3.0.0/main/routes-and-pages#add-pages-to-your-site-navigation) for both WordPress workflows.
 
 ## Editor tips
 

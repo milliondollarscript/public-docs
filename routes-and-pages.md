@@ -36,7 +36,7 @@ Million Dollar Script supports “routes” (pretty URLs) and page-based embeds 
 
 ## Add pages to your site navigation
 
-Creating or mapping a page does not automatically add it to your theme's navigation. This protects existing menus and lets you choose which customer-facing pages to publish. Start in **Pages > All Pages** to confirm that the pages you want are published, then use the workflow for your active theme.
+Creating or mapping a standard page does not automatically add it to your theme's navigation. This protects existing menus and lets you choose which customer-facing pages to publish. The Setup Wizard's explicit **Optional starter site** choice can prepare a new site's starter navigation, but it also preserves existing Navigation, menus, and occupied menu locations. Start in **Pages > All Pages** to confirm that the pages you want are published, then use the workflow for your active theme when you need to add links manually.
 
 ### Classic themes
 
