@@ -74,14 +74,14 @@ Licensed extension guides are available in the Documentation page and customer p
 
 - **[Complete Extension Pack plans](/docs/mds-3/million-dollar-script/3.0.0/main/licenses-and-complete-extension-pack)** - Compare monthly, yearly, and lifetime access to all current pack members
 
-- **[Advertiser Workspace](/catalog/mds-advertiser-workspace)** - A private, verified workspace where purchasers manage eligible placements and bookings
-- **[Campaign Scheduler](/catalog/mds-campaign-scheduler)** - Time-based visibility controls for approved core and compatible extension inventory
-- **[Fields](/catalog/mds-fields)** - Custom placement fields, validation, field groups, and popup templates
-- **[Missions](/catalog/mds-missions)** - Goals, milestones, paid support, and moderated sponsor recognition
-- **[Revenue Agent](/catalog/mds-revenue-agent)** - Administrator-reviewed sponsor packages, opportunity audits, and outreach drafts
-- **[Search Visibility](/catalog/mds-search-visibility)** - Grid-page audits, sitemap controls, inventory schema, and redirect reporting
-- **[Time Capsule](/catalog/mds-time-capsule)** - Paid or free future-reveal slots and moderated archives
-- **[Translation](/catalog/mds-translation)** - Translation editing, imports, exports, delegated access, and bounded backups
+- **[Advertiser Workspace](/extensions/mds-advertiser-workspace)** - A private, verified workspace where purchasers manage eligible placements and bookings
+- **[Campaign Scheduler](/extensions/mds-campaign-scheduler)** - Time-based visibility controls for approved core and compatible extension inventory
+- **[Fields](/extensions/mds-fields)** - Custom placement fields, validation, field groups, and popup templates
+- **[Missions](/extensions/mds-missions)** - Goals, milestones, paid support, and moderated sponsor recognition
+- **[Revenue Agent](/extensions/mds-revenue-agent)** - Administrator-reviewed sponsor packages, opportunity audits, and outreach drafts
+- **[Search Visibility](/extensions/mds-search-visibility)** - Grid-page audits, sitemap controls, inventory schema, and redirect reporting
+- **[Time Capsule](/extensions/mds-time-capsule)** - Paid or free future-reveal slots and moderated archives
+- **[Translation](/extensions/mds-translation)** - Translation editing, imports, exports, delegated access, and bounded backups
 
 ## Help
 

@@ -67,7 +67,7 @@ This usually indicates PHP version incompatibility or missing dependencies.
 **Cause:** The ZIP file was incompletely downloaded or corrupted.
 
 **Solutions:**
-- Re-download from https://milliondollarscript.com/plugin
+- Re-download the plugin from the [plugin download page](/plugin)
 - Verify the download completed fully (check file size)
 - Try a different browser
 - Use manual FTP/SSH installation
@@ -94,7 +94,7 @@ This usually indicates PHP version incompatibility or missing dependencies.
 **Solution:** Simply retry the update. WordPress will fetch a fresh download link. If you see this error repeatedly, try:
 1. Click "Check for updates" to refresh the update information
 2. Immediately click "Update Now"
-3. If the issue persists, manually download the latest version from https://milliondollarscript.com/plugin and reinstall
+3. If the issue persists, manually download the latest version from the [plugin download page](/plugin) and reinstall
 
 ---
 
@@ -278,6 +278,6 @@ This is similar to core plugin updates. The download link may have expired.
 
 ## Still Need Help?
 
-- **MDS Installation Service:** Professional installation assistance at https://milliondollarscript.com
+- **MDS Installation Service:** Request professional assistance through the [installation service form](/forms/install-service)
 - **Hosting Support:** Your hosting provider can help with server configuration, PHP settings, and permissions
 - **Isolate the issue:** Test with a default WordPress theme and no other plugins to rule out conflicts

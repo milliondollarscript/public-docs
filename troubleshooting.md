@@ -206,4 +206,4 @@ Before contacting support, collect:
 - Relevant sanitized log entries.
 - Whether the issue reproduces with a default theme and unrelated plugins disabled on staging.
 
-Use the [contact page](https://milliondollarscript.com/contact/) for support or professional installation assistance.
+Use the [contact page](/forms/contact) for support or professional installation assistance.

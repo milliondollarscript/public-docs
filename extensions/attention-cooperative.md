@@ -115,7 +115,7 @@ POST /wp-json/million-dollar-script/v1/cooperative/placements/{id}/revoke
 
 Application writes require the relevant nonce or API policy. Approval and revocation actions require administrator access. Service placement writes require a valid Attention Cooperative v1 service signature and an `X-Idempotency-Key`. The credential identifies the partner and cooperative; request fields cannot substitute another partner or pool. The approved same-pool relationship, inventory allowance, terms, source approval, capacity, moderation, and hourly partner limit are still checked.
 
-The signature uses the [Million Dollar Script v1 service-signature contract](/api-reference/#service-signature-version-1). For this endpoint:
+The signature uses the [Million Dollar Script v1 service-signature contract](/docs/mds-3/million-dollar-script/3.0.0/main/api-reference#service-signature-version-1). For this endpoint:
 
 ```text
 method: POST

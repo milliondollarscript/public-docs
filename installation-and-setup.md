@@ -42,7 +42,7 @@ Use my affiliate link if you’d like to support development:
 
 ### Simple Installation (Recommended)
 
-1. **Download** the latest plugin ZIP file from https://milliondollarscript.com/plugin
+1. **Download** the latest plugin ZIP file from the [plugin download page](/plugin)
 2. **Log in** to your WordPress admin dashboard
 3. **Navigate** to Plugins > Add New
 4. **Click** "Upload Plugin" at the top of the page
