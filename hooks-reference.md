@@ -130,6 +130,22 @@ Runs after placement data is stored. Use it to persist extension-owned values li
 
 Never add private order, customer, manage-token, or unescaped HTML fields to public payloads.
 
+### Individual advertiser pages
+
+| Hook | Arguments | Purpose |
+|---|---|---|
+| `million-dollar-script/advertiser/page/view-model` | `$model, $placement_id` | Add a minimal, sanitized public view model before rendering and metadata filters |
+| `million-dollar-script/advertiser/page/before` | `$model` | Render before the standard advertiser-page content |
+| `million-dollar-script/advertiser/page/before-image` | `$model` | Render before the placement image |
+| `million-dollar-script/advertiser/page/after-image` | `$model` | Render after the placement image |
+| `million-dollar-script/advertiser/page/before-content` | `$model` | Render before the placement description |
+| `million-dollar-script/advertiser/page/after-content` | `$model` | Render after the placement description |
+| `million-dollar-script/advertiser/page/before-actions` | `$model` | Render before the advertiser and grid links |
+| `million-dollar-script/advertiser/page/after-actions` | `$model` | Render after the advertiser and grid links |
+| `million-dollar-script/advertiser/page/after` | `$model` | Render at the end of the advertiser page article |
+
+The view-model filter is public output. Add only values intentionally approved for that placement surface. Do not attach raw orders, customer records, payment data, manage credentials, or unpublished extension settings. Theme overrides of `million-dollar-script/single-advertiser.php` should preserve the standard action hooks when extension content is expected to render.
+
 ## REST API Governance
 
 ### `million-dollar-script/api/endpoint/manifest`

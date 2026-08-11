@@ -23,6 +23,7 @@ This guidance is operational information, not legal advice.
 - Collect only the customer and placement fields needed for the service being offered.
 - Keep customer email addresses, order keys, manage tokens, API keys, license keys, payment references, and unpublished placement metadata private.
 - Review each extension's privacy and retention settings. Extensions that collect submissions may add their own WordPress personal-data export and erasure support.
+- Keep custom placement fields private by default. Publish a value in a grid popup or on an individual advertiser page only when the advertiser understands and permits that public use.
 - Document external processors such as WooCommerce gateways, SMTP providers, analytics services, ImageGrid, map tiles, or hosted extension services.
 - Use the WordPress privacy tools and provider dashboards that apply to the data being processed. A database or CSV export may contain personal information and must be handled securely.
 

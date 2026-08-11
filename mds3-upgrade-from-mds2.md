@@ -126,6 +126,8 @@ Existing migrated pages are preserved. Million Dollar Script only creates missin
 
 Pages that specify a legacy grid keep that grid relationship after import, including sites with several grids. A legacy page without an explicit grid uses a grid from the same migration source rather than an unrelated grid that may already exist in Million Dollar Script.
 
+Individual advertiser pages keep their mapped legacy URL and prior-slug redirects. If an old `mds-pixel` title contains an oversized or multiline description, migration derives a concise heading from suitable placement alternative text or a bounded public-content fallback. The full placement description remains separate, and the reconciliation report flags the normalized record for review. Existing concise legacy titles are retained.
+
 ## After Import
 
 1. Open Million Dollar Script > Grids and check the imported grid dimensions, block size, background presentation, packages, price zones, and unavailable regions.
@@ -133,7 +135,7 @@ Pages that specify a legacy grid keep that grid relationship after import, inclu
 3. Test a small block selection and image upload.
 4. Review checkout settings. WooCommerce sites should test checkout with a sandbox gateway. Standalone/manual sites should verify the Checkout URL and any Million Dollar Script 2 placeholders. See [Million Dollar Script Checkout And Payments](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-checkout-and-payments).
 5. Review Million Dollar Script > Orders for imported orders and new test orders.
-6. Review the migration reconciliation totals. Investigate every skipped or warning entry before relying on the migrated site.
+6. Review the migration reconciliation totals. Investigate every skipped, repaired, or warning entry before relying on the migrated site, including advertiser-title normalization notices.
 7. Keep the old Million Dollar Script 2 tables until you are confident the site is stable.
 
 ## Rollback Notes
