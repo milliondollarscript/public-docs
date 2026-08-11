@@ -28,6 +28,14 @@ When importing settings:
 
 The importer validates known settings and rejects unsupported values. It does not import grids, orders, media, extension records, WordPress pages, users, or payment-provider data.
 
+## Uninstall Data Cleanup
+
+Deactivation always preserves Million Dollar Script and extension data. Uninstall also preserves data unless **Million Dollar Script -> Settings -> System -> Delete Data On Uninstall** is set to **Yes**.
+
+When deletion is enabled, expand **Choose extension data to delete** beneath that setting and review each installed extension. Registered extensions are selected by default, but you can exclude any extension whose data should remain available for a later reinstall. An extension removes its own settings, records, scheduled jobs, and generated files only when both the global setting and its individual selection permit deletion. WooCommerce Checkout never removes WooCommerce orders.
+
+Create a complete database and uploads backup before enabling deletion. If Million Dollar Script cannot verify an extension's cleanup policy during uninstall, it preserves that extension's data.
+
 ## Migration Recovery
 
 Run the Million Dollar Script 2 migration dry run before importing. Review source-table counts and warnings, then take a fresh backup. The migration records progress so an interrupted local request can resume, but a completed data import is not a substitute for a reversible backup.

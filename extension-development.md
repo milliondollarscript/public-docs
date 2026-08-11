@@ -200,6 +200,34 @@ ApiAccess::register_service_signature_verifier(
 
 Core accepts only literal `true`. A safe `WP_Error` is normalized, exceptions and malformed returns are denied, and no registration means remote access remains unavailable. Read the verified non-administrator identity with `ApiAccess::service_identity($request)`. Extensions must own credential creation, one-time secret exchange, encryption, rotation, revocation, replay storage, and relationship checks; do not use private `V3` classes or treat a label, URL, service ID, or header as authentication.
 
+## Uninstall Cleanup Policy
+
+Production extensions declare cleanup ownership through their normal registry metadata:
+
+```php
+\MillionDollarScript\Extensions\Registry::register([
+    'id' => 'example-extension',
+    'name' => 'Example Extension',
+    'cleanup' => [
+        'description' => 'Example records and settings.',
+    ],
+]);
+```
+
+The extension's `uninstall.php` must call the public cleanup facade with exact owned identifiers. Cleanup runs only when the core parent setting is enabled and the extension remains selected. Unknown extensions, missing core APIs, or unresolved policy state preserve data.
+
+```php
+if (defined('WP_UNINSTALL_PLUGIN') && class_exists('\\MillionDollarScript\\Extensions\\CleanupPolicy')) {
+    \MillionDollarScript\Extensions\CleanupPolicy::cleanup('example-extension', [
+        'tables' => ['mds_example_records'],
+        'option_prefixes' => ['mds_example_'],
+        'cron_hooks' => ['mds_example_cleanup'],
+    ]);
+}
+```
+
+Use only extension-owned table suffixes, private post types, option or metadata prefixes, transient prefixes, and cron hooks. Do not include shared core tables or third-party records.
+
 ## Packaging and Updates
 
 - Keep the extension slug and main plugin basename stable.
