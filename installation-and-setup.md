@@ -23,6 +23,20 @@ This guide covers Million Dollar Script 3.0 installation. The core WordPress int
 
 The memory limit is per PHP request. Check the effective value in **Million Dollar Script > System Status** or **Tools > Site Health**, because a hosting plan can advertise a higher maximum while WordPress is configured to use less.
 
+### Hosting capacity guide
+
+These are conservative starting points for comparing hosting plans. They are not hard limits or guarantees; traffic, themes, extensions, image sizes, concurrent checkouts, backups, and other WordPress plugins all share the same resources.
+
+| Example site | Suitable hosting | Memory | CPU and CPU time | Free SSD space | Rendering and cache |
+| --- | --- | --- | --- | --- | --- |
+| Up to about 10,000 orders, 1-10 sparse grids, and fewer than 1,000 active placements on a grid | Ordinary quality shared or managed WordPress hosting | 256 MB PHP memory; shared-plan RAM is acceptable | 1-2 vCPU equivalent with a normal shared CPU allowance | 5 GB or more | Local rendering is usually suitable. A persistent object cache is optional. |
+| Up to about 100,000 orders, 50-100 grids, and fewer than 5,000 active placements on a classic grid | Strong managed WordPress hosting or a small VPS | 256-512 MB PHP memory; about 4 GB RAM for a VPS | 2 vCPU; scheduled jobs must be allowed and the plan should not impose aggressive CPU-time throttling | 10 GB or more | Redis, Valkey, or a host-provided object cache can help repeated reads. Consider ImageGrid for large or frequently rebuilt grids. |
+| Around 500,000 orders, 250 sparse grids, or roughly 100,000 placements spread across the site | Scalable managed hosting, VPS, or dedicated resources | 512 MB PHP memory; about 8 GB RAM for a VPS | 4 vCPU or equivalent; avoid low shared CPU-minute limits | 20 GB or more, with at least 5 GB available for database growth | A persistent object cache is useful but remains optional. ImageGrid is recommended for very large or placement-heavy grids. |
+
+The 100,000-order test database used about 315 MB. The 500,000-order test database, which also contained about 450,000 WooCommerce orders and 100,000 placements, used about 1.72 GB. The larger disk allowances above leave room for indexes, logs, media, temporary files, updates, and backups.
+
+Large empty grids are inexpensive because Million Dollar Script does not store one database row for every unsold cell. Orders, occupied or reserved blocks, placements, traffic, and concurrent checkout activity are what increase resource use. On a classic interactive grid, fewer than 5,000 active placements is the recommended range; at 10,000 or more, test the exact page and consider [ImageGrid Rendering](/docs/mds-3/mds-imagegrid/current/main/usage) to offload composite rendering and tile delivery. ImageGrid reduces image-processing and browser-delivery work, but it does not replace the WordPress, WooCommerce, order, or database resources shown above.
+
 Want to understand the workflow before installing anything? [Open the private browser demo](/demo) to explore a ready-made campaign, complete a guided mission, and reset or export the disposable site when you are finished.
 
 ## Hosting Recommendation

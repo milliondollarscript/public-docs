@@ -18,6 +18,7 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 
 - **[Try the Browser Demo](/demo)** - Explore a private, disposable WordPress workspace with a ready-made campaign and guided missions
 - **[Installation & Setup](/docs/mds-3/million-dollar-script/3.0.0/main/installation-and-setup)** - Requirements, installation methods, and first steps
+- **[Hosting Capacity Guide](/docs/mds-3/million-dollar-script/3.0.0/main/installation-and-setup#hosting-capacity-guide)** - Compare shared hosting, managed WordPress, and VPS resources for representative site sizes
 - **[Setup Wizard](/docs/mds-3/million-dollar-script/3.0.0/main/setup-wizard)** - Automated setup for pages and configuration
 - **[Upgrade From Million Dollar Script 2](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-upgrade-from-mds2)** - Install Million Dollar Script 3.0 beside Million Dollar Script 2, review migration, and choose when to import or deactivate
 - **[Million Dollar Script 3.0 And Million Dollar Script 2 Workflow Parity](/docs/mds-3/million-dollar-script/3.0.0/main/mds3-mds2-workflow-parity)** - What is covered, what changed, and what to validate before a live migration
