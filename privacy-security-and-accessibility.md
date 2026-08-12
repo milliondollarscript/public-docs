@@ -27,6 +27,14 @@ This guidance is operational information, not legal advice.
 - Document external processors such as WooCommerce gateways, SMTP providers, analytics services, ImageGrid, map tiles, or hosted extension services.
 - Use the WordPress privacy tools and provider dashboards that apply to the data being processed. A database or CSV export may contain personal information and must be handled securely.
 
+## Anonymous Version Analytics
+
+Direct-download editions send a versioned, privacy-bounded analytics snapshot with the existing WordPress core update check unless **Disable Anonymous Version Analytics** is enabled in **Million Dollar Script -> Settings -> System**. No additional scheduled request is created.
+
+The snapshot contains the Million Dollar Script generation and version, WordPress and PHP versions, update channel, and the slug, version, and active state of installed first-party Million Dollar Script extensions. It is limited to 64 extensions identified by an official `milliondollarscript.com` plugin or author URL. Other WordPress plugins, settings, content, customer records, license keys, API keys, and payment data are not included.
+
+The service converts the normalized site address to a keyed one-way hash before storage, keeps only the current extension snapshot for that hash, reports extension use only as aggregate counts, and removes installation analytics after 365 days without an update check. Disabling analytics sends the opt-out header on later checks, omits the snapshot, and stops analytics storage without disabling update delivery.
+
 ## Security Checklist
 
 - Use HTTPS for WordPress administration, checkout, order management, extension-server connections, and hosted rendering.
