@@ -24,10 +24,18 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 
 - **[Routes & Pages](/docs/mds-2/million-dollar-script/2.6/main/routes-and-pages)** - Pretty URLs vs. page-based embeds
 - **[Blocks & Shortcodes](/docs/mds-2/million-dollar-script/2.6/main/shortcode-reference)** - Complete shortcode reference and block usage
+- **[Grid Layout, Backgrounds, and Scale](/docs/mds-2/million-dollar-script/2.6/main/grid-layout-backgrounds-and-scale)** - Grid sizing, centering, backgrounds, multiple grids, and browser troubleshooting
 - **[Pixel Permalinks](/docs/mds-2/million-dollar-script/2.6/main/pixel-permalinks-and-migration)** - Custom URL patterns for pixel pages
 - **[Styling & Themes](/docs/mds-2/million-dollar-script/2.6/main/dynamic-css-and-theme-modes)** - Dynamic CSS, light/dark modes
+- **[Customization, Localization, and Templates](/docs/mds-2/million-dollar-script/2.6/main/customization-localization-and-templates)** - Safe customization, WordPress themes, and translations
 - **[Admin Navigation](/docs/mds-2/million-dollar-script/2.6/main/admin-navigation)** - Guide to admin pages and menus
 - **[Logs & Cron](/docs/mds-2/million-dollar-script/2.6/main/logs-and-cron)** - Logging and scheduled tasks
+
+## Operations
+
+- **[Advertisers, Validation, and Click Tracking](/docs/mds-2/million-dollar-script/2.6/main/advertisers-validation-and-clicks)** - Account cleanup, field validation, URL checks, and campaign statistics
+- **[Email Delivery](/docs/mds-2/million-dollar-script/2.6/main/email-delivery)** - SMTP setup and connection troubleshooting
+- **[Hosting, Permissions, and Installation Troubleshooting](/docs/mds-2/million-dollar-script/2.6/main/hosting-permissions-and-installs)** - Current WordPress installation practices, file permissions, and PHP memory errors
 
 ## Integrations
 
@@ -59,6 +67,9 @@ Welcome to the Million Dollar Script documentation. This guide covers installati
 | Enable WooCommerce checkout | [WooCommerce](/docs/mds-2/million-dollar-script/2.6/main/woocommerce-integration) |
 | Fix 404 errors | [Troubleshooting](/docs/mds-2/million-dollar-script/2.6/main/troubleshooting#routes--404-errors) |
 | Grid alignment issues | [Troubleshooting](/docs/mds-2/million-dollar-script/2.6/main/troubleshooting#grid-alignment) |
+| Configure a background or large grid | [Grid Layout, Backgrounds, and Scale](/docs/mds-2/million-dollar-script/2.6/main/grid-layout-backgrounds-and-scale) |
+| Fix email delivery | [Email Delivery](/docs/mds-2/million-dollar-script/2.6/main/email-delivery) |
+| Resolve file permissions or memory errors | [Hosting, Permissions, and Installation Troubleshooting](/docs/mds-2/million-dollar-script/2.6/main/hosting-permissions-and-installs) |
 | Update failed | [Troubleshooting](/docs/mds-2/million-dollar-script/2.6/main/troubleshooting#plugin-updates) |
 | Add custom columns to the list | [List Page Customization](/docs/mds-2/million-dollar-script/2.6/main/list-page-customization) |
 | Create an extension | [Extension Development](/docs/mds-2/million-dollar-script/2.6/main/extension-development) |

@@ -17,7 +17,7 @@ This guide updates and replaces the old “WordPress Installation” article. Th
 
 ## Requirements
 
-- WordPress 6.7+ (tested up to 7.0.2)
+- WordPress 6.7+ (tested up to 7.0.4)
 - PHP 8.1+
 - Optional: WooCommerce (for checkout, refunds, and account integration)
 
