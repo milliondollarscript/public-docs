@@ -62,6 +62,12 @@ add_filter( 'million-dollar-script/dashboard/menu/items', function ( array $grou
 
 For developers building extensions, see [Extension Development](/docs/mds-3/million-dollar-script/3.0.0/main/extension-development).
 
+## Admin Bar (Top Bar)
+
+The **MDS** node in the WordPress admin top bar mirrors the dashboard menu and adds one maintenance action:
+
+- **Clear cache** — rotates every grid's tile cache key and removes short-lived plugin transients so browsers re-download the existing grid images. See [Troubleshooting: Cache](/docs/mds-3/million-dollar-script/3.0.0/main/troubleshooting#cache) for what it does and does not clear.
+
 ## Notes
 
 - Hidden pages remain directly accessible by URL and are linked from the dashboard menu.

@@ -94,6 +94,23 @@ If grids load slowly or tiles are missing:
 - If local PNG tile requests return `404` or an image workflow reports an undefined `imagecreate()` function, follow the [PHP GD troubleshooting guide](/docs/mds-3/million-dollar-script/3.0.0/main/fatal-error-call-to-undefined-function-imagecreate).
 - Use hosted ImageGrid rendering for very large grids or processing that exceeds shared-host limits.
 
+## Cache
+
+**Clear cache** is available from the **MDS** menu in the admin top bar and from the **System Status** page. It is the first thing to try when a grid shows stale or missing content after changes.
+
+What it does:
+
+- **Rotates every grid's tile cache key.** Grid tiles are addressed by URLs that include a cache key; rotating the key gives every grid new tile URLs, so browsers and intermediate proxies stop serving old tiles and re-download the existing ones from the server. Existing tile files are kept and served as-is, so nothing is regenerated.
+- **Removes short-lived plugin transients** (admin summaries, previews, result notices, maintenance locks).
+
+What it does not do:
+
+- It does **not** change grid data, blocks, orders, or settings.
+- It does **not** clear nginx, Cloudflare, PHP, or third-party page-cache plugin caches. If a full page cache is active, flush that plugin's cache separately; the rotated tile keys take effect on the next fresh render.
+- It does **not** touch ImageGrid remote tilesets. Grids rendered through ImageGrid keep serving their remote tiles, and new ImageGrid render jobs pick up the rotated state automatically.
+
+**Delete cached tile files** (checkbox on the System Status page) additionally removes the plugin's cached tile images from the `uploads/mds3-tiles/` directory. With the files gone, tiles regenerate from scratch on the next view, which can take a while for large grids. Use this when rotated keys alone do not resolve a stale display, or to reclaim disk space.
+
 ## Extension Catalog
 
 The WordPress.org edition does not install extension ZIP files from the Million Dollar Script service. Use **Discover extensions** to browse compatible products, install free extensions through **Plugins > Add New**, and upload premium packages supplied with a purchase.
